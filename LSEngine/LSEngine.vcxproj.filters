@@ -1,39 +1,48 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="LSEngine">
+      <UniqueIdentifier>{7AF2543D-66BF-AF48-8FD8-9DF07B04E5D6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="LSEngine\Events">
+      <UniqueIdentifier>{1ED1E514-8A5C-53D9-936D-D6CDFF77AFD9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\LSEngine.h" />
+    <ClInclude Include="src\LSEngine\Application.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\EntryPoint.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Events\ApplicationEvent.h">
+      <Filter>LSEngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Events\Event.h">
+      <Filter>LSEngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Events\KeyEvent.h">
+      <Filter>LSEngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Events\MouseEvent.h">
+      <Filter>LSEngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Log.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lsepch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Application.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>LSEngine</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\LSEngine\Application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\EntryPoint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\LSEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="src\LSEngine\Log.cpp">
+      <Filter>LSEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lsepch.cpp" />
   </ItemGroup>
 </Project>

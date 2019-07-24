@@ -1,5 +1,7 @@
 #include <LSEngine.h>
 
+#include <LSEngine/Events/KeyEvent.h>
+
 class Sandbox : public LSE::Application
 {
 public:

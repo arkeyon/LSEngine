@@ -10,4 +10,7 @@
 	#error Only Windows Supported
 #endif
 
+#define BIT(i) (1 << i)
+
 #include "Application.h"
+#include "Log.h"

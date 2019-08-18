@@ -10,7 +10,12 @@
 	#error Only Windows Supported
 #endif
 
-#define BIT(i) (1 << i)
+#ifdef LSE_ENABLE_ASSERTS
+	#define LSE_ASSERT(x, ...) { if(!(x)) { LSE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+	#define LSE_CORE_ASSERT(x, ...) { if(!(x)) { LSE_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+#else
+	#define LSE_ASSERT(x, ...)
+	#define LSE_CORE_ASSERT(x, ...)
+#endif
 
-#include "Application.h"
-#include "Log.h"
+#define BIT(i) (1 << i)

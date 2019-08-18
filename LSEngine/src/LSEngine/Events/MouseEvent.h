@@ -19,6 +19,9 @@ namespace LSE {
 
 		}
 
+		inline const float& GetX() const { return m_MouseX; };
+		inline const float& GetY() const { return m_MouseY; };
+
 		std::string ToString() const override
 		{
 			std::stringstream ss;
@@ -35,34 +38,39 @@ namespace LSE {
 	class LSE_API MouseScrolledEvent : public MouseEvent
 	{
 	public:
-		MouseScrolledEvent(float scroll)
-			: m_Scroll(scroll)
+		MouseScrolledEvent(float scrollx, float scrolly)
+			: m_ScrollX(scrollx), m_ScrollY(scrolly)
 		{
 
 		}
 
+		inline const int& GetScrollX() const { return m_ScrollX; };
+		inline const int& GetScrollY() const { return m_ScrollY; };
+
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "MouseScrolledEvent: " << m_Scroll;
+			ss << "MouseScrolledEvent: " << m_ScrollX << ", " << m_ScrollY;
 			return ss.str();
 		}
 
 		EVENT_CLASS_TYPE(MouseScrolled);
 
 	private:
-		float m_Scroll;
+		float m_ScrollX, m_ScrollY;
 	};
 
 	class LSE_API MouseButtonEvent : public MouseEvent
 	{
 	public:
+
 		MouseButtonEvent(int button)
 			: m_Button(button)
 		{
 
 		}
 
+		inline const int& GetButtonCode() const { return m_Button; }
 	protected:
 		int m_Button;
 	};

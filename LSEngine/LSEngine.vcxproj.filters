@@ -7,6 +7,18 @@
     <Filter Include="LSEngine\Events">
       <UniqueIdentifier>{1ED1E514-8A5C-53D9-936D-D6CDFF77AFD9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="LSEngine\ImGui">
+      <UniqueIdentifier>{24DB0B9C-10A9-FFA1-F93C-70C8E5A9DB06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\OpenGL">
+      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\Windows">
+      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\LSEngine.h" />
@@ -31,18 +43,65 @@
     <ClInclude Include="src\LSEngine\Events\MouseEvent.h">
       <Filter>LSEngine\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\LSEngine\ImGui\ImGuiLayer.h">
+      <Filter>LSEngine\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Input.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\KeyMouseCodes.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Layer.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\LayerStack.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
     <ClInclude Include="src\LSEngine\Log.h">
       <Filter>LSEngine</Filter>
     </ClInclude>
+    <ClInclude Include="src\LSEngine\Timer.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsTimer.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Window.h" />
     <ClInclude Include="src\lsepch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Application.cpp">
       <Filter>LSEngine</Filter>
     </ClCompile>
+    <ClCompile Include="src\LSEngine\ImGui\ImGuiLayer.cpp">
+      <Filter>LSEngine\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Layer.cpp">
+      <Filter>LSEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\LayerStack.cpp">
+      <Filter>LSEngine</Filter>
+    </ClCompile>
     <ClCompile Include="src\LSEngine\Log.cpp">
       <Filter>LSEngine</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsTimer.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\lsepch.cpp" />
+    <ClCompile Include="src\LSEngine\ImGui\ImGuiBuild.cpp" />
   </ItemGroup>
 </Project>

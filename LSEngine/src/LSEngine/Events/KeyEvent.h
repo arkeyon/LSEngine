@@ -7,7 +7,7 @@ namespace LSE {
 	class LSE_API KeyEvent : public Event
 	{
 	public:
-		inline int GetKeyCode() { return m_KeyCode; }
+		inline const int& GetKeyCode() const { return m_KeyCode; }
 
 		EVENT_CLASS_CATEGORY(EventCategoryKeyboard);
 	protected:
@@ -59,4 +59,41 @@ namespace LSE {
 		EVENT_CLASS_TYPE(KeyReleased);
 	};
 
+	class LSE_API KeyRepeatedEvent : public KeyEvent
+	{
+	public:
+		KeyRepeatedEvent(int keycode)
+			: KeyEvent(keycode)
+		{
+
+		}
+
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "KeyRepeatedEvent: " << m_KeyCode;
+			return ss.str();
+		}
+
+		EVENT_CLASS_TYPE(KeyRepeated);
+	};
+
+	class LSE_API KeyTypedEvent : public KeyEvent
+	{
+	public:
+		KeyTypedEvent(int keycode)
+			: KeyEvent(keycode)
+		{
+
+		}
+
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "KeyTypedEvent: " << m_KeyCode;
+			return ss.str();
+		}
+
+		EVENT_CLASS_TYPE(KeyTyped);
+	};
 }

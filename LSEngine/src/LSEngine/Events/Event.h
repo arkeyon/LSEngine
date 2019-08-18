@@ -13,7 +13,7 @@ namespace LSE {
 		None = 0,
 		WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
 		AppTick, AppUpdate, AppRender,
-		KeyPressed, KeyReleased, KeyHeld,
+		KeyPressed, KeyReleased, KeyRepeated, KeyTyped,
 		MouseButtonPressed, MouseButtonReleased, MouseButtonHeld, MouseMoved, MouseScrolled
 	};
 
@@ -31,6 +31,7 @@ namespace LSE {
 	class LSE_API Event
 	{
 		friend class EventDispatcher;
+		friend class Application;
 	public:
 		virtual EventType GetEventType() const = 0;
 		virtual const char* GetName() const = 0;
@@ -65,7 +66,7 @@ namespace LSE {
 		template<typename T>
 		bool Dispatch(EventFn<T> func)
 		{
-			if (m_Event.GetCategoryFlags() == T::GetStaticType())
+			if (m_Event.GetEventType() == T::GetStaticType())
 			{
 				m_Event.m_Handled = func(*(T*)& m_Event);
 				return true;

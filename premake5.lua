@@ -11,6 +11,17 @@ workspace "LSEngine"
 
     outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
+    IncludeDir = {}
+    IncludeDir["GLFW"] = "LSEngine/vendor/glfw/include"
+    IncludeDir["GLAD"] = "LSEngine/vendor/glad/include"
+    IncludeDir["imgui"] = "LSEngine/vendor/imgui"
+    IncludeDir["GLM"] = "LSEngine/vendor/glm"
+    IncludeDir["spdlog"] = "LSEngine/vendor/spdlog/include"
+
+    include "LSEngine/vendor/glfw"
+    include "LSEngine/vendor/glad"
+    include "LSEngine/vendor/imgui"
+
     project "Sandbox"
         location "Sandbox"
         kind "ConsoleApp"
@@ -28,9 +39,9 @@ workspace "LSEngine"
     
         includedirs
         {
-            "LSEngine/vendor/spdlog/include",
-            "LSEngine/vendor/glm",
-            "LSEngine/src"
+            "LSEngine/src",
+            "%{IncludeDir.spdlog}",
+            "%{IncludeDir.GLM}"
         }
     
         links
@@ -50,14 +61,17 @@ workspace "LSEngine"
     
         filter "configurations:Debug"
             defines "LSE_DEBUG"
+            buildoptions "/MDd"
             symbols "On"
     
         filter "configurations:Release"
             defines "LSE_RELEASE"
+            buildoptions "/MD"
             optimize "On"
     
         filter "configurations:Dist"
             defines "LSE_DIST"
+            buildoptions "/MD"
             optimize "On"
 
     project "LSEngine"
@@ -81,9 +95,21 @@ workspace "LSEngine"
         {
             "%{prj.name}/vendor/spdlog/include",
             "%{prj.name}/vendor/glm",
-            "%{prj.name}/src"
+            "%{prj.name}/src",
+            "%{IncludeDir.GLFW}",
+            "%{IncludeDir.GLAD}",
+            "%{IncludeDir.imgui}",
+            "%{IncludeDir.GLM}"
         }
         
+        links
+        {
+            "GLFW",
+            "GLAD",
+            "imgui",
+            "opengl32.lib"
+        }
+
         filter "system:windows"
             cppdialect "C++17"
             staticruntime "On"
@@ -91,6 +117,8 @@ workspace "LSEngine"
         
             defines
             {
+                "IMGUI_IMPL_OPENGL_LOADER_GLAD",
+                "GLFW_INCLUDE_NONE",
                 "LSE_PLATFORM_WINDOWS",
                 "LSE_BUILD_DLL"
             }
@@ -101,13 +129,20 @@ workspace "LSEngine"
             }
         
         filter "configurations:Debug"
-            defines "LSE_DEBUG"
+            defines
+            {
+                "LSE_DEBUG",
+                "LSE_ENABLE_ASSERTS"
+            }
+            buildoptions "/MDd"
             symbols "On"
         
         filter "configurations:Release"
             defines "LSE_RELEASE"
+            buildoptions "/MD"
             optimize "On"
         
         filter "configurations:Dist"
             defines "LSE_DIST"
+            buildoptions "/MD"
             optimize "On"

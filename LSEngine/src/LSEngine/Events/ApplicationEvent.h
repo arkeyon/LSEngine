@@ -27,6 +27,9 @@ namespace LSE {
 		
 		}
 
+		inline const int& GetWidth() const { return m_Width; }
+		inline const int& GetHeight() const { return m_Height; }
+
 		std::string ToString() const override
 		{
 			std::stringstream ss;

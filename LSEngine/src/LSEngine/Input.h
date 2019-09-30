@@ -2,12 +2,12 @@
 
 namespace LSE {
 
-	class Input
+	class LSE_API Input
 	{
 	public:
 		inline static bool IsKeyPressed(int keycode) { return s_Instance->IsKeyPressedImpl(keycode); }
 
-		inline static const bool& IsMouseButtonPressed(int button) { return s_Instance->IsMouseButtonPressedImpl(button); }
+		inline static bool IsMouseButtonPressed(int button) { return s_Instance->IsMouseButtonPressedImpl(button); }
 
 		inline static std::pair<float, float> GetMousePos() { return s_Instance->GetMousePosImpl(); };
 		inline static float GetMouseX() { return s_Instance->GetMouseXImpl(); }

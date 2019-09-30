@@ -25,8 +25,9 @@ workspace "LSEngine"
     project "Sandbox"
         location "Sandbox"
         kind "ConsoleApp"
-
         language "C++"
+        cppdialect "C++17"
+        staticruntime "on"
 
         targetdir ("bin/" .. outputdir .. "/%{prj.name}")
         objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -41,7 +42,8 @@ workspace "LSEngine"
         {
             "LSEngine/src",
             "%{IncludeDir.spdlog}",
-            "%{IncludeDir.GLM}"
+            "%{IncludeDir.GLM}",
+            "%{IncludeDir.imgui}"
         }
     
         links
@@ -50,8 +52,6 @@ workspace "LSEngine"
         }
 
         filter "system:windows"
-            cppdialect "C++17"
-            staticruntime "On"
             systemversion "latest"
     
             defines
@@ -61,24 +61,26 @@ workspace "LSEngine"
     
         filter "configurations:Debug"
             defines "LSE_DEBUG"
-            buildoptions "/MDd"
-            symbols "On"
+            runtime "Debug"
+            symbols "on"
     
         filter "configurations:Release"
             defines "LSE_RELEASE"
-            buildoptions "/MD"
-            optimize "On"
+            runtime "Release"
+            optimize "on"
     
         filter "configurations:Dist"
             defines "LSE_DIST"
-            buildoptions "/MD"
-            optimize "On"
+            runtime "Release"
+            optimize "on"
 
     project "LSEngine"
         location "LSEngine"
-        kind "SharedLib"
+        kind "StaticLib"
         language "C++"
-        
+        cppdialect "C++17"
+        staticruntime "on"
+
         targetdir ("bin/" .. outputdir .. "/%{prj.name}")
         objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
         
@@ -110,9 +112,12 @@ workspace "LSEngine"
             "opengl32.lib"
         }
 
+        defines
+        {
+            "_CRT_SECURE_NO_WARNINGS"
+        }
+
         filter "system:windows"
-            cppdialect "C++17"
-            staticruntime "On"
             systemversion "latest"
         
             defines
@@ -122,27 +127,22 @@ workspace "LSEngine"
                 "LSE_PLATFORM_WINDOWS",
                 "LSE_BUILD_DLL"
             }
-        
-            postbuildcommands
-            {
-                ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-            }
-        
+
         filter "configurations:Debug"
             defines
             {
                 "LSE_DEBUG",
                 "LSE_ENABLE_ASSERTS"
             }
-            buildoptions "/MDd"
-            symbols "On"
-        
+            runtime "Debug"
+            symbols "on"
+    
         filter "configurations:Release"
             defines "LSE_RELEASE"
-            buildoptions "/MD"
-            optimize "On"
-        
+            runtime "Release"
+            optimize "on"
+    
         filter "configurations:Dist"
             defines "LSE_DIST"
-            buildoptions "/MD"
-            optimize "On"
+            runtime "Release"
+            optimize "on"

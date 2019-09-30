@@ -6,7 +6,7 @@
 #include "LSEngine/Events/MouseEvent.h"
 #include "LSEngine/Events/KeyEvent.h"
 
-#include <glad/glad.h>
+#include "Platform/OpenGL/OpenGLContext.h"
 
 namespace LSE {
 
@@ -47,9 +47,10 @@ namespace LSE {
 		}
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_Window);
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		LSE_CORE_ASSERT(status, "Failed to load GLAD");
+
+		s_Context = new OpenGLContext(m_Window);
+		s_Context->Init();
+
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 
@@ -118,7 +119,7 @@ namespace LSE {
 			{
 				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 				
-				MouseScrolledEvent e(xoffset, yoffset);
+				MouseScrolledEvent e((float)(xoffset), (float)(yoffset));
 				data.EventCallback(e);
 
 			});
@@ -127,7 +128,7 @@ namespace LSE {
 			{
 				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-				MouseMovedEvent e(xpos, ypos);
+				MouseMovedEvent e((float)(xpos), (float)(ypos));
 				data.EventCallback(e);
 
 			});
@@ -152,8 +153,8 @@ namespace LSE {
 
 	void WindowsWindow::OnUpdate()
 	{
+		s_Context->SwapBuffers();
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
 	}
 
 	void WindowsWindow::Shutdown()

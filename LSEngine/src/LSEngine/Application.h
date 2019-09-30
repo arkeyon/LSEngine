@@ -24,7 +24,7 @@ namespace LSE {
 
 		inline Window& GetWindow() { return *m_Window; }
 
-		inline static Application& Get() { return *m_Instance; }
+		inline static Application& Get() { return *s_Instance; }
 	private:
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
@@ -32,7 +32,7 @@ namespace LSE {
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 	private:
-		static Application* m_Instance;
+		static Application* s_Instance;
 	};
 
 	Application* CreateApplication();

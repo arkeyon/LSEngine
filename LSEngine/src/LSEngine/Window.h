@@ -1,9 +1,9 @@
 #pragma once
 
-#include "lsepch.h"
-
 #include "LSEngine/Core.h"
 #include "LSEngine/Events/Event.h"
+
+#include "Renderer/GraphicsContext.h"
 
 namespace LSE {
 
@@ -44,6 +44,8 @@ namespace LSE {
 		virtual void* GetNativeWindow() = 0;
 
 		static Window* Create(const WindowProps& props = WindowProps());
+	protected:
+		static GraphicsContext* s_Context;
 	};
 
 }

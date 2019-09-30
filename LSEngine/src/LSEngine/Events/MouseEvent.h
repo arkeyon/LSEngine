@@ -44,8 +44,8 @@ namespace LSE {
 
 		}
 
-		inline const int& GetScrollX() const { return m_ScrollX; };
-		inline const int& GetScrollY() const { return m_ScrollY; };
+		inline const float& GetScrollX() const { return m_ScrollX; };
+		inline const float& GetScrollY() const { return m_ScrollY; };
 
 		std::string ToString() const override
 		{

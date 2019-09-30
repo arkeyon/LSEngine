@@ -7,16 +7,22 @@
 #include "Timer.h"
 
 #include <glm/glm.hpp>
+#include "Renderer/Shader.h"
+#include "Renderer/Buffer.h"
+#include "Renderer/VertexArray.h"
+#include "Renderer/Renderer.h"
+
+#include <memory>
 
 namespace LSE {
 
 #define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
 
-	Application* Application::m_Instance = nullptr;
+	Application* Application::s_Instance = nullptr;
 
 	Application::Application()
 	{
-		m_Instance = this;
+		s_Instance = this;
 
 		m_Window = std::unique_ptr<Window>(Window::Create(WindowProps("Title", 1280, 720)));
 		m_Window->SetEventCallbackFn(BIND_EVENT_FN(Application::OnEvent));
@@ -61,15 +67,78 @@ namespace LSE {
 		}
 	}
 
-#define KEYDOWN(x) (GetAsyncKeyState(x) & 0x8000)
-
 	void Application::Run()
 	{
+		RendererAPI::SetAPI(RendererAPI::API::OpenGL);
+		Shader shader("simpleshader.vert", "simpleshader.frag");
+
+		std::shared_ptr <VertexArray> vertexArray(VertexArray::Create());
+
+		{
+
+			float vertices[] =
+			{
+				-1.f, -1.f,		+1.f, +0.f, +0.f, +1.f,
+				-0.5f, +1.f,	+0.f, +1.f, +0.f, +1.f,
+				+0.f,-1.f,		+0.f, +0.f, +1.f, +1.f
+			};
+
+			uint32_t indices[] =
+			{
+				0, 1, 2
+			};
+
+			std::shared_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(3 * 6, vertices));
+			vertexBuffer->SetLayout({
+				{ SDT::Float2, "a_Position" },
+				{ SDT::Float4, "a_Colour" }
+				});
+
+			std::shared_ptr<IndexBuffer> indexBuffer(IndexBuffer::Create(3, indices));
+
+			vertexArray->AddVertexBuffer(vertexBuffer);
+			vertexArray->SetIndexBuffer(indexBuffer);
+		}
+
+		std::shared_ptr <VertexArray> vertexArray2(VertexArray::Create());
+		
+		{
+		
+			float vertices[] =
+			{
+				+0.f, -1.f,		+1.f, +0.f, +0.f, +1.f,
+				+0.f, +1.f,		+0.f, +1.f, +0.f, +1.f,
+				+1.f, +1.f,		+0.f, +0.f, +1.f, +1.f,
+				+1.f, -1.f,		+0.f, +1.f, +1.f, +1.f
+			};
+		
+			uint32_t indices[] =
+			{
+				0, 1, 2, 2, 3, 0
+			};
+		
+			std::shared_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(4 * 6, vertices));
+			vertexBuffer->SetLayout({
+				{ SDT::Float2, "a_Position" },
+				{ SDT::Float4, "a_Colour" }
+				});
+		
+			std::shared_ptr<IndexBuffer> indexBuffer(IndexBuffer::Create(6, indices));
+		
+			vertexArray2->AddVertexBuffer(vertexBuffer);
+			vertexArray2->SetIndexBuffer(indexBuffer);
+		}
+
 		while (m_Running)
 		{
-			glClear(GL_COLOR_BUFFER_BIT);
+			RenderCommand::Clear();
 
-			if (KEYDOWN(VK_NUMPAD9)) continue;
+			shader.Bind();
+			Renderer::BeginScene();
+			Renderer::Submit(vertexArray);
+			Renderer::Submit(vertexArray2);
+			Renderer::EndScene();
+			shader.Unbind();
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();

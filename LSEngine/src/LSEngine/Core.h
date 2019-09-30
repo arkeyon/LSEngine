@@ -1,10 +1,14 @@
 #pragma once
 
 #ifdef LSE_PLATFORM_WINDOWS
-	#ifdef LSE_BUILD_DLL
-		#define LSE_API __declspec(dllexport)
+	#ifdef LSE_DYNAMIC_LINK
+		#ifdef LSE_BUILD_DLL
+			#define LSE_API __declspec(dllexport)
+		#else
+			#define LSE_API __declspec(dllimport)
+		#endif
 	#else
-		#define LSE_API __declspec(dllimport)
+		#define LSE_API
 	#endif
 #else
 	#error Only Windows Supported

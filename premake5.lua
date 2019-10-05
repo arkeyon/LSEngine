@@ -17,6 +17,8 @@ workspace "LSEngine"
     IncludeDir["imgui"] = "LSEngine/vendor/imgui"
     IncludeDir["GLM"] = "LSEngine/vendor/glm"
     IncludeDir["spdlog"] = "LSEngine/vendor/spdlog/include"
+    IncludeDir["gli"] = "LSEngine/vendor/gli"
+    IncludeDir["FreeImage"] = "LSEngine/vendor/FreeImage/include"
 
     include "LSEngine/vendor/glfw"
     include "LSEngine/vendor/glad"
@@ -43,7 +45,8 @@ workspace "LSEngine"
             "LSEngine/src",
             "%{IncludeDir.spdlog}",
             "%{IncludeDir.GLM}",
-            "%{IncludeDir.imgui}"
+            "%{IncludeDir.imgui}",
+            "%{IncludeDir.FreeImage}"
         }
     
         links
@@ -101,20 +104,29 @@ workspace "LSEngine"
             "%{IncludeDir.GLFW}",
             "%{IncludeDir.GLAD}",
             "%{IncludeDir.imgui}",
-            "%{IncludeDir.GLM}"
+            "%{IncludeDir.GLM}",
+            "%{IncludeDir.gli}",
+            "%{IncludeDir.FreeImage}"
         }
         
+        libdirs
+        {
+            "%{prj.name}/vendor/FreeImage/lib"
+        }
+
         links
         {
             "GLFW",
             "GLAD",
             "imgui",
-            "opengl32.lib"
+            "opengl32.lib",
+            "FreeImageLibd.lib"
         }
 
         defines
         {
-            "_CRT_SECURE_NO_WARNINGS"
+            "_CRT_SECURE_NO_WARNINGS",
+            "FREEIMAGE_LIB"
         }
 
         filter "system:windows"

@@ -25,6 +25,8 @@ namespace LSE {
 		glfwMakeContextCurrent(m_WindowHandle);
 		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		LSE_CORE_ASSERT(status, "Failed to load GLAD");
+
+		LSE_CORE_INFO("OpenGL Version: {0}", glGetString(GL_VERSION));
 	}
 
 }

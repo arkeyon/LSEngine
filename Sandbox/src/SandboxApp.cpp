@@ -2,13 +2,15 @@
 
 #include "imgui.h"
 
-class ExampleLayer : public LSE::Layer
+#include "LSEngine/IOUtils.h"
+
+class LogicLayer : public LSE::Layer
 {
 public:
-	ExampleLayer()
-		: Layer("Example")
+	LogicLayer()
+		: Layer("LogicLayer")
 	{
-		
+
 	}
 
 	void OnUpdate() override
@@ -21,9 +23,7 @@ public:
 
 	void OnImGuiRender() override
 	{
-		ImGui::Begin("Test");
-		ImGui::Text("Hello World!");
-		ImGui::End();
+	//	ImGui::ImageButton((void*)tex, ImVec2(), ImVec2(0.f, 0.f), ImVec2(1.f, 1.f), -1, ImVec4(0.f, 0.f, 0.f, 0.f), ImVec4(1.f, 1.f, 1.f, 1.f));
 	}
 
 	void OnEvent(LSE::Event& e) override
@@ -44,7 +44,7 @@ class Sandbox : public LSE::Application
 public:
 	Sandbox()
 	{
-		PushLayer(new ExampleLayer());
+		PushLayer(new LogicLayer());
 	}
 
 	~Sandbox()

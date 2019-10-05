@@ -136,4 +136,10 @@ namespace LSE {
 	{
 		glUseProgram(0);
 	}
+
+	void Shader::SetUniformi(const char* name, int i)
+	{
+		GLuint location = glGetUniformLocation(m_ShaderProgram, name);
+		glUniform1i(location, i);
+	}
 }

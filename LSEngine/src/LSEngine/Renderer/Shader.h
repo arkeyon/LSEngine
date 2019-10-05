@@ -13,6 +13,7 @@ namespace LSE {
 		Shader(std::string vertexPath, std::string fragmentPath);
 		void Bind();
 		void Unbind();
+		void SetUniformi(const char* name, int i);
 	private:
 		GLuint m_ShaderProgram;
 	};

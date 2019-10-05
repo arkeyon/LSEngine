@@ -76,8 +76,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>lsepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;IMGUI_IMPL_OPENGL_LOADER_GLAD;GLFW_INCLUDE_NONE;LSE_PLATFORM_WINDOWS;LSE_BUILD_DLL;LSE_DEBUG;LSE_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;FREEIMAGE_LIB;IMGUI_IMPL_OPENGL_LOADER_GLAD;GLFW_INCLUDE_NONE;LSE_PLATFORM_WINDOWS;LSE_BUILD_DLL;LSE_DEBUG;LSE_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\gli;vendor\FreeImage\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -88,7 +88,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;FreeImageLibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\FreeImage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -96,8 +97,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>lsepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;IMGUI_IMPL_OPENGL_LOADER_GLAD;GLFW_INCLUDE_NONE;LSE_PLATFORM_WINDOWS;LSE_BUILD_DLL;LSE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;FREEIMAGE_LIB;IMGUI_IMPL_OPENGL_LOADER_GLAD;GLFW_INCLUDE_NONE;LSE_PLATFORM_WINDOWS;LSE_BUILD_DLL;LSE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\gli;vendor\FreeImage\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -112,7 +113,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;FreeImageLibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\FreeImage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -120,8 +122,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>lsepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;IMGUI_IMPL_OPENGL_LOADER_GLAD;GLFW_INCLUDE_NONE;LSE_PLATFORM_WINDOWS;LSE_BUILD_DLL;LSE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;FREEIMAGE_LIB;IMGUI_IMPL_OPENGL_LOADER_GLAD;GLFW_INCLUDE_NONE;LSE_PLATFORM_WINDOWS;LSE_BUILD_DLL;LSE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\gli;vendor\FreeImage\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -136,7 +138,8 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;FreeImageLibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>vendor\FreeImage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -149,20 +152,22 @@
     <ClInclude Include="src\LSEngine\Events\KeyEvent.h" />
     <ClInclude Include="src\LSEngine\Events\MouseEvent.h" />
     <ClInclude Include="src\LSEngine\IOUtils.h" />
-    <ClInclude Include="src\LSEngine\Renderer\Buffer.h" />
-    <ClInclude Include="src\LSEngine\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\LSEngine\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\LSEngine\Input.h" />
     <ClInclude Include="src\LSEngine\KeyMouseCodes.h" />
     <ClInclude Include="src\LSEngine\Layer.h" />
     <ClInclude Include="src\LSEngine\LayerStack.h" />
     <ClInclude Include="src\LSEngine\Log.h" />
+    <ClInclude Include="src\LSEngine\Renderer\Buffer.h" />
+    <ClInclude Include="src\LSEngine\Renderer\Camera.h" />
+    <ClInclude Include="src\LSEngine\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\LSEngine\Renderer\RenderCommand.h" />
     <ClInclude Include="src\LSEngine\Renderer\Renderer.h" />
     <ClInclude Include="src\LSEngine\Renderer\RendererAPI.h" />
     <ClInclude Include="src\LSEngine\Renderer\Shader.h" />
     <ClInclude Include="src\LSEngine\Renderer\VertexArray.h" />
     <ClInclude Include="src\LSEngine\Timer.h" />
+    <ClInclude Include="src\LSEngine\Window.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
@@ -170,18 +175,18 @@
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsTimer.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
-    <ClInclude Include="src\LSEngine\Window.h" />
     <ClInclude Include="src\lsepch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Application.cpp" />
+    <ClCompile Include="src\LSEngine\IOUtils.cpp" />
     <ClCompile Include="src\LSEngine\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\LSEngine\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="src\LSEngine\IOUtils.cpp" />
     <ClCompile Include="src\LSEngine\Layer.cpp" />
     <ClCompile Include="src\LSEngine\LayerStack.cpp" />
     <ClCompile Include="src\LSEngine\Log.cpp" />
     <ClCompile Include="src\LSEngine\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\LSEngine\Renderer\Camera.cpp" />
     <ClCompile Include="src\LSEngine\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\LSEngine\Renderer\Renderer.cpp" />
     <ClCompile Include="src\LSEngine\Renderer\RendererAPI.cpp" />

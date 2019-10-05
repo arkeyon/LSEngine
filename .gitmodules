@@ -10,3 +10,6 @@
 [submodule "LSEngine/vendor/imgui"]
 	path = LSEngine/vendor/imgui
 	url = https://github.com/TheCherno/imgui
+[submodule "LSEngine/vendor/gli"]
+	path = LSEngine/vendor/gli
+	url = https://github.com/g-truc/gli

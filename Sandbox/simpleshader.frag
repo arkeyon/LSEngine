@@ -6,7 +6,7 @@ uniform sampler2D tex;
 
 in VertexData
 {
-	vec4 Position;
+	vec3 Position;
 	vec4 Colour;
 	vec2 UV;
 	float Tex;
@@ -14,10 +14,5 @@ in VertexData
 
 void main()
 {
-	vec4 ts = texture(tex, fin.UV);
-	if (ts.w < 0.5f)
-	{
-		discard;
-	}
-	a_Colour = fin.Colour * vec4(ts.xyz * ts.w, 1.f);
+	a_Colour = fin.Colour * 2.f / length(fin.Position - vec3(0.f, 3.f, 0.f));
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "KeyMouseCodes.h"
+
 namespace LSE {
 
 	class LSE_API Input

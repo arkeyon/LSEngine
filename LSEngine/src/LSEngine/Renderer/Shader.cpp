@@ -137,6 +137,12 @@ namespace LSE {
 		glUseProgram(0);
 	}
 
+	void Shader::SetUniformMat4(const char* name, const glm::mat4& matrix)
+	{
+		GLuint location = glGetUniformLocation(m_ShaderProgram, name);
+		glUniformMatrix4fv(location, 1, GL_FALSE, &(matrix[0][0]));
+	}
+
 	void Shader::SetUniformi(const char* name, int i)
 	{
 		GLuint location = glGetUniformLocation(m_ShaderProgram, name);

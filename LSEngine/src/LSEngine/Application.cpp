@@ -16,6 +16,8 @@
 #include "imgui.h"
 
 #include <glm/glm.hpp>
+#include <glm/gtc/constants.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <memory>
 
 namespace LSE {
@@ -23,8 +25,6 @@ namespace LSE {
 #define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
 
 	Application* Application::s_Instance = nullptr;
-
-	int tex = 0;
 
 	Application::Application()
 	{
@@ -81,26 +81,13 @@ namespace LSE {
 		Shader shader("simpleshader.vert", "simpleshader.frag");
 		
 		std::shared_ptr <VertexArray> vertexArray(VertexArray::Create());
-		
-		struct vertex_t
-		{
-			glm::vec3 a_Position;
-			glm::vec4 a_Colour;
-			glm::vec2 a_UV;
-			float a_Tex;
-		};
 
 		vertex_t vertices[8];
 		uint32_t indices[36];
-		generateRectCenter((float*)vertices, (int32_t*)indices, sizeof(vertex_t), 0, 5.f, 5.f, 5.f);
-		for (int i = 0; i < 8; i++)
-		{
-			vertices[i].a_Colour = glm::vec4(0.5f, 0.5f, 0.5f, 1.f);
-			vertices[i].a_UV = glm::vec2(0.f, 0.f);
-			vertices[i].a_Tex = -1.f;
-		}
+		generateRectCenter(vertices, (uint32_t*)indices, 5.f, 5.f, 5.f);
+		for (int i = 0; i < 8; i++) vertices[i].a_Colour = glm::vec4(0.5f, 0.5f, 0.5f, 1.f);
 
-		std::shared_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(4 * 9, (float*)vertices));
+		std::shared_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(sizeof(vertex_t) / 4 * 8, (float*)vertices));
 		vertexBuffer->SetLayout({
 			{ SDT::Float3, "a_Position" },
 			{ SDT::Float4, "a_Colour" },
@@ -108,40 +95,47 @@ namespace LSE {
 			{ SDT::Float, "a_Tex" }
 			});
 		
-		std::shared_ptr<IndexBuffer> indexBuffer(IndexBuffer::Create(6, indices));
-		
-		tex = LSE::CreateTexture("Gates/XNOR.png");
-
-		shader.SetUniformi("tex", 0);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, tex);
+		std::shared_ptr<IndexBuffer> indexBuffer(IndexBuffer::Create(36, indices));
 
 		vertexArray->AddVertexBuffer(vertexBuffer);
 		vertexArray->SetIndexBuffer(indexBuffer);
 
-		RenderCommand::SetClearColour(glm::vec4(0.6f, 0.6f, 0.6f, 1.f));
+		RenderCommand::SetClearColour(glm::vec4(0.f, 0.f, 0.f, 1.f));
 
-		Camera3D camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f));
+		Camera3D camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 100.f);
+
+		float movespeed = 0.1f;
+		float rotatespeed = 0.01f;
+
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CULL_FACE);
 
 		while (m_Running)
 		{
 			RenderCommand::Clear();
 
+			camera.MoveLocalView(
+				glm::vec3(
+					Input::IsKeyPressed(LSE_KEY_D) - Input::IsKeyPressed(LSE_KEY_A),
+					Input::IsKeyPressed(LSE_KEY_SPACE) - Input::IsKeyPressed(LSE_KEY_LEFT_SHIFT),
+					Input::IsKeyPressed(LSE_KEY_W) - Input::IsKeyPressed(LSE_KEY_S)
+				) * movespeed,
+				glm::vec3(
+					Input::IsKeyPressed(LSE_KEY_UP) - Input::IsKeyPressed(LSE_KEY_DOWN), 
+					Input::IsKeyPressed(LSE_KEY_LEFT) - Input::IsKeyPressed(LSE_KEY_RIGHT),
+					0.f
+				) * rotatespeed
+			);
+
 			shader.Bind();
+			shader.SetUniformMat4("u_VP", camera.GetVP());
 			Renderer::BeginScene();
 			Renderer::Submit(vertexArray);
 			Renderer::EndScene();
-			shader.Unbind();
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
 			m_ImGuiLayer->Begin();
-			ImGui::Begin("Contents Window", nullptr, ImGuiWindowFlags_::ImGuiWindowFlags_NoBackground);
-			if (ImGui::ImageButton((void*)tex, ImVec2(64, 64), ImVec2(0, 0), ImVec2(1, 1), 1, ImVec4(0, 0, 0, 0), ImVec4(1, 1, 1, 1)))
-			{
-
-			}
-			ImGui::End();
 			for (Layer* layer : m_LayerStack)
 				layer->OnImGuiRender();
 			m_ImGuiLayer->End();

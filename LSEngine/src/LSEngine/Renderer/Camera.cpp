@@ -6,10 +6,10 @@
 namespace LSE {
 
 	Camera3D::Camera3D(glm::vec3 pos, glm::vec3 angles, float fov, float ar, float znear, float zfar)
-		: m_FOV(fov), m_AR(ar), m_ZNear(znear), m_ZFar(zfar)
+		: m_Pos(pos), m_Angles(angles), m_FOV(fov), m_AR(ar), m_ZNear(znear), m_ZFar(zfar)
 	{
 		m_ProjectionMatrix = glm::perspective(m_FOV, m_AR, m_ZNear, m_ZFar);
-		m_ViewMatrix = FPViewMatrix(m_Pos, m_Angles);
+		m_ViewMatrix = FPViewMatrix(m_Pos, m_Angles, &m_Forward, &m_Side, &m_Up);
 	}
 
 	void Camera3D::SetView(const glm::vec3& pos, const glm::vec3& angles)
@@ -30,29 +30,68 @@ namespace LSE {
 		m_ViewMatrix = FPViewMatrix(m_Pos, m_Angles);
 	}
 
+	void Camera3D::MoveLocalView(const glm::vec3& localoffs, const glm::vec3& angoffs)
+	{
+		m_Angles += angoffs;
+		AngleVectors(m_Angles, &m_Forward, &m_Side, &m_Up);
+
+		m_Pos += localoffs.z * m_Forward + localoffs.x * m_Side + localoffs.y * m_Up;
+		m_ViewMatrix = FPViewMatrix(m_Pos, m_Forward, m_Side, m_Up);
+	}
+
+	void Camera3D::AngleVectors(const glm::vec3& angles, glm::vec3* forward, glm::vec3* side, glm::vec3* up)
+	{
+		float cospitch = cosf(angles.x);
+		float sinpitch = sinf(angles.x);
+		float cosyaw = cosf(angles.y);
+		float sinyaw = sinf(angles.y);
+
+		if (forward) *forward = glm::vec3(cosyaw * cospitch, sinyaw * cospitch, sinpitch);
+		if (side) *side = glm::vec3(sinyaw, -cosyaw, 0.f);
+		if (up) *up = glm::vec3(cosyaw * -sinpitch, sinyaw * -sinpitch, cospitch);
+	}
+
 	void Camera3D::NormalizeAngles(glm::vec3& angles)
 	{
 		while (angles.y > glm::pi<float>()) angles.y -= glm::pi<float>();
 		while (angles.y < -glm::pi<float>()) angles.y += glm::pi<float>();
-
+		
 		if (angles.x > glm::half_pi<float>()) angles.x = glm::half_pi<float>();
 		if (angles.x < -glm::half_pi<float>()) angles.x = -glm::half_pi<float>();
 
 		angles.z = 0.f;
 	}
 
-	glm::mat4 Camera3D::FPViewMatrix(const glm::vec3& pos, const glm::vec3& angles)
+	glm::mat4 Camera3D::FPViewMatrix(const glm::vec3& pos, const glm::vec3& forward, const glm::vec3& side, const glm::vec3& up)
 	{
-		float cospitch = cosf(angles.x);
-		float sinpitch = cosf(angles.x);
-		float cosyaw = cosf(angles.y);
-		float sinyaw = cosf(angles.y);
+		glm::mat4 Result(1.f);
+		Result[0][0] = side.x;
+		Result[1][0] = side.y;
+		Result[2][0] = side.z;
+		Result[0][1] = up.x;
+		Result[1][1] = up.y;
+		Result[2][1] = up.z;
+		Result[0][2] = -forward.x;
+		Result[1][2] = -forward.y;
+		Result[2][2] = -forward.z;
+		Result[3][0] = -glm::dot(side, pos);
+		Result[3][1] = -glm::dot(up, pos);
+		Result[3][2] = glm::dot(forward, pos);
 
-		glm::vec3 f(cosyaw * cospitch, sinyaw * cospitch, sinpitch);
-		glm::vec3 const s(f.y, -f.x, 0.f);
-		glm::vec3 const u(cosyaw * -sinpitch, sinyaw * -sinpitch, cospitch);
+		return Result;
+	}
 
-		glm::mat4 Result;
+	glm::mat4 Camera3D::FPViewMatrix(const glm::vec3& pos, const glm::vec3& angles, glm::vec3* forward, glm::vec3* side, glm::vec3* up)
+	{
+		glm::vec3 f, s, u;
+
+		AngleVectors(angles, &f, &s, &u);
+
+		if (forward) *forward = f;
+		if (side) *side = s;
+		if (up) *up = u;
+
+		glm::mat4 Result(1.f);
 		Result[0][0] = s.x;
 		Result[1][0] = s.y;
 		Result[2][0] = s.z;
@@ -65,10 +104,6 @@ namespace LSE {
 		Result[3][0] = -glm::dot(s, pos);
 		Result[3][1] = -glm::dot(u, pos);
 		Result[3][2] = -glm::dot(f, pos);
-		Result[0][3] = 0.f;
-		Result[1][3] = 0.f;
-		Result[2][3] = 0.f;
-		Result[3][3] = 1.f;
 
 		return Result;
 	}

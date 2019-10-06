@@ -8,6 +8,14 @@
 namespace LSE
 {
 
+	struct vertex_t
+	{
+		glm::vec3 a_Position;
+		glm::vec4 a_Colour;
+		glm::vec2 a_UV;
+		float a_Tex;
+	};
+
 	const glm::ivec2 tvertices[]
 	{
 		glm::ivec2(0, 0),
@@ -111,21 +119,21 @@ namespace LSE
 		indices[35] = 0;
 	}
 
-	void generateRectCenter(float* vertices, int32_t* indices, int32_t stride, int32_t offset, float width, float height, float depth)
+	void generateRectCenter(vertex_t* vertices, uint32_t* indices, float width, float height, float depth)
 	{
 		float depthover2 = depth / 2.f;
 		float widthover2 = width / 2.f;
 		float heightover2 = height / 2.f;
 
 		using namespace glm;
-		*(glm::vec3*)((DWORD)vertices + 0 * stride + offset) = vec3(-widthover2, -heightover2, -depthover2);
-		*(glm::vec3*)((DWORD)vertices + 1 * stride + offset) = vec3(-widthover2, +heightover2, -depthover2);
-		*(glm::vec3*)((DWORD)vertices + 2 * stride + offset) = vec3(+widthover2, +heightover2, -depthover2);
-		*(glm::vec3*)((DWORD)vertices + 3 * stride + offset) = vec3(+widthover2, -heightover2, -depthover2);
-		*(glm::vec3*)((DWORD)vertices + 4 * stride + offset) = vec3(-widthover2, -heightover2, +depthover2);
-		*(glm::vec3*)((DWORD)vertices + 5 * stride + offset) = vec3(-widthover2, +heightover2, +depthover2);
-		*(glm::vec3*)((DWORD)vertices + 6 * stride + offset) = vec3(+widthover2, +heightover2, +depthover2);
-		*(glm::vec3*)((DWORD)vertices + 7 * stride + offset) = vec3(+widthover2, -heightover2, +depthover2);
+		vertices[0].a_Position = vec3(-widthover2, -heightover2, -depthover2);
+		vertices[1].a_Position = vec3(-widthover2, +heightover2, -depthover2);
+		vertices[2].a_Position = vec3(+widthover2, +heightover2, -depthover2);
+		vertices[3].a_Position = vec3(+widthover2, -heightover2, -depthover2);
+		vertices[4].a_Position = vec3(-widthover2, -heightover2, +depthover2);
+		vertices[5].a_Position = vec3(-widthover2, +heightover2, +depthover2);
+		vertices[6].a_Position = vec3(+widthover2, +heightover2, +depthover2);
+		vertices[7].a_Position = vec3(+widthover2, -heightover2, +depthover2);
 
 		indices[0] = 0;
 		indices[1] = 1;

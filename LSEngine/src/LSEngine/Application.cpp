@@ -1,20 +1,21 @@
 #include "lsepch.h"
+
 #include "Application.h"
 #include "Input.h"
-
-
 #include "Timer.h"
+#include "IOUtils.h"
 
-#include <glm/glm.hpp>
 #include "Renderer/Shader.h"
 #include "Renderer/Buffer.h"
 #include "Renderer/VertexArray.h"
 #include "Renderer/Renderer.h"
+#include "Renderer/Meshfactory.h"
+#include "Renderer/Camera.h"
 
 #include "FreeImage.h"
-#include "IOUtils.h"
 #include "imgui.h"
 
+#include <glm/glm.hpp>
 #include <memory>
 
 namespace LSE {
@@ -81,22 +82,27 @@ namespace LSE {
 		
 		std::shared_ptr <VertexArray> vertexArray(VertexArray::Create());
 		
-		float vertices[] =
+		struct vertex_t
 		{
-			-0.5f, -0.5f,		+1.f, +1.f, +1.f, +1.f,		0.f, 0.f,		0.f,
-			-0.5f, +0.5f,		+1.f, +1.f, +1.f, +1.f,		0.f, 1.f,		0.f,
-			+0.5f, +0.5f,		+1.f, +1.f, +1.f, +1.f,		1.f, 1.f,		0.f,
-			+0.5f, -0.5f,		+1.f, +1.f, +1.f, +1.f,		1.f, 0.f,		0.f
+			glm::vec3 a_Position;
+			glm::vec4 a_Colour;
+			glm::vec2 a_UV;
+			float a_Tex;
 		};
-		
-		uint32_t indices[] =
+
+		vertex_t vertices[8];
+		uint32_t indices[36];
+		generateRectCenter((float*)vertices, (int32_t*)indices, sizeof(vertex_t), 0, 5.f, 5.f, 5.f);
+		for (int i = 0; i < 8; i++)
 		{
-			0, 1, 2, 2, 3, 0
-		};
-		
-		std::shared_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(4 * 9, vertices));
+			vertices[i].a_Colour = glm::vec4(0.5f, 0.5f, 0.5f, 1.f);
+			vertices[i].a_UV = glm::vec2(0.f, 0.f);
+			vertices[i].a_Tex = -1.f;
+		}
+
+		std::shared_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(4 * 9, (float*)vertices));
 		vertexBuffer->SetLayout({
-			{ SDT::Float2, "a_Position" },
+			{ SDT::Float3, "a_Position" },
 			{ SDT::Float4, "a_Colour" },
 			{ SDT::Float2, "a_UV" },
 			{ SDT::Float, "a_Tex" }
@@ -115,16 +121,17 @@ namespace LSE {
 
 		RenderCommand::SetClearColour(glm::vec4(0.6f, 0.6f, 0.6f, 1.f));
 
+		Camera3D camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f));
+
 		while (m_Running)
 		{
 			RenderCommand::Clear();
 
-
-			//shader.Bind();
-			//Renderer::BeginScene();
-			//Renderer::Submit(vertexArray);
-			//Renderer::EndScene();
-			//shader.Unbind();
+			shader.Bind();
+			Renderer::BeginScene();
+			Renderer::Submit(vertexArray);
+			Renderer::EndScene();
+			shader.Unbind();
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();

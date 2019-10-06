@@ -161,6 +161,7 @@
     <ClInclude Include="src\LSEngine\Renderer\Buffer.h" />
     <ClInclude Include="src\LSEngine\Renderer\Camera.h" />
     <ClInclude Include="src\LSEngine\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\LSEngine\Renderer\Meshfactory.h" />
     <ClInclude Include="src\LSEngine\Renderer\RenderCommand.h" />
     <ClInclude Include="src\LSEngine\Renderer\Renderer.h" />
     <ClInclude Include="src\LSEngine\Renderer\RendererAPI.h" />

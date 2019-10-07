@@ -10,7 +10,7 @@
 #include "Renderer/VertexArray.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Meshfactory.h"
-#include "Renderer/Camera.h"
+#include "Renderer/Camera/PerspectiveCamera.h"
 
 #include "FreeImage.h"
 #include "imgui.h"
@@ -102,7 +102,7 @@ namespace LSE {
 
 		RenderCommand::SetClearColour(glm::vec4(0.f, 0.f, 0.f, 1.f));
 
-		Camera3D camera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 100.f);
+		Camera3D& camera = PerspCamera3D(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 100.f);
 
 		float movespeed = 0.1f;
 		float rotatespeed = 0.01f;

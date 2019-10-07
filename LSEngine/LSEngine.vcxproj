@@ -159,7 +159,8 @@
     <ClInclude Include="src\LSEngine\LayerStack.h" />
     <ClInclude Include="src\LSEngine\Log.h" />
     <ClInclude Include="src\LSEngine\Renderer\Buffer.h" />
-    <ClInclude Include="src\LSEngine\Renderer\Camera.h" />
+    <ClInclude Include="src\LSEngine\Renderer\Camera\Camera.h" />
+    <ClInclude Include="src\LSEngine\Renderer\Camera\PerspectiveCamera.h" />
     <ClInclude Include="src\LSEngine\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\LSEngine\Renderer\Meshfactory.h" />
     <ClInclude Include="src\LSEngine\Renderer\RenderCommand.h" />
@@ -187,7 +188,8 @@
     <ClCompile Include="src\LSEngine\LayerStack.cpp" />
     <ClCompile Include="src\LSEngine\Log.cpp" />
     <ClCompile Include="src\LSEngine\Renderer\Buffer.cpp" />
-    <ClCompile Include="src\LSEngine\Renderer\Camera.cpp" />
+    <ClCompile Include="src\LSEngine\Renderer\Camera\Camera.cpp" />
+    <ClCompile Include="src\LSEngine\Renderer\Camera\PerspectiveCamera.cpp" />
     <ClCompile Include="src\LSEngine\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\LSEngine\Renderer\Renderer.cpp" />
     <ClCompile Include="src\LSEngine\Renderer\RendererAPI.cpp" />

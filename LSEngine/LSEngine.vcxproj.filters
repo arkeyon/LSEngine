@@ -116,8 +116,9 @@
       <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\lsepch.h" />
-    <ClInclude Include="src\LSEngine\Renderer\Camera.h" />
     <ClInclude Include="src\LSEngine\Renderer\Meshfactory.h" />
+    <ClInclude Include="src\LSEngine\Renderer\Camera\Camera.h" />
+    <ClInclude Include="src\LSEngine\Renderer\Camera\PerspectiveCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Application.cpp">
@@ -184,6 +185,7 @@
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\lsepch.cpp" />
-    <ClCompile Include="src\LSEngine\Renderer\Camera.cpp" />
+    <ClCompile Include="src\LSEngine\Renderer\Camera\Camera.cpp" />
+    <ClCompile Include="src\LSEngine\Renderer\Camera\PerspectiveCamera.cpp" />
   </ItemGroup>
 </Project>

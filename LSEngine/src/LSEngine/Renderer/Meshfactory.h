@@ -63,18 +63,18 @@ namespace LSE
 		if (numofindices)* numofindices = (width - 1) * (height - 1) * 6;
 	}
 
-	void generateRectCorner(float* vertices, int32_t* indices, float width, float height, float depth, int32_t stride = 4, int32_t offset = 0)
+	void generateRectCorner(vertex_t* vertices, uint32_t* indices, float width, float height, float depth)
 	{
 		using namespace glm;
 
-		*(glm::vec3*)((DWORD)vertices + 0 * stride + offset) = vec3(0.f, 0.f, 0.f);
-		*(glm::vec3*)((DWORD)vertices + 1 * stride + offset) = vec3(0.f, height, 0.f);
-		*(glm::vec3*)((DWORD)vertices + 2 * stride + offset) = vec3(width, height, 0.f);
-		*(glm::vec3*)((DWORD)vertices + 3 * stride + offset) = vec3(width, 0.f, 0.f);
-		*(glm::vec3*)((DWORD)vertices + 4 * stride + offset) = vec3(0.f, 0.f, depth);
-		*(glm::vec3*)((DWORD)vertices + 5 * stride + offset) = vec3(0.f, height, depth);
-		*(glm::vec3*)((DWORD)vertices + 6 * stride + offset) = vec3(width, height, depth);
-		*(glm::vec3*)((DWORD)vertices + 7 * stride + offset) = vec3(width, 0.f, depth);
+		vertices[0].a_Position = vec3(0.f, 0.f, 0.f);
+		vertices[1].a_Position = vec3(0.f, height, 0.f);
+		vertices[2].a_Position = vec3(width, height, 0.f);
+		vertices[3].a_Position = vec3(width, 0.f, 0.f);
+		vertices[4].a_Position = vec3(0.f, 0.f, depth);
+		vertices[5].a_Position = vec3(0.f, height, depth);
+		vertices[6].a_Position = vec3(width, height, depth);
+		vertices[7].a_Position = vec3(width, 0.f, depth);
 
 		indices[0] = 0;
 		indices[1] = 1;

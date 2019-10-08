@@ -2,7 +2,7 @@
 
 layout (location = 0) out vec4 a_Colour;
 
-uniform sampler2D tex;
+uniform vec4 u_Colour;
 
 in VertexData
 {
@@ -14,5 +14,5 @@ in VertexData
 
 void main()
 {
-	a_Colour = fin.Colour * 2.f / length(fin.Position - vec3(0.f, 3.f, 0.f));
+	a_Colour = u_Colour * 2.f / length(fin.Position - vec3(0.f, 3.f, 0.f));
 }

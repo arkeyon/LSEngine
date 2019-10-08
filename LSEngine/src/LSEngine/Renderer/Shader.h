@@ -4,21 +4,19 @@
 
 #include <glm/glm.hpp>
 #include <string>
-#include <glad/glad.h>
 
 namespace LSE {
 
 	class LSE_API Shader
 	{
 	public:
-		Shader(std::string vertexPath, std::string fragmentPath);
-		void Bind();
-		void Unbind();
+		virtual void Bind() = 0;
+		virtual void Unbind() = 0;
 
-		void SetUniformMat4(const char* name, const glm::mat4& matrix);
-		void SetUniformi(const char* name, int i);
-	private:
-		GLuint m_ShaderProgram;
+		virtual void SetUniformMat4(const char* name, const glm::mat4& matrix) = 0;
+		virtual void SetUniformi(const char* name, int i) = 0;
+		virtual void SetUniform4fv(const char* name, const glm::vec4& vector) = 0;
+		static Shader* Create(std::string vertexPath, std::string fragmentPath);
 	};
 
 }

@@ -12,6 +12,9 @@ namespace LSE {
 	public:
 		Camera3D(glm::vec3 pos, glm::vec3 angles, float ar = 16.f / 9.f, float zmin = 0.1f, float zmax = 100.f);
 
+		inline const glm::vec3& GetPos() { return m_Pos; }
+		inline const glm::vec3& GetAngles() { return m_Angles; }
+
 		virtual void SetView(const glm::vec3& pos, const glm::vec3& angles) = 0;
 		virtual void MoveView(const glm::vec3& posoffs, const glm::vec3& angoffs) = 0;
 		virtual void MoveLocalView(const glm::vec3& localoffs, const glm::vec3& angoffs) = 0;

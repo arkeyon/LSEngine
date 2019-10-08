@@ -119,6 +119,8 @@
     <ClInclude Include="src\LSEngine\Renderer\Meshfactory.h" />
     <ClInclude Include="src\LSEngine\Renderer\Camera\Camera.h" />
     <ClInclude Include="src\LSEngine\Renderer\Camera\PerspectiveCamera.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
+    <ClInclude Include="src\LSEngine\Renderer\Camera\OrthographicCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Application.cpp">
@@ -187,5 +189,8 @@
     <ClCompile Include="src\lsepch.cpp" />
     <ClCompile Include="src\LSEngine\Renderer\Camera\Camera.cpp" />
     <ClCompile Include="src\LSEngine\Renderer\Camera\PerspectiveCamera.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
+    <ClCompile Include="src\LSEngine\Renderer\Meshfactory.cpp" />
+    <ClCompile Include="src\LSEngine\Renderer\Camera\OrthographicCamera.cpp" />
   </ItemGroup>
 </Project>

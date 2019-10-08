@@ -77,61 +77,8 @@ namespace LSE {
 
 	void Application::Run()
 	{
-		RendererAPI::SetAPI(RendererAPI::API::OpenGL);
-		Shader shader("simpleshader.vert", "simpleshader.frag");
-		
-		std::shared_ptr <VertexArray> vertexArray(VertexArray::Create());
-
-		vertex_t vertices[8];
-		uint32_t indices[36];
-		generateRectCenter(vertices, (uint32_t*)indices, 5.f, 5.f, 5.f);
-		for (int i = 0; i < 8; i++) vertices[i].a_Colour = glm::vec4(0.5f, 0.5f, 0.5f, 1.f);
-
-		std::shared_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(sizeof(vertex_t) / 4 * 8, (float*)vertices));
-		vertexBuffer->SetLayout({
-			{ SDT::Float3, "a_Position" },
-			{ SDT::Float4, "a_Colour" },
-			{ SDT::Float2, "a_UV" },
-			{ SDT::Float, "a_Tex" }
-			});
-		
-		std::shared_ptr<IndexBuffer> indexBuffer(IndexBuffer::Create(36, indices));
-
-		vertexArray->AddVertexBuffer(vertexBuffer);
-		vertexArray->SetIndexBuffer(indexBuffer);
-
-		RenderCommand::SetClearColour(glm::vec4(0.f, 0.f, 0.f, 1.f));
-
-		Camera3D& camera = PerspCamera3D(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 100.f);
-
-		float movespeed = 0.1f;
-		float rotatespeed = 0.01f;
-
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
-
 		while (m_Running)
 		{
-			RenderCommand::Clear();
-
-			camera.MoveLocalView(
-				glm::vec3(
-					Input::IsKeyPressed(LSE_KEY_D) - Input::IsKeyPressed(LSE_KEY_A),
-					Input::IsKeyPressed(LSE_KEY_SPACE) - Input::IsKeyPressed(LSE_KEY_LEFT_SHIFT),
-					Input::IsKeyPressed(LSE_KEY_W) - Input::IsKeyPressed(LSE_KEY_S)
-				) * movespeed,
-				glm::vec3(
-					Input::IsKeyPressed(LSE_KEY_UP) - Input::IsKeyPressed(LSE_KEY_DOWN), 
-					Input::IsKeyPressed(LSE_KEY_LEFT) - Input::IsKeyPressed(LSE_KEY_RIGHT),
-					0.f
-				) * rotatespeed
-			);
-
-			shader.Bind();
-			shader.SetUniformMat4("u_VP", camera.GetVP());
-			Renderer::BeginScene();
-			Renderer::Submit(vertexArray);
-			Renderer::EndScene();
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();

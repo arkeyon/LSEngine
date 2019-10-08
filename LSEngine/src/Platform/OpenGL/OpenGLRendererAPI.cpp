@@ -20,4 +20,14 @@ namespace LSE {
 		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
+	void OpenGLRendererAPI::EnableDepthTest()
+	{
+		glEnable(GL_DEPTH_TEST);
+	}
+
+	void OpenGLRendererAPI::EnableFaceCulling()
+	{
+		glEnable(GL_CULL_FACE);
+	}
+
 }

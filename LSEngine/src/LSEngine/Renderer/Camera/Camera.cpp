@@ -23,12 +23,12 @@ namespace LSE {
 
 	void Camera3D::NormalizeAngles(glm::vec3& angles)
 	{
-		while (angles.y > glm::pi<float>()) angles.y -= glm::pi<float>();
-		while (angles.y < -glm::pi<float>()) angles.y += glm::pi<float>();
+		while (angles.y > glm::pi<float>()) angles.y -= glm::two_pi<float>();
+		while (angles.y < -glm::pi<float>()) angles.y += glm::two_pi<float>();
 		
 		if (angles.x > glm::half_pi<float>()) angles.x = glm::half_pi<float>();
 		if (angles.x < -glm::half_pi<float>()) angles.x = -glm::half_pi<float>();
-
+		
 		angles.z = 0.f;
 	}
 

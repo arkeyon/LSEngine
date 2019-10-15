@@ -20,14 +20,21 @@ namespace LSE {
 		glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
-	void OpenGLRendererAPI::EnableDepthTest()
+	void OpenGLRendererAPI::EnableDepthTest(bool enabled)
 	{
-		glEnable(GL_DEPTH_TEST);
+		if (enabled) glEnable(GL_DEPTH_TEST);
+		else glDisable(GL_DEPTH_TEST);
 	}
 
-	void OpenGLRendererAPI::EnableFaceCulling()
+	void OpenGLRendererAPI::EnableFaceCulling(bool enabled)
 	{
-		glEnable(GL_CULL_FACE);
+		if (enabled) glEnable(GL_CULL_FACE);
+		else glDisable(GL_CULL_FACE);
 	}
 
+	void OpenGLRendererAPI::EnableWireframe(bool enabled)
+	{
+		if (enabled) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
 }

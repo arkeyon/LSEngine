@@ -10,8 +10,9 @@ namespace LSE {
 	public:
 		virtual void Clear() override;
 		virtual void SetClearColour(const glm::vec4& colour) override;
-		virtual void EnableDepthTest() override;
-		virtual void EnableFaceCulling() override;
+		virtual void EnableDepthTest(bool enabled) override;
+		virtual void EnableFaceCulling(bool enabled) override;
+		virtual void EnableWireframe(bool enabled) override;
 
 		virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray) override;
 	};

@@ -12,6 +12,8 @@
 #include "Renderer/Meshfactory.h"
 #include "Renderer/Camera/PerspectiveCamera.h"
 
+#include "Platform/Windows/WindowsTimer.h"
+
 #include "FreeImage.h"
 #include "imgui.h"
 
@@ -33,6 +35,7 @@ namespace LSE {
 		FreeImage_Initialise();
 
 		m_Window = std::unique_ptr<Window>(Window::Create(WindowProps("Title", 1280, 720)));
+		m_Window->SetVSync(false);
 		m_Window->SetEventCallbackFn(BIND_EVENT_FN(Application::OnEvent));
 
 		m_ImGuiLayer = new ImGuiLayer();
@@ -58,8 +61,6 @@ namespace LSE {
 
 	void Application::OnEvent(Event& e)
 	{
-		LSE_CORE_TRACE("{0}", e);
-
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>([&](WindowCloseEvent& e)
 			{
@@ -77,11 +78,16 @@ namespace LSE {
 
 	void Application::Run()
 	{
+
+		Timer& timer = WindowsTimer();
+
 		while (m_Running)
 		{
+			float delta = timer.elapsed();
+			timer.reset();
 
 			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate();
+				layer->OnUpdate(delta);
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)
 				layer->OnImGuiRender();

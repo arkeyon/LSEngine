@@ -3,9 +3,9 @@
 
 namespace LSE {
 
-	void Renderer::BeginScene()
+	void Renderer::BeginScene(const Camera3D& camera)
 	{
-
+		
 	}
 
 	void Renderer::EndScene()

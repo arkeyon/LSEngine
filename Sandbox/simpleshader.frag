@@ -6,7 +6,7 @@ uniform vec4 u_Colour;
 
 in VertexData
 {
-	vec3 Position;
+	vec4 Position;
 	vec4 Colour;
 	vec2 UV;
 	float Tex;
@@ -14,5 +14,5 @@ in VertexData
 
 void main()
 {
-	a_Colour = u_Colour * 2.f / length(fin.Position - vec3(0.f, 3.f, 0.f));
+	a_Colour = fin.Colour * u_Colour;// * 2.f / length(fin.Position.xyz - vec3(0.f, 3.f, 0.f));
 }

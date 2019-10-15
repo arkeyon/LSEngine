@@ -13,6 +13,9 @@
     <Filter Include="LSEngine\Renderer">
       <UniqueIdentifier>{609F99DC-CCB5-9772-152D-2394818268FA}</UniqueIdentifier>
     </Filter>
+    <Filter Include="LSEngine\Renderer\Camera">
+      <UniqueIdentifier>{D827B4D7-C44C-0358-ED97-E8E7D91B0276}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
     </Filter>
@@ -70,7 +73,19 @@
     <ClInclude Include="src\LSEngine\Renderer\Buffer.h">
       <Filter>LSEngine\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\Camera\Camera.h">
+      <Filter>LSEngine\Renderer\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\Camera\OrthographicCamera.h">
+      <Filter>LSEngine\Renderer\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\Camera\PerspectiveCamera.h">
+      <Filter>LSEngine\Renderer\Camera</Filter>
+    </ClInclude>
     <ClInclude Include="src\LSEngine\Renderer\GraphicsContext.h">
+      <Filter>LSEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\Meshfactory.h">
       <Filter>LSEngine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\LSEngine\Renderer\RenderCommand.h">
@@ -103,6 +118,9 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
       <Filter>Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
       <Filter>Platform\OpenGL</Filter>
     </ClInclude>
@@ -116,11 +134,6 @@
       <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\lsepch.h" />
-    <ClInclude Include="src\LSEngine\Renderer\Meshfactory.h" />
-    <ClInclude Include="src\LSEngine\Renderer\Camera\Camera.h" />
-    <ClInclude Include="src\LSEngine\Renderer\Camera\PerspectiveCamera.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
-    <ClInclude Include="src\LSEngine\Renderer\Camera\OrthographicCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Application.cpp">
@@ -145,6 +158,18 @@
       <Filter>LSEngine</Filter>
     </ClCompile>
     <ClCompile Include="src\LSEngine\Renderer\Buffer.cpp">
+      <Filter>LSEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Renderer\Camera\Camera.cpp">
+      <Filter>LSEngine\Renderer\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Renderer\Camera\OrthographicCamera.cpp">
+      <Filter>LSEngine\Renderer\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Renderer\Camera\PerspectiveCamera.cpp">
+      <Filter>LSEngine\Renderer\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Renderer\Meshfactory.cpp">
       <Filter>LSEngine\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\LSEngine\Renderer\RenderCommand.cpp">
@@ -174,6 +199,9 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
       <Filter>Platform\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp">
+      <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp">
       <Filter>Platform\OpenGL</Filter>
     </ClCompile>
@@ -187,10 +215,5 @@
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\lsepch.cpp" />
-    <ClCompile Include="src\LSEngine\Renderer\Camera\Camera.cpp" />
-    <ClCompile Include="src\LSEngine\Renderer\Camera\PerspectiveCamera.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
-    <ClCompile Include="src\LSEngine\Renderer\Meshfactory.cpp" />
-    <ClCompile Include="src\LSEngine\Renderer\Camera\OrthographicCamera.cpp" />
   </ItemGroup>
 </Project>

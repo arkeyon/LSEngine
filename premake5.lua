@@ -120,7 +120,6 @@ workspace "LSEngine"
             "GLAD",
             "imgui",
             "opengl32.lib",
-            "FreeImageLibd.lib"
         }
 
         defines
@@ -137,7 +136,6 @@ workspace "LSEngine"
                 "IMGUI_IMPL_OPENGL_LOADER_GLAD",
                 "GLFW_INCLUDE_NONE",
                 "LSE_PLATFORM_WINDOWS",
-                "LSE_BUILD_DLL"
             }
 
         filter "configurations:Debug"
@@ -146,6 +144,12 @@ workspace "LSEngine"
                 "LSE_DEBUG",
                 "LSE_ENABLE_ASSERTS"
             }
+
+            links
+            {
+                "FreeImageLibd.lib"
+            }
+
             runtime "Debug"
             symbols "on"
     
@@ -154,7 +158,17 @@ workspace "LSEngine"
             runtime "Release"
             optimize "on"
     
+            links
+            {
+                "FreeImageLib.lib"
+            }
+
         filter "configurations:Dist"
             defines "LSE_DIST"
             runtime "Release"
             optimize "on"
+
+            links
+            {
+                "FreeImageLib.lib"
+            }

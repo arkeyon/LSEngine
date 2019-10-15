@@ -13,7 +13,7 @@ namespace LSE {
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate() {}
+		virtual void OnUpdate(float delta) {}
 		virtual void OnImGuiRender () {}
 		virtual void OnEvent(Event& e) {}
 

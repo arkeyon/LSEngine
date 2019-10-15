@@ -76,7 +76,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>lsepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;FREEIMAGE_LIB;IMGUI_IMPL_OPENGL_LOADER_GLAD;GLFW_INCLUDE_NONE;LSE_PLATFORM_WINDOWS;LSE_BUILD_DLL;LSE_DEBUG;LSE_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;FREEIMAGE_LIB;IMGUI_IMPL_OPENGL_LOADER_GLAD;GLFW_INCLUDE_NONE;LSE_PLATFORM_WINDOWS;LSE_DEBUG;LSE_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\gli;vendor\FreeImage\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
@@ -97,7 +97,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>lsepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;FREEIMAGE_LIB;IMGUI_IMPL_OPENGL_LOADER_GLAD;GLFW_INCLUDE_NONE;LSE_PLATFORM_WINDOWS;LSE_BUILD_DLL;LSE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;FREEIMAGE_LIB;IMGUI_IMPL_OPENGL_LOADER_GLAD;GLFW_INCLUDE_NONE;LSE_PLATFORM_WINDOWS;LSE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\gli;vendor\FreeImage\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -113,7 +113,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;FreeImageLibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;FreeImageLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>vendor\FreeImage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -122,7 +122,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>lsepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;FREEIMAGE_LIB;IMGUI_IMPL_OPENGL_LOADER_GLAD;GLFW_INCLUDE_NONE;LSE_PLATFORM_WINDOWS;LSE_BUILD_DLL;LSE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;FREEIMAGE_LIB;IMGUI_IMPL_OPENGL_LOADER_GLAD;GLFW_INCLUDE_NONE;LSE_PLATFORM_WINDOWS;LSE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\gli;vendor\FreeImage\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -138,7 +138,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;FreeImageLibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;FreeImageLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>vendor\FreeImage\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>

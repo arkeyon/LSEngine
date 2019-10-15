@@ -32,8 +32,9 @@ namespace LSE {
 	{
 		m_Angles += angoffs;
 		AngleVectors(m_Angles, &m_Forward, &m_Side, &m_Up);
-
+		
 		m_Pos += localoffs.z * m_Forward + localoffs.x * m_Side + localoffs.y * m_Up;
 		m_ViewMatrix = FPViewMatrix(m_Pos, m_Forward, m_Side, m_Up);
+		//MoveView(localoffs, angoffs);
 	}
 }

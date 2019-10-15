@@ -11,6 +11,7 @@
 #include "LSEngine/Renderer/Shader.h"
 
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/color_space.hpp>
 
 class ExampleLayer : public LSE::Layer
 {
@@ -20,15 +21,20 @@ private:
 	std::shared_ptr<LSE::Camera3D> m_Camera;
 	std::shared_ptr<LSE::PerspCamera3D> m_PerspCamera;
 	std::shared_ptr<LSE::OrthoCamera3D> m_OrthoCamera;
-	glm::vec3 m_Colour;
-	bool m_CameraSelect = true;
-	bool m_LastSelect = true;
 
-	float m_MoveSpeed = 0.1f;
-	float m_RotateSpeed = 0.02f;
+	float m_MoveSpeed = 20.f;
+	float m_RotateSpeed = 2.f;
+	bool m_Depthtest = true;
+	bool m_Facecull = true;
+	bool m_Projection = true;
+	glm::vec4 m_Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+
+	float m_FPS = 0.f;
+	float m_Frames = 0.f;
+	float m_Time = 0.f;
 public:
 	ExampleLayer()
-		: Layer("ExampleLayer"), m_Colour(glm::vec3(1.f, 1.f, 1.f))
+		: Layer("ExampleLayer")
 	{
 		using namespace LSE;
 
@@ -36,15 +42,21 @@ public:
 
 		m_Shader.reset(Shader::Create("simpleshader.vert", "simpleshader.frag"));
 		m_VertexArray.reset(VertexArray::Create());
-		m_PerspCamera.reset(new PerspCamera3D(glm::vec3(-10.f, 0.f, 5.f), glm::vec3(-glm::two_pi<float>() / 10.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 100.f));
-		m_OrthoCamera.reset(new OrthoCamera3D(glm::vec3(-10.f, 0.f, 5.f), glm::vec3(-glm::two_pi<float>() / 10.f, 0.f, 0.f), 16.f / 9.f, -10.f, 10.f, -10.f, 10.f, 0.1f, 100.f));
+		m_PerspCamera.reset(new PerspCamera3D(glm::vec3(0.f, 0.f, 0.f), glm::vec3(-glm::two_pi<float>() / 10.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 10000.f));
+		m_OrthoCamera.reset(new OrthoCamera3D(glm::vec3(0.f, 0.f, 0.f), glm::vec3(-glm::two_pi<float>() / 10.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, -100.f, 100.f, -50.f, 50.f, -5000.f, 5000.f));
 		m_Camera = m_PerspCamera;
-
 		{
 			vertex_t vertices[8];
 			uint32_t indices[36];
 			MeshFactory::generateRectCenter(vertices, (uint32_t*)indices, 5.f, 5.f, 5.f);
-			for (int i = 0; i < 8; i++) vertices[i].a_Colour = glm::vec4(0.5f, 0.5f, 0.5f, 1.f);
+			vertices[0].a_Colour = glm::vec4(glm::rgbColor(glm::vec3(45.f, 1.f, 1.f)), 1.f);
+			vertices[1].a_Colour = glm::vec4(glm::rgbColor(glm::vec3(45.f, 1.f, 1.f)), 1.f);
+			vertices[2].a_Colour = glm::vec4(glm::rgbColor(glm::vec3(45.f, 1.f, 1.f)), 1.f);
+			vertices[3].a_Colour = glm::vec4(glm::rgbColor(glm::vec3(45.f, 1.f, 1.f)), 1.f);
+			vertices[4].a_Colour = glm::vec4(glm::rgbColor(glm::vec3(180.f, 1.f, 1.f)), 1.f);
+			vertices[5].a_Colour = glm::vec4(glm::rgbColor(glm::vec3(180.f, 1.f, 1.f)), 1.f);
+			vertices[6].a_Colour = glm::vec4(glm::rgbColor(glm::vec3(180.f, 1.f, 1.f)), 1.f);
+			vertices[7].a_Colour = glm::vec4(glm::rgbColor(glm::vec3(180.f, 1.f, 1.f)), 1.f);
 
 			std::shared_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(sizeof(vertex_t) / 4 * 8, (float*)vertices));
 			vertexBuffer->SetLayout({
@@ -61,56 +73,78 @@ public:
 		}
 
 		RenderCommand::SetClearColour(glm::vec4(0.f, 0.f, 0.f, 1.f));
-		RenderCommand::EnableDepthTest();
-		RenderCommand::EnableFaceCulling();
+		//RenderCommand::EnableDepthTest();
 	}
 
-	void OnUpdate() override
+	void OnUpdate(float delta) override
 	{
 		using namespace LSE;
 
+		m_Frames += 1.f;
+		m_Time += delta;
+
+		if (m_Time > 1.f)
+		{
+			m_FPS = m_Frames / m_Time;
+			m_Frames = 0.f;
+			m_Time = 0.f;
+		}
+
 		RenderCommand::Clear();
 
-		if (m_CameraSelect != m_LastSelect)
-		{
-			if (m_CameraSelect)
-			{
-				m_Camera = m_PerspCamera;
-				m_PerspCamera->SetView(m_OrthoCamera->GetPos(), m_OrthoCamera->GetAngles());
-			}
-			else
-			{
-				m_Camera = m_OrthoCamera;
-				m_OrthoCamera->SetView(m_PerspCamera->GetPos(), m_PerspCamera->GetAngles());
-			}
-			m_LastSelect = m_CameraSelect;
-		}
 		m_Camera->MoveLocalView(
 			glm::vec3(
 				Input::IsKeyPressed(LSE_KEY_D) - Input::IsKeyPressed(LSE_KEY_A),
 				Input::IsKeyPressed(LSE_KEY_SPACE) - Input::IsKeyPressed(LSE_KEY_LEFT_SHIFT),
 				Input::IsKeyPressed(LSE_KEY_W) - Input::IsKeyPressed(LSE_KEY_S)
-			) * m_MoveSpeed,
+			) * m_MoveSpeed * delta,
 			glm::vec3(
 				Input::IsKeyPressed(LSE_KEY_UP) - Input::IsKeyPressed(LSE_KEY_DOWN),
 				Input::IsKeyPressed(LSE_KEY_LEFT) - Input::IsKeyPressed(LSE_KEY_RIGHT),
 				0.f
-			) * m_RotateSpeed
+			) * m_RotateSpeed * delta
 		);
 
 		m_Shader->Bind();
-		m_Shader->SetUniform4fv("u_Colour", glm::vec4(m_Colour, 1.f));
+		Renderer::BeginScene(*m_Camera);
 		m_Shader->SetUniformMat4("u_VP", m_Camera->GetVP());
-		Renderer::BeginScene();
-		Renderer::Submit(m_VertexArray);
+
+		RenderCommand::EnableFaceCulling(m_Facecull);
+		RenderCommand::EnableDepthTest(m_Depthtest);
+		RenderCommand::EnabledWireframe(false);
+
+		if (m_Projection)
+		{
+			m_PerspCamera->SetView(m_Camera->GetPos(), m_Camera->GetAngles());
+			m_Camera = m_PerspCamera;
+		}
+		else
+		{
+			m_OrthoCamera->SetView(m_Camera->GetPos(), m_Camera->GetAngles());
+			m_Camera = m_OrthoCamera;
+		}
+
+		m_Shader->SetUniform4fv("u_Colour", m_Colour);
+		for (int y = 0; y < 100; y++)
+		{
+			for (int x = 0; x < 100; x++)
+			{
+				m_Shader->SetUniformMat4("u_ModelMatrix", glm::translate(glm::mat4(1.f), glm::vec3(x * 5.5f, y * 5.5f, 0.f)));
+				Renderer::Submit(m_VertexArray);
+			}
+		}
+		
 		Renderer::EndScene();
 	}
 
 	void OnImGuiRender() override
 	{
-		ImGui::GetIO().MouseDrawCursor = true;
-		ImGui::Begin("Settings");
-		ImGui::Checkbox("Camera", &m_CameraSelect);
+		ImGui::Begin("Debug");
+		ImGui::Text((std::string("FPS: ") + std::to_string(m_FPS)).c_str());
+		ImGui::ColorEdit4("Colour", &m_Colour[0]);
+		ImGui::Checkbox("Depth test", &m_Depthtest);
+		ImGui::Checkbox("Cull face", &m_Facecull);
+		ImGui::Checkbox("Projection", &m_Projection);
 		ImGui::End();
 	}
 

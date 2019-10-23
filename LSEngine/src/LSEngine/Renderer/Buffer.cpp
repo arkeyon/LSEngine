@@ -1,6 +1,7 @@
 #include "lsepch.h"
 #include "Buffer.h"
-#include "Renderer.h"
+
+#include "LSEngine/Renderer/Renderer.h"
 
 #include "Platform/OpenGL/OpenGLBuffer.h"
 
@@ -15,8 +16,7 @@ namespace LSE {
 			m_Stride += element.Size;
 		}
 	}
-
-	VertexBuffer* VertexBuffer::Create(size_t count, float* vertices)
+	VertexBuffer* VertexBuffer::Create(size_t size, void* vertices)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -24,7 +24,7 @@ namespace LSE {
 			LSE_CORE_ASSERT(false, "Cant create VertexBuffer without RenderingAPI");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return new OpenGLVertexBuffer(count * sizeof(float), vertices);
+			return new OpenGLVertexBuffer(size, vertices);
 		}
 		return nullptr;
 	}

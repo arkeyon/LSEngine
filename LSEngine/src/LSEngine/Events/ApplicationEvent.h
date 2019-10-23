@@ -2,6 +2,8 @@
 
 #include <LSEngine/Events/Event.h>
 
+#include <sstream>
+
 namespace LSE {
 
 	class LSE_API WindowEvent : public Event

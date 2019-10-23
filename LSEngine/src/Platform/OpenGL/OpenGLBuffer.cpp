@@ -5,7 +5,7 @@
 
 namespace LSE {
 
-	OpenGLVertexBuffer::OpenGLVertexBuffer(size_t size, float* vertices)
+	OpenGLVertexBuffer::OpenGLVertexBuffer(size_t size, void* vertices)
 	{
 		glGenBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);

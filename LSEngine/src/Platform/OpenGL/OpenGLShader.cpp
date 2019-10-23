@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "LSEngine/IOUtils.h"
+#include "LSEngine/Core/IOUtils.h"
 
 namespace LSE {
 
@@ -149,9 +149,27 @@ namespace LSE {
 		glUniform1i(location, i);
 	}
 
-	void OpenGLShader::SetUniform4fv(const char* name, const glm::vec4& vector)
+	void OpenGLShader::SetUniform4f(const char* name, const glm::vec4& vector)
 	{
 		GLuint location = glGetUniformLocation(m_ShaderProgram, name);
 		glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
+	}
+
+	void OpenGLShader::SetUniform3f(const char* name, const glm::vec3& vector)
+	{
+		GLuint location = glGetUniformLocation(m_ShaderProgram, name);
+		glUniform3f(location, vector.x, vector.y, vector.z);
+	}
+	
+	void OpenGLShader::SetUniform2f(const char* name, const glm::vec2& vector)
+	{
+		GLuint location = glGetUniformLocation(m_ShaderProgram, name);
+		glUniform2f(location, vector.x, vector.y);
+	}
+	
+	void OpenGLShader::SetUniform1f(const char* name, const float& vector)
+	{
+		GLuint location = glGetUniformLocation(m_ShaderProgram, name);
+		glUniform1f(location, vector);
 	}
 }

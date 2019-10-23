@@ -2,12 +2,12 @@
 
 #include "imgui.h"
 
-#include "LSEngine/IOUtils.h"
+#include "LSEngine/Core/IOUtils.h"
 #include "LSEngine/Renderer/VertexArray.h"
 #include "LSEngine/Renderer/Meshfactory.h"
 #include "LSEngine/Renderer/Renderer.h"
-#include "LSEngine/Renderer/Camera/PerspectiveCamera.h"
-#include "LSEngine/Renderer/Camera/OrthographicCamera.h"
+#include "LSEngine/Core/Camera/PerspectiveCamera.h"
+#include "LSEngine/Core/Camera/OrthographicCamera.h"
 #include "LSEngine/Renderer/Shader.h"
 
 #include <glm/gtc/type_ptr.hpp>
@@ -19,19 +19,19 @@ private:
 	std::shared_ptr <LSE::VertexArray> m_VertexArray;
 	std::shared_ptr<LSE::Shader> m_Shader;
 	std::shared_ptr<LSE::Camera3D> m_Camera;
-	std::shared_ptr<LSE::PerspCamera3D> m_PerspCamera;
-	std::shared_ptr<LSE::OrthoCamera3D> m_OrthoCamera;
 
 	float m_MoveSpeed = 20.f;
 	float m_RotateSpeed = 2.f;
-	bool m_Depthtest = true;
-	bool m_Facecull = true;
-	bool m_Projection = true;
-	glm::vec4 m_Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 
 	float m_FPS = 0.f;
 	float m_Frames = 0.f;
 	float m_Time = 0.f;
+
+	glm::vec4 m_Color = glm::vec4(1.f, 1.f, 1.f, 1.f);
+	glm::vec3 m_AmbientColor	 = 1.f * glm::vec3(1.f, 1.f, 1.f);
+	glm::vec3 m_DiffuseColor	 = 1.f * glm::vec3(1.f, 1.f, 1.f);
+	glm::vec3 m_SpecularColor	 = 1.f * glm::vec3(1.f, 1.f, 1.f);
+	float m_Shininess			 = 10.f;
 public:
 	ExampleLayer()
 		: Layer("ExampleLayer")
@@ -42,38 +42,34 @@ public:
 
 		m_Shader.reset(Shader::Create("simpleshader.vert", "simpleshader.frag"));
 		m_VertexArray.reset(VertexArray::Create());
-		m_PerspCamera.reset(new PerspCamera3D(glm::vec3(0.f, 0.f, 0.f), glm::vec3(-glm::two_pi<float>() / 10.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 10000.f));
-		m_OrthoCamera.reset(new OrthoCamera3D(glm::vec3(0.f, 0.f, 0.f), glm::vec3(-glm::two_pi<float>() / 10.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, -100.f, 100.f, -50.f, 50.f, -5000.f, 5000.f));
-		m_Camera = m_PerspCamera;
+		m_Camera.reset(new PerspCamera3D(glm::vec3(0.f, 0.f, 0.f), glm::vec3(-glm::two_pi<float>() / 10.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 10000.f));
+		//m_Camera.reset(new OrthoCamera3D(glm::vec3(0.f, 0.f, 0.f), glm::vec3(-glm::two_pi<float>() / 10.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, -100.f, 100.f, -50.f, 50.f, -5000.f, 5000.f));
 		{
-			vertex_t vertices[8];
-			uint32_t indices[36];
-			MeshFactory::generateRectCenter(vertices, (uint32_t*)indices, 5.f, 5.f, 5.f);
-			vertices[0].a_Colour = glm::vec4(glm::rgbColor(glm::vec3(45.f, 1.f, 1.f)), 1.f);
-			vertices[1].a_Colour = glm::vec4(glm::rgbColor(glm::vec3(45.f, 1.f, 1.f)), 1.f);
-			vertices[2].a_Colour = glm::vec4(glm::rgbColor(glm::vec3(45.f, 1.f, 1.f)), 1.f);
-			vertices[3].a_Colour = glm::vec4(glm::rgbColor(glm::vec3(45.f, 1.f, 1.f)), 1.f);
-			vertices[4].a_Colour = glm::vec4(glm::rgbColor(glm::vec3(180.f, 1.f, 1.f)), 1.f);
-			vertices[5].a_Colour = glm::vec4(glm::rgbColor(glm::vec3(180.f, 1.f, 1.f)), 1.f);
-			vertices[6].a_Colour = glm::vec4(glm::rgbColor(glm::vec3(180.f, 1.f, 1.f)), 1.f);
-			vertices[7].a_Colour = glm::vec4(glm::rgbColor(glm::vec3(180.f, 1.f, 1.f)), 1.f);
 
-			std::shared_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(sizeof(vertex_t) / 4 * 8, (float*)vertices));
+			const int detail = 80;
+
+			vertex_t vertices[detail * detail * 2];
+			uint32_t indices[(detail - 1) * (detail * 2 - 1) * 6];
+			MeshFactory::generateSphere(vertices, (uint32_t*)indices, 2.f, detail);
+
+			std::shared_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(detail * detail * 2 * sizeof(vertex_t), vertices));
 			vertexBuffer->SetLayout({
 				{ SDT::Float3, "a_Position" },
 				{ SDT::Float4, "a_Colour" },
+				{ SDT::Float3, "a_Normal" },
 				{ SDT::Float2, "a_UV" },
 				{ SDT::Float, "a_Tex" }
 				});
 
-			std::shared_ptr<IndexBuffer> indexBuffer(IndexBuffer::Create(36, indices));
+			std::shared_ptr<IndexBuffer> indexBuffer(IndexBuffer::Create((detail - 1) * (detail * 2 - 1) * 6, indices));
 
 			m_VertexArray->AddVertexBuffer(vertexBuffer);
 			m_VertexArray->SetIndexBuffer(indexBuffer);
 		}
 
 		RenderCommand::SetClearColour(glm::vec4(0.f, 0.f, 0.f, 1.f));
-		//RenderCommand::EnableDepthTest();
+		RenderCommand::EnableFaceCulling(true);
+		RenderCommand::EnableDepthTest(true);
 	}
 
 	void OnUpdate(float delta) override
@@ -105,35 +101,14 @@ public:
 			) * m_RotateSpeed * delta
 		);
 
-		m_Shader->Bind();
-		Renderer::BeginScene(*m_Camera);
-		m_Shader->SetUniformMat4("u_VP", m_Camera->GetVP());
+		m_Shader->SetUniform4f("u_Color", m_Color);
+		m_Shader->SetUniform3f("u_AmbientColor", m_AmbientColor);
+		m_Shader->SetUniform3f("u_DiffuseColor", m_DiffuseColor);
+		m_Shader->SetUniform3f("u_SpecularColor", m_SpecularColor);
+		m_Shader->SetUniform1f("u_Shininess", m_Shininess);
 
-		RenderCommand::EnableFaceCulling(m_Facecull);
-		RenderCommand::EnableDepthTest(m_Depthtest);
-		RenderCommand::EnabledWireframe(false);
-
-		if (m_Projection)
-		{
-			m_PerspCamera->SetView(m_Camera->GetPos(), m_Camera->GetAngles());
-			m_Camera = m_PerspCamera;
-		}
-		else
-		{
-			m_OrthoCamera->SetView(m_Camera->GetPos(), m_Camera->GetAngles());
-			m_Camera = m_OrthoCamera;
-		}
-
-		m_Shader->SetUniform4fv("u_Colour", m_Colour);
-		for (int y = 0; y < 100; y++)
-		{
-			for (int x = 0; x < 100; x++)
-			{
-				m_Shader->SetUniformMat4("u_ModelMatrix", glm::translate(glm::mat4(1.f), glm::vec3(x * 5.5f, y * 5.5f, 0.f)));
-				Renderer::Submit(m_VertexArray);
-			}
-		}
-		
+		Renderer::BeginScene(m_Camera);
+		Renderer::Submit(m_Shader, m_VertexArray);
 		Renderer::EndScene();
 	}
 
@@ -141,10 +116,14 @@ public:
 	{
 		ImGui::Begin("Debug");
 		ImGui::Text((std::string("FPS: ") + std::to_string(m_FPS)).c_str());
-		ImGui::ColorEdit4("Colour", &m_Colour[0]);
-		ImGui::Checkbox("Depth test", &m_Depthtest);
-		ImGui::Checkbox("Cull face", &m_Facecull);
-		ImGui::Checkbox("Projection", &m_Projection);
+		ImGui::Text((std::string("Camera->Pos: ") + std::to_string(m_Camera->GetPos().x) + ", " + std::to_string(m_Camera->GetPos().y) + ", " + std::to_string(m_Camera->GetPos().z)).c_str());
+		ImGui::Text((std::string("Camera->Angles: ") + std::to_string(m_Camera->GetAngles().x) + ", " + std::to_string(m_Camera->GetAngles().y)).c_str());
+		ImGui::Spacing();
+		ImGui::ColorEdit4("Color", &m_Color[0]);
+		ImGui::ColorEdit3("AmbientColor", &m_AmbientColor[0]);
+		ImGui::ColorEdit3("DiffuseColor", &m_DiffuseColor[0]);
+		ImGui::ColorEdit3("SpecularColor", &m_SpecularColor[0]);
+		ImGui::SliderFloat("Shininess", &m_Shininess, 1.f, 10.f, "%.3f", 3.f);
 		ImGui::End();
 	}
 

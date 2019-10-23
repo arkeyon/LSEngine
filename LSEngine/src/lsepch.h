@@ -16,4 +16,4 @@
 	#include <Windows.h>
 #endif
 
-#include "LSEngine/Log.h"
+#include "LSEngine/Core/Log.h"

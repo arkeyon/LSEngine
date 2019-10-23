@@ -28,15 +28,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\LSEngine.h" />
-    <ClInclude Include="src\LSEngine\Application.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Core.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\EntryPoint.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
     <ClInclude Include="src\LSEngine\Events\ApplicationEvent.h">
       <Filter>LSEngine\Events</Filter>
     </ClInclude>
@@ -49,38 +40,11 @@
     <ClInclude Include="src\LSEngine\Events\MouseEvent.h">
       <Filter>LSEngine\Events</Filter>
     </ClInclude>
-    <ClInclude Include="src\LSEngine\IOUtils.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
     <ClInclude Include="src\LSEngine\ImGui\ImGuiLayer.h">
       <Filter>LSEngine\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="src\LSEngine\Input.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\KeyMouseCodes.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Layer.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\LayerStack.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Log.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
     <ClInclude Include="src\LSEngine\Renderer\Buffer.h">
       <Filter>LSEngine\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Renderer\Camera\Camera.h">
-      <Filter>LSEngine\Renderer\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Renderer\Camera\OrthographicCamera.h">
-      <Filter>LSEngine\Renderer\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Renderer\Camera\PerspectiveCamera.h">
-      <Filter>LSEngine\Renderer\Camera</Filter>
     </ClInclude>
     <ClInclude Include="src\LSEngine\Renderer\GraphicsContext.h">
       <Filter>LSEngine\Renderer</Filter>
@@ -102,12 +66,6 @@
     </ClInclude>
     <ClInclude Include="src\LSEngine\Renderer\VertexArray.h">
       <Filter>LSEngine\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Timer.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Window.h">
-      <Filter>LSEngine</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
       <Filter>Platform\OpenGL</Filter>
@@ -134,40 +92,58 @@
       <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\lsepch.h" />
+    <ClInclude Include="src\LSEngine\Core\Application.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\Core.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\EntryPoint.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\Input.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\IOUtils.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\KeyMouseCodes.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\Layer.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\LayerStack.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\Log.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\Timer.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\Window.h">
+      <Filter>LSEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\Camera\Camera.h">
+      <Filter>LSEngine\Renderer\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\Camera\OrthographicCamera.h">
+      <Filter>LSEngine\Renderer\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\Camera\PerspectiveCamera.h">
+      <Filter>LSEngine\Renderer\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\LSEngine\Application.cpp">
-      <Filter>LSEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\IOUtils.cpp">
-      <Filter>LSEngine</Filter>
-    </ClCompile>
     <ClCompile Include="src\LSEngine\ImGui\ImGuiBuild.cpp">
       <Filter>LSEngine\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\LSEngine\ImGui\ImGuiLayer.cpp">
       <Filter>LSEngine\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="src\LSEngine\Layer.cpp">
-      <Filter>LSEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\LayerStack.cpp">
-      <Filter>LSEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Log.cpp">
-      <Filter>LSEngine</Filter>
-    </ClCompile>
     <ClCompile Include="src\LSEngine\Renderer\Buffer.cpp">
       <Filter>LSEngine\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Renderer\Camera\Camera.cpp">
-      <Filter>LSEngine\Renderer\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Renderer\Camera\OrthographicCamera.cpp">
-      <Filter>LSEngine\Renderer\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Renderer\Camera\PerspectiveCamera.cpp">
-      <Filter>LSEngine\Renderer\Camera</Filter>
     </ClCompile>
     <ClCompile Include="src\LSEngine\Renderer\Meshfactory.cpp">
       <Filter>LSEngine\Renderer</Filter>
@@ -186,9 +162,6 @@
     </ClCompile>
     <ClCompile Include="src\LSEngine\Renderer\VertexArray.cpp">
       <Filter>LSEngine\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Window.cpp">
-      <Filter>LSEngine</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
       <Filter>Platform\OpenGL</Filter>
@@ -215,5 +188,32 @@
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\lsepch.cpp" />
+    <ClCompile Include="src\LSEngine\Core\Application.cpp">
+      <Filter>LSEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Core\IOUtils.cpp">
+      <Filter>LSEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Core\Layer.cpp">
+      <Filter>LSEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Core\LayerStack.cpp">
+      <Filter>LSEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Core\Log.cpp">
+      <Filter>LSEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Core\Window.cpp">
+      <Filter>LSEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Core\Camera\Camera.cpp">
+      <Filter>LSEngine\Renderer\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Core\Camera\OrthographicCamera.cpp">
+      <Filter>LSEngine\Renderer\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Core\Camera\PerspectiveCamera.cpp">
+      <Filter>LSEngine\Renderer\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

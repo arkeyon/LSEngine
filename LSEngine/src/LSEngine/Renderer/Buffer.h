@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LSEngine/Core.h"
+#include "LSEngine/Core/Core.h"
 
 namespace LSE {
 
@@ -102,7 +102,7 @@ namespace LSE {
 		virtual const BufferLayout& GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
 
-		static VertexBuffer* Create(size_t count, float* vertices);
+		static VertexBuffer* Create(size_t size, void* vertices);
 	};
 
 	class LSE_API IndexBuffer

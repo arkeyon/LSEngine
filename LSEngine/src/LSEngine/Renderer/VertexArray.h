@@ -1,10 +1,7 @@
 #pragma once
 
-#include "LSEngine/Core.h"
-#include "Buffer.h"
-
-#include <memory>
-#include <vector>
+#include "LSEngine/Core/Core.h"
+#include "LSEngine/Renderer/Buffer.h"
 
 namespace LSE {
 

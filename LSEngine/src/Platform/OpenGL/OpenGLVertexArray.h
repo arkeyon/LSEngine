@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LSEngine/Core.h"
+#include "LSEngine/Core/Core.h"
 #include "LSEngine/Renderer/VertexArray.h"
 
 #include <glad/glad.h>

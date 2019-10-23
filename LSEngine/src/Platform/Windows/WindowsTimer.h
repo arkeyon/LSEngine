@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LSEngine/Timer.h"
+#include "LSEngine/Core/Timer.h"
 
 namespace LSE {
 

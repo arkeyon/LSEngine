@@ -1,7 +1,7 @@
 #include "lsepch.h"
 #include "VertexArray.h"
 
-#include "Renderer.h"
+#include "LSEngine/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLVertexArray.h"
 
 namespace LSE {

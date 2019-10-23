@@ -1,7 +1,7 @@
 #pragma once
 
-#include "LSEngine/Core.h"
-#include "RendererAPI.h"
+#include "LSEngine/Core/Core.h"
+#include "LSEngine/Renderer/RendererAPI.h"
 
 namespace LSE {
 

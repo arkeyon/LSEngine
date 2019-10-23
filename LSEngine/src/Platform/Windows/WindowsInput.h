@@ -1,6 +1,6 @@
 #pragma once
 
-#include "LSEngine/Input.h"
+#include "LSEngine/Core/Input.h"
 
 namespace LSE {
 

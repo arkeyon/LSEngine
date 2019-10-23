@@ -2,11 +2,11 @@
 
 #include "Core.h"
 
-#include "Events/Event.h"
-#include "Events/ApplicationEvent.h"
-#include "Window.h"
-#include "LayerStack.h"
-#include "ImGui/ImGuiLayer.h"
+#include "LSEngine/Events/Event.h"
+#include "LSEngine/Events/ApplicationEvent.h"
+#include "LSEngine/Core/Window.h"
+#include "LSEngine/Core/LayerStack.h"
+#include "LSEngine/ImGui/ImGuiLayer.h"
 
 namespace LSE {
 

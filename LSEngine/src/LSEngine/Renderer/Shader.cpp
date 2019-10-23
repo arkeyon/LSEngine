@@ -1,11 +1,8 @@
 #include "lsepch.h"
-
 #include "Shader.h"
-#include <fstream>
-#include <iostream>
 
-#include "LSEngine/IOUtils.h"
-#include "Renderer.h"
+#include "LSEngine/Core/IOUtils.h"
+#include "LSEngine/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLShader.h"
 
 namespace LSE {

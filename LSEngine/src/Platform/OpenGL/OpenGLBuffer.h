@@ -7,7 +7,7 @@ namespace LSE {
 	class LSE_API OpenGLVertexBuffer : public VertexBuffer
 	{
 	public:
-		OpenGLVertexBuffer(size_t size, float* vertices);
+		OpenGLVertexBuffer(size_t size, void* vertices);
 		~OpenGLVertexBuffer();
 
 		virtual void Bind() const override;

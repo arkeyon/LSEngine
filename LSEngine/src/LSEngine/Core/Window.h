@@ -1,9 +1,9 @@
 #pragma once
 
-#include "LSEngine/Core.h"
+#include "LSEngine/Core/Core.h"
 #include "LSEngine/Events/Event.h"
 
-#include "Renderer/GraphicsContext.h"
+#include "LSEngine/Renderer/GraphicsContext.h"
 
 namespace LSE {
 

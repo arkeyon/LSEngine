@@ -1,7 +1,7 @@
 #include "lsepch.h"
 #include "WindowsInput.h"
 
-#include "LSEngine/Application.h"
+#include "LSEngine/Core/Application.h"
 
 #include <GLFW/glfw3.h>
 

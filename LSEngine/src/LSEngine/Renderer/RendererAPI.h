@@ -1,7 +1,8 @@
 #pragma once
 
-#include "LSEngine/Core.h"
-#include "VertexArray.h"
+#include "LSEngine/Core/Core.h"
+#include "LSEngine/Renderer/VertexArray.h"
+
 #include <glm/glm.hpp>
 
 namespace LSE {

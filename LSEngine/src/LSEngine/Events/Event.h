@@ -1,8 +1,7 @@
 #pragma once
 
-#include <LSEngine/Core.h>
+#include <LSEngine/Core/Core.h>
 
-#include <sstream>
 #include <string>
 #include <functional>
 

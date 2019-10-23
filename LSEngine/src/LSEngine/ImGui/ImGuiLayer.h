@@ -1,6 +1,7 @@
 #pragma once
 
-#include "LSEngine/Layer.h"
+#include "LSEngine/Core/Core.h"
+#include "LSEngine/Core/Layer.h"
 
 namespace LSE {
 

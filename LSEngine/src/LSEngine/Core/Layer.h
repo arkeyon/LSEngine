@@ -1,7 +1,7 @@
 #pragma once
 
-#include "LSEngine/Core.h"	
-#include "Events/Event.h"
+#include "LSEngine/Core/Core.h"	
+#include "LSEngine/Events/Event.h"
 
 namespace LSE {
 

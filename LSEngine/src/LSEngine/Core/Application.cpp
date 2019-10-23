@@ -1,16 +1,17 @@
 #include "lsepch.h"
 
-#include "LSEngine/Application.h"
-#include "LSEngine/Input.h"
-#include "LSEngine/Timer.h"
-#include "LSEngine/IOUtils.h"
+#include "LSEngine/Core/Application.h"
+#include "LSEngine/Core/Input.h"
+#include "LSEngine/Core/Timer.h"
+#include "LSEngine/Core/IOUtils.h"
+#include "LSEngine/Core/Camera/PerspectiveCamera.h"
+#include "LSEngine/Core/Camera/OrthographicCamera.h"
 
 #include "LSEngine/Renderer/Shader.h"
 #include "LSEngine/Renderer/Buffer.h"
 #include "LSEngine/Renderer/VertexArray.h"
 #include "LSEngine/Renderer/Renderer.h"
 #include "LSEngine/Renderer/Meshfactory.h"
-#include "LSEngine/Renderer/Camera/PerspectiveCamera.h"
 
 #include "Platform/Windows/WindowsTimer.h"
 

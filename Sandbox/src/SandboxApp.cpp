@@ -43,13 +43,12 @@ public:
 		m_Shader.reset(Shader::Create("simpleshader.vert", "simpleshader.frag"));
 		m_VertexArray.reset(VertexArray::Create());
 		m_Camera.reset(new PerspCamera3D(glm::vec3(0.f, 0.f, 0.f), glm::vec3(-glm::two_pi<float>() / 10.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 10000.f));
-		//m_Camera.reset(new OrthoCamera3D(glm::vec3(0.f, 0.f, 0.f), glm::vec3(-glm::two_pi<float>() / 10.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, -100.f, 100.f, -50.f, 50.f, -5000.f, 5000.f));
 		{
 
-			const int detail = 80;
+			const int detail = 4;
 
-			vertex_t vertices[detail * detail * 2];
-			uint32_t indices[(detail - 1) * (detail * 2 - 1) * 6];
+			vertex_t* vertices = new vertex_t[detail * detail * 2];
+			uint32_t* indices = new uint32_t[(detail - 1) * (detail * 2 - 1) * 6];
 			MeshFactory::generateSphere(vertices, (uint32_t*)indices, 2.f, detail);
 
 			std::shared_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(detail * detail * 2 * sizeof(vertex_t), vertices));
@@ -70,6 +69,7 @@ public:
 		RenderCommand::SetClearColour(glm::vec4(0.f, 0.f, 0.f, 1.f));
 		RenderCommand::EnableFaceCulling(true);
 		RenderCommand::EnableDepthTest(true);
+		RenderCommand::EnabledWireframe(true);
 	}
 
 	void OnUpdate(float delta) override

@@ -15,7 +15,7 @@ namespace LSE {
 		inline static void EnableFaceCulling(bool enabled = true) { s_RenderAPI->EnableFaceCulling(enabled); }
 		inline static void EnabledWireframe(bool enabled = true) { s_RenderAPI->EnableWireframe(enabled); };
 
-		inline static void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray) { s_RenderAPI->DrawIndexed(vertexArray); }
+		inline static void DrawIndexed(const Ref<VertexArray>& vertexArray) { s_RenderAPI->DrawIndexed(vertexArray); }
 	private:
 		static RendererAPI* s_RenderAPI;
 	};

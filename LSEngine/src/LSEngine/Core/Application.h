@@ -19,20 +19,20 @@ namespace LSE {
 		void Run();
 		void OnEvent(Event& e);
 
-		void PushLayer(Layer* layer);
-		void PushOverlay(Layer* overlay);
+		void PushLayer(Ref<Layer> layer);
+		void PushOverlay(Ref<Layer> overlay);
 
 		inline Window& GetWindow() { return *m_Window; }
 
 		inline static Application& Get() { return *s_Instance; }
 	private:
-		std::unique_ptr<Window> m_Window;
-		ImGuiLayer* m_ImGuiLayer;
+		Scope<Window> m_Window;
+		Ref<ImGuiLayer> m_ImGuiLayer;
 
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 	private:
-		static Application* s_Instance;
+		static Scope<Application> s_Instance;
 	};
 
 	Application* CreateApplication();

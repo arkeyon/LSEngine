@@ -2,6 +2,7 @@
 
 #include "imgui.h"
 
+#include "LSEngine/Core/Core.h"
 #include "LSEngine/Core/IOUtils.h"
 #include "LSEngine/Renderer/VertexArray.h"
 #include "LSEngine/Renderer/Meshfactory.h"
@@ -16,9 +17,9 @@
 class ExampleLayer : public LSE::Layer
 {
 private:
-	std::shared_ptr <LSE::VertexArray> m_VertexArray;
-	std::shared_ptr<LSE::Shader> m_Shader;
-	std::shared_ptr<LSE::Camera3D> m_Camera;
+	LSE::Ref<LSE::VertexArray> m_VertexArray;
+	LSE::Ref<LSE::Shader> m_Shader;
+	LSE::Ref<LSE::Camera3D> m_Camera;
 
 	float m_MoveSpeed = 20.f;
 	float m_RotateSpeed = 2.f;
@@ -51,7 +52,7 @@ public:
 			uint32_t* indices = new uint32_t[(detail - 1) * (detail * 2 - 1) * 6];
 			MeshFactory::generateSphere(vertices, (uint32_t*)indices, 2.f, detail);
 
-			std::shared_ptr<VertexBuffer> vertexBuffer(VertexBuffer::Create(detail * detail * 2 * sizeof(vertex_t), vertices));
+			Ref<VertexBuffer> vertexBuffer(VertexBuffer::Create(detail * detail * 2 * sizeof(vertex_t), vertices));
 			vertexBuffer->SetLayout({
 				{ SDT::Float3, "a_Position" },
 				{ SDT::Float4, "a_Colour" },
@@ -60,7 +61,7 @@ public:
 				{ SDT::Float, "a_Tex" }
 				});
 
-			std::shared_ptr<IndexBuffer> indexBuffer(IndexBuffer::Create((detail - 1) * (detail * 2 - 1) * 6, indices));
+			Ref<IndexBuffer> indexBuffer(IndexBuffer::Create((detail - 1) * (detail * 2 - 1) * 6, indices));
 
 			m_VertexArray->AddVertexBuffer(vertexBuffer);
 			m_VertexArray->SetIndexBuffer(indexBuffer);
@@ -138,7 +139,7 @@ class Sandbox : public LSE::Application
 public:
 	Sandbox()
 	{
-		PushLayer(new ExampleLayer());
+		PushLayer(MakeScope<LSE::Layer>());
 	}
 
 	~Sandbox()

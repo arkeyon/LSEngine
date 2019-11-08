@@ -26,19 +26,19 @@ namespace LSE {
 
 #define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
 
-	Application* Application::s_Instance = nullptr;
+	Scope<Application> Application::s_Instance = nullptr;
 
 	Application::Application()
 	{
-		s_Instance = this;
+		s_Instance = Scope<Application>(this);
 
 		FreeImage_Initialise();
 
-		m_Window = std::unique_ptr<Window>(Window::Create(WindowProps("Title", 1280, 720)));
+		m_Window = Scope<Window>(Window::Create(WindowProps("Title", 1280, 720)));
 		m_Window->SetVSync(false);
 		m_Window->SetEventCallbackFn(BIND_EVENT_FN(Application::OnEvent));
 
-		m_ImGuiLayer = new ImGuiLayer();
+		m_ImGuiLayer = MakeRef<ImGuiLayer>();
 		PushOverlay(m_ImGuiLayer);
 	}
 
@@ -47,13 +47,13 @@ namespace LSE {
 
 	}
 
-	void Application::PushLayer(Layer* layer)
+	void Application::PushLayer(Ref<Layer> layer)
 	{
 		m_LayerStack.PushLayer(layer);
 		layer->OnAttach();
 	}
 
-	void Application::PushOverlay(Layer* overlay)
+	void Application::PushOverlay(Ref<Layer> overlay)
 	{
 		m_LayerStack.PushOverlay(overlay);
 		overlay->OnAttach();

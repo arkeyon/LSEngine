@@ -134,6 +134,7 @@
     <ClInclude Include="src\LSEngine\Core\Camera\PerspectiveCamera.h">
       <Filter>LSEngine\Renderer\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\ImGui\ImGuiBuild.cpp">

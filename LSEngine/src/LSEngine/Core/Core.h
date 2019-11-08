@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #ifdef LSE_PLATFORM_WINDOWS
 	#ifdef LSE_DYNAMIC_LINK
 		#ifdef LSE_BUILD_DLL
@@ -23,3 +25,17 @@
 #endif
 
 #define BIT(i) (1 << i)
+
+namespace LSE {
+
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+
+#define MakeScope std::make_unique
+
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+
+#define MakeRef std::make_unique
+
+}

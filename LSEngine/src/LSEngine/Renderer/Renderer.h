@@ -10,10 +10,10 @@ namespace LSE {
 	class LSE_API Renderer
 	{
 	public:
-		static void BeginScene(const std::shared_ptr<Camera3D>& camera);
+		static void BeginScene(const Ref<Camera3D>& camera);
 		static void EndScene();
 
-		static void Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.f));
+		static void Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.f));
 
 		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 	private:
@@ -24,6 +24,6 @@ namespace LSE {
 			glm::vec3 ViewDir;
 		};
 
-		static std::shared_ptr<SceneData> s_SceneData;
+		static Ref<SceneData> s_SceneData;
 	};
 }

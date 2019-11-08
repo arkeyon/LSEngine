@@ -3,9 +3,9 @@
 
 namespace LSE {
 
-	std::shared_ptr<Renderer::SceneData> Renderer::s_SceneData(new Renderer::SceneData());
+	Ref<Renderer::SceneData> Renderer::s_SceneData(new Renderer::SceneData());
 
-	void Renderer::BeginScene(const std::shared_ptr<Camera3D>& camera)
+	void Renderer::BeginScene(const Ref<Camera3D>& camera)
 	{
 		s_SceneData->ViewProjectionMatrix = camera->GetVP();
 		s_SceneData->ViewPosition = camera->GetPos();
@@ -17,7 +17,7 @@ namespace LSE {
 
 	}
 
-	void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4& transform)
+	void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform)
 	{
 		shader->Bind();
 

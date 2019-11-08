@@ -168,6 +168,7 @@
     <ClInclude Include="src\LSEngine\Renderer\Renderer.h" />
     <ClInclude Include="src\LSEngine\Renderer\RendererAPI.h" />
     <ClInclude Include="src\LSEngine\Renderer\Shader.h" />
+    <ClInclude Include="src\LSEngine\Renderer\Texture.h" />
     <ClInclude Include="src\LSEngine\Renderer\VertexArray.h" />
     <ClInclude Include="src\LSEngine\Core\Timer.h" />
     <ClInclude Include="src\LSEngine\Core\Window.h" />

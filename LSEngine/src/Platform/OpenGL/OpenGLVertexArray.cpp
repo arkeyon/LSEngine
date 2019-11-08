@@ -23,7 +23,7 @@ namespace LSE {
 		glBindVertexArray(0);
 	}
 
-	void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer> buffer)
+	void OpenGLVertexArray::AddVertexBuffer(const Ref<VertexBuffer> buffer)
 	{
 		glBindVertexArray(m_RendererID);
 		buffer->Bind();
@@ -43,7 +43,7 @@ namespace LSE {
 		m_VertexBuffers.push_back(buffer);
 	}
 
-	void OpenGLVertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer> buffer)
+	void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer> buffer)
 	{
 		glBindVertexArray(m_RendererID);
 		buffer->Bind();
@@ -51,12 +51,12 @@ namespace LSE {
 		m_IndexBuffer = buffer;
 	}
 
-	const std::vector<std::shared_ptr<VertexBuffer>>& OpenGLVertexArray::GetVertexBuffers() const
+	const std::vector<Ref<VertexBuffer>>& OpenGLVertexArray::GetVertexBuffers() const
 	{
 		return m_VertexBuffers;
 	}
 
-	const std::shared_ptr<IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() const
+	const Ref<IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() const
 	{
 		return m_IndexBuffer;
 	}

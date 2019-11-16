@@ -19,7 +19,7 @@ namespace LSE
 	class LSE_API MeshFactory
 	{
 	public:
-		static void generateSphere(vertex_t* vertices, uint32_t* indices, const float& radius, const int& detail);
+		static void generateSphere(vertex_t* vertices, uint32_t* indices, const float& radius, const int& detail, vertex_t temp);
 		static void generateRectCorner(vertex_t* vertices, uint32_t* indices, float width, float height, float depth);
 		static void generateRectCenter(vertex_t* vertices, uint32_t* indices, float width, float height, float depth);
 		static void generateRectCenterSharedVertices(vertex_t* vertices, uint32_t* indices, float width, float height, float depth);

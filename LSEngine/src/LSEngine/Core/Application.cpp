@@ -26,11 +26,11 @@ namespace LSE {
 
 #define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
 
-	Scope<Application> Application::s_Instance = nullptr;
+	Application* Application::s_Instance = nullptr;
 
 	Application::Application()
 	{
-		s_Instance = Scope<Application>(this);
+		s_Instance = this;
 
 		FreeImage_Initialise();
 
@@ -86,10 +86,10 @@ namespace LSE {
 			float delta = timer.elapsed();
 			timer.reset();
 
-			for (Layer* layer : m_LayerStack)
+			for (Ref<Layer>& layer : m_LayerStack)
 				layer->OnUpdate(delta);
 			m_ImGuiLayer->Begin();
-			for (Layer* layer : m_LayerStack)
+			for (Ref<Layer>& layer : m_LayerStack)
 				layer->OnImGuiRender();
 			m_ImGuiLayer->End();
 

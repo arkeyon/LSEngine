@@ -17,7 +17,7 @@ namespace LSE
 		0, 3, 1, 1, 3, 2
 	};
 
-	void MeshFactory::generateSphere(vertex_t* vertices, uint32_t* indices, const float& radius, const int& detail)
+	void MeshFactory::generateSphere(vertex_t* vertices, uint32_t* indices, const float& radius, const int& detail, vertex_t temp = {})
 	{
 		int width = detail * 2;
 		int height = detail;
@@ -32,10 +32,12 @@ namespace LSE
 			{
 				float yaw = x / (width - 1.f) * 2.f * glm::pi<float>();
 
+				vertices[x + y * width] = temp;
 				vertices[x + y * width].a_Normal = glm::vec3(cos(yaw) * rr, sin(yaw) * rr, sin(pitch));
 				vertices[x + y * width].a_Position = vertices[x + y * width].a_Normal * radius;
-				//vertices[x + y * width].a_Colour = glm::mix(glm::vec4(1.f, 0.f, 0.f, 1.f), glm::vec4(0.f, 0.f, 1.f, 1.f), (float)y / height);
-				vertices[x + y * width].a_Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+				vertices[x + y * width].a_UV = glm::vec2(1.f - abs((float)x / (width - 1.f) * 2.f - 1.f), 1.f - abs((float)y / (height - 1.f) * 2.f - 1.f));
+
+				//LSE_CORE_TRACE("{0},{1}\t{2},{3}", x, y, vertices[x + y * width].a_UV.x, vertices[x + y * width].a_UV.y);
 			}
 		}
 

@@ -10,6 +10,7 @@
 #include "LSEngine/Core/Camera/PerspectiveCamera.h"
 #include "LSEngine/Core/Camera/OrthographicCamera.h"
 #include "LSEngine/Renderer/Shader.h"
+#include "LSEngine/Renderer/Texture.h"
 
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/color_space.hpp>
@@ -20,6 +21,8 @@ private:
 	LSE::Ref<LSE::VertexArray> m_VertexArray;
 	LSE::Ref<LSE::Shader> m_Shader;
 	LSE::Ref<LSE::Camera3D> m_Camera;
+
+	LSE::Ref<LSE::Texture2D> m_XNORTexture;
 
 	float m_MoveSpeed = 20.f;
 	float m_RotateSpeed = 2.f;
@@ -41,16 +44,20 @@ public:
 
 		RendererAPI::SetAPI(RendererAPI::API::OpenGL);
 
-		m_Shader.reset(Shader::Create("simpleshader.vert", "simpleshader.frag"));
+		m_Shader.reset(Shader::Create("assets/shaders/simpleshader.vert", "assets/shaders/simpleshader.frag"));
 		m_VertexArray.reset(VertexArray::Create());
 		m_Camera.reset(new PerspCamera3D(glm::vec3(0.f, 0.f, 0.f), glm::vec3(-glm::two_pi<float>() / 10.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 10000.f));
+
 		{
 
-			const int detail = 4;
+			const int detail = 80;
 
 			vertex_t* vertices = new vertex_t[detail * detail * 2];
 			uint32_t* indices = new uint32_t[(detail - 1) * (detail * 2 - 1) * 6];
-			MeshFactory::generateSphere(vertices, (uint32_t*)indices, 2.f, detail);
+			vertex_t temp;
+			temp.a_Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+			temp.a_Tex = 0;
+			MeshFactory::generateSphere(vertices, (uint32_t*)indices, 2.f, detail, temp);
 
 			Ref<VertexBuffer> vertexBuffer(VertexBuffer::Create(detail * detail * 2 * sizeof(vertex_t), vertices));
 			vertexBuffer->SetLayout({
@@ -66,11 +73,13 @@ public:
 			m_VertexArray->AddVertexBuffer(vertexBuffer);
 			m_VertexArray->SetIndexBuffer(indexBuffer);
 		}
-
+		
 		RenderCommand::SetClearColour(glm::vec4(0.f, 0.f, 0.f, 1.f));
 		RenderCommand::EnableFaceCulling(true);
 		RenderCommand::EnableDepthTest(true);
-		RenderCommand::EnabledWireframe(true);
+		//RenderCommand::EnabledWireframe(true);
+
+		m_XNORTexture = Texture2D::Create("assets/textures/TEST.png");
 	}
 
 	void OnUpdate(float delta) override
@@ -108,6 +117,8 @@ public:
 		m_Shader->SetUniform3f("u_SpecularColor", m_SpecularColor);
 		m_Shader->SetUniform1f("u_Shininess", m_Shininess);
 
+		m_Shader->SetUniformi("tex", 0);
+		m_XNORTexture->Bind(0);
 		Renderer::BeginScene(m_Camera);
 		Renderer::Submit(m_Shader, m_VertexArray);
 		Renderer::EndScene();
@@ -139,7 +150,7 @@ class Sandbox : public LSE::Application
 public:
 	Sandbox()
 	{
-		PushLayer(MakeScope<LSE::Layer>());
+		PushLayer(MakeScope<ExampleLayer>());
 	}
 
 	~Sandbox()

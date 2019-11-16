@@ -32,7 +32,7 @@ namespace LSE {
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 	private:
-		static Scope<Application> s_Instance;
+		static Application* s_Instance;
 	};
 
 	Application* CreateApplication();

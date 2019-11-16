@@ -1,220 +1,252 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="LSEngine">
-      <UniqueIdentifier>{7AF2543D-66BF-AF48-8FD8-9DF07B04E5D6}</UniqueIdentifier>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="LSEngine\Events">
-      <UniqueIdentifier>{1ED1E514-8A5C-53D9-936D-D6CDFF77AFD9}</UniqueIdentifier>
+    <Filter Include="src\LSEngine">
+      <UniqueIdentifier>{71F5CE6D-5D58-5E12-06DE-96C8F21F2A95}</UniqueIdentifier>
     </Filter>
-    <Filter Include="LSEngine\ImGui">
-      <UniqueIdentifier>{24DB0B9C-10A9-FFA1-F93C-70C8E5A9DB06}</UniqueIdentifier>
+    <Filter Include="src\LSEngine\Core">
+      <UniqueIdentifier>{692880C9-D53E-7E5F-1EB6-09818A0B4FE7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="LSEngine\Renderer">
-      <UniqueIdentifier>{609F99DC-CCB5-9772-152D-2394818268FA}</UniqueIdentifier>
+    <Filter Include="src\LSEngine\Core\Camera">
+      <UniqueIdentifier>{C10C170F-AD31-668F-D67C-4B1FC20065AD}</UniqueIdentifier>
     </Filter>
-    <Filter Include="LSEngine\Renderer\Camera">
-      <UniqueIdentifier>{D827B4D7-C44C-0358-ED97-E8E7D91B0276}</UniqueIdentifier>
+    <Filter Include="src\LSEngine\Events">
+      <UniqueIdentifier>{35F84D2F-A159-2B3D-2AC7-71EF962762FC}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Platform">
-      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    <Filter Include="src\LSEngine\ImGui">
+      <UniqueIdentifier>{5BFBEFF9-47DF-B04F-B03F-ABA29C429BD1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Platform\OpenGL">
-      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
+    <Filter Include="src\LSEngine\Renderer">
+      <UniqueIdentifier>{37E8A731-A354-632C-6C48-FB89D8738594}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Platform\Windows">
-      <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
+    <Filter Include="src\Platform">
+      <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform\OpenGL">
+      <UniqueIdentifier>{35A49437-A105-7245-2A73-B8F796D3A804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform\Windows">
+      <UniqueIdentifier>{5B054582-4794-CE4B-F0B2-E246DC20DFF1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor">
+      <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\stb">
+      <UniqueIdentifier>{8BD3C5A8-778B-07F6-E092-E051CC69A2E6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\LSEngine.h" />
-    <ClInclude Include="src\LSEngine\Events\ApplicationEvent.h">
-      <Filter>LSEngine\Events</Filter>
+    <ClInclude Include="src\LSEngine.h">
+      <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\LSEngine\Events\Event.h">
-      <Filter>LSEngine\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Events\KeyEvent.h">
-      <Filter>LSEngine\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Events\MouseEvent.h">
-      <Filter>LSEngine\Events</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\ImGui\ImGuiLayer.h">
-      <Filter>LSEngine\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Renderer\Buffer.h">
-      <Filter>LSEngine\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Renderer\GraphicsContext.h">
-      <Filter>LSEngine\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Renderer\Meshfactory.h">
-      <Filter>LSEngine\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Renderer\RenderCommand.h">
-      <Filter>LSEngine\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Renderer\Renderer.h">
-      <Filter>LSEngine\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Renderer\RendererAPI.h">
-      <Filter>LSEngine\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Renderer\Shader.h">
-      <Filter>LSEngine\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Renderer\VertexArray.h">
-      <Filter>LSEngine\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
-      <Filter>Platform\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
-      <Filter>Platform\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
-      <Filter>Platform\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h">
-      <Filter>Platform\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
-      <Filter>Platform\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\Windows\WindowsInput.h">
-      <Filter>Platform\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\Windows\WindowsTimer.h">
-      <Filter>Platform\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
-      <Filter>Platform\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lsepch.h" />
     <ClInclude Include="src\LSEngine\Core\Application.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Core\Core.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Core\EntryPoint.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Core\Input.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Core\IOUtils.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Core\KeyMouseCodes.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Core\Layer.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Core\LayerStack.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Core\Log.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Core\Timer.h">
-      <Filter>LSEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LSEngine\Core\Window.h">
-      <Filter>LSEngine</Filter>
+      <Filter>src\LSEngine\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\LSEngine\Core\Camera\Camera.h">
-      <Filter>LSEngine\Renderer\Camera</Filter>
+      <Filter>src\LSEngine\Core\Camera</Filter>
     </ClInclude>
     <ClInclude Include="src\LSEngine\Core\Camera\OrthographicCamera.h">
-      <Filter>LSEngine\Renderer\Camera</Filter>
+      <Filter>src\LSEngine\Core\Camera</Filter>
     </ClInclude>
     <ClInclude Include="src\LSEngine\Core\Camera\PerspectiveCamera.h">
-      <Filter>LSEngine\Renderer\Camera</Filter>
+      <Filter>src\LSEngine\Core\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="src\LSEngine\Renderer\Texture.h" />
+    <ClInclude Include="src\LSEngine\Core\Core.h">
+      <Filter>src\LSEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\EntryPoint.h">
+      <Filter>src\LSEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\IOUtils.h">
+      <Filter>src\LSEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\Input.h">
+      <Filter>src\LSEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\KeyMouseCodes.h">
+      <Filter>src\LSEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\Layer.h">
+      <Filter>src\LSEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\LayerStack.h">
+      <Filter>src\LSEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\Log.h">
+      <Filter>src\LSEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\Timer.h">
+      <Filter>src\LSEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\Window.h">
+      <Filter>src\LSEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Events\ApplicationEvent.h">
+      <Filter>src\LSEngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Events\Event.h">
+      <Filter>src\LSEngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Events\KeyEvent.h">
+      <Filter>src\LSEngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Events\MouseEvent.h">
+      <Filter>src\LSEngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\ImGui\ImGuiLayer.h">
+      <Filter>src\LSEngine\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\Buffer.h">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\GraphicsContext.h">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\Meshfactory.h">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\RenderCommand.h">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\Renderer.h">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\RendererAPI.h">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\Shader.h">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\Texture.h">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\VertexArray.h">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h">
+      <Filter>src\Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsTimer.h">
+      <Filter>src\Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
+      <Filter>src\Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\lsepch.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\LSEngine\ImGui\ImGuiBuild.cpp">
-      <Filter>LSEngine\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\ImGui\ImGuiLayer.cpp">
-      <Filter>LSEngine\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Renderer\Buffer.cpp">
-      <Filter>LSEngine\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Renderer\Meshfactory.cpp">
-      <Filter>LSEngine\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Renderer\RenderCommand.cpp">
-      <Filter>LSEngine\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Renderer\Renderer.cpp">
-      <Filter>LSEngine\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Renderer\RendererAPI.cpp">
-      <Filter>LSEngine\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Renderer\Shader.cpp">
-      <Filter>LSEngine\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Renderer\VertexArray.cpp">
-      <Filter>LSEngine\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
-      <Filter>Platform\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
-      <Filter>Platform\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
-      <Filter>Platform\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp">
-      <Filter>Platform\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp">
-      <Filter>Platform\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
-      <Filter>Platform\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\Windows\WindowsTimer.cpp">
-      <Filter>Platform\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
-      <Filter>Platform\Windows</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lsepch.cpp" />
     <ClCompile Include="src\LSEngine\Core\Application.cpp">
-      <Filter>LSEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Core\IOUtils.cpp">
-      <Filter>LSEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Core\Layer.cpp">
-      <Filter>LSEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Core\LayerStack.cpp">
-      <Filter>LSEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Core\Log.cpp">
-      <Filter>LSEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Core\Window.cpp">
-      <Filter>LSEngine</Filter>
+      <Filter>src\LSEngine\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\LSEngine\Core\Camera\Camera.cpp">
-      <Filter>LSEngine\Renderer\Camera</Filter>
+      <Filter>src\LSEngine\Core\Camera</Filter>
     </ClCompile>
     <ClCompile Include="src\LSEngine\Core\Camera\OrthographicCamera.cpp">
-      <Filter>LSEngine\Renderer\Camera</Filter>
+      <Filter>src\LSEngine\Core\Camera</Filter>
     </ClCompile>
     <ClCompile Include="src\LSEngine\Core\Camera\PerspectiveCamera.cpp">
-      <Filter>LSEngine\Renderer\Camera</Filter>
+      <Filter>src\LSEngine\Core\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Core\IOUtils.cpp">
+      <Filter>src\LSEngine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Core\Layer.cpp">
+      <Filter>src\LSEngine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Core\LayerStack.cpp">
+      <Filter>src\LSEngine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Core\Log.cpp">
+      <Filter>src\LSEngine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Core\Window.cpp">
+      <Filter>src\LSEngine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\ImGui\ImGuiBuild.cpp">
+      <Filter>src\LSEngine\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\ImGui\ImGuiLayer.cpp">
+      <Filter>src\LSEngine\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Renderer\Buffer.cpp">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Renderer\Meshfactory.cpp">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Renderer\RenderCommand.cpp">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Renderer\Renderer.cpp">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Renderer\RendererAPI.cpp">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Renderer\Shader.cpp">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Renderer\Texture.cpp">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Renderer\VertexArray.cpp">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
+      <Filter>src\Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsTimer.cpp">
+      <Filter>src\Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
+      <Filter>src\Platform\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lsepch.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\stb\stb_image.cpp">
+      <Filter>vendor\stb</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

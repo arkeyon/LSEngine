@@ -19,6 +19,7 @@ workspace "LSEngine"
     IncludeDir["spdlog"] = "LSEngine/vendor/spdlog/include"
     IncludeDir["gli"] = "LSEngine/vendor/gli"
     IncludeDir["FreeImage"] = "LSEngine/vendor/FreeImage/include"
+    IncludeDir["stb"] = "LSEngine/vendor/stb"
 
     include "LSEngine/vendor/glfw"
     include "LSEngine/vendor/glad"
@@ -37,7 +38,7 @@ workspace "LSEngine"
         files
         {
             "%{prj.name}/src/**.h",
-            "%{prj.name}/src/**.cpp"
+            "%{prj.name}/src/**.cpp",
         }
     
         includedirs
@@ -46,7 +47,8 @@ workspace "LSEngine"
             "%{IncludeDir.spdlog}",
             "%{IncludeDir.GLM}",
             "%{IncludeDir.imgui}",
-            "%{IncludeDir.FreeImage}"
+            "%{IncludeDir.FreeImage}",
+            "%{IncludeDir.stb}"
         }
     
         links
@@ -93,7 +95,8 @@ workspace "LSEngine"
         files
         {
             "%{prj.name}/src/**.h",
-            "%{prj.name}/src/**.cpp"
+            "%{prj.name}/src/**.cpp",
+            "%{IncludeDir.stb}/stb_image.cpp"
         }
         
         includedirs
@@ -106,7 +109,8 @@ workspace "LSEngine"
             "%{IncludeDir.imgui}",
             "%{IncludeDir.GLM}",
             "%{IncludeDir.gli}",
-            "%{IncludeDir.FreeImage}"
+            "%{IncludeDir.FreeImage}",
+            "%{IncludeDir.stb}"
         }
         
         libdirs

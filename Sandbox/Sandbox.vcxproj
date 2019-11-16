@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>LSE_PLATFORM_WINDOWS;LSE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\LSEngine\src;..\LSEngine\vendor\spdlog\include;..\LSEngine\vendor\glm;..\LSEngine\vendor\imgui;..\LSEngine\vendor\FreeImage\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\LSEngine\src;..\LSEngine\vendor\spdlog\include;..\LSEngine\vendor\glm;..\LSEngine\vendor\imgui;..\LSEngine\vendor\FreeImage\include;..\LSEngine\vendor\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -95,7 +95,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>LSE_PLATFORM_WINDOWS;LSE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\LSEngine\src;..\LSEngine\vendor\spdlog\include;..\LSEngine\vendor\glm;..\LSEngine\vendor\imgui;..\LSEngine\vendor\FreeImage\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\LSEngine\src;..\LSEngine\vendor\spdlog\include;..\LSEngine\vendor\glm;..\LSEngine\vendor\imgui;..\LSEngine\vendor\FreeImage\include;..\LSEngine\vendor\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -115,7 +115,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>LSE_PLATFORM_WINDOWS;LSE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\LSEngine\src;..\LSEngine\vendor\spdlog\include;..\LSEngine\vendor\glm;..\LSEngine\vendor\imgui;..\LSEngine\vendor\FreeImage\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\LSEngine\src;..\LSEngine\vendor\spdlog\include;..\LSEngine\vendor\glm;..\LSEngine\vendor\imgui;..\LSEngine\vendor\FreeImage\include;..\LSEngine\vendor\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>

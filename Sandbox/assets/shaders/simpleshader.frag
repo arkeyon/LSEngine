@@ -11,6 +11,8 @@ uniform vec3 u_DiffuseColor = 0.5f * vec3(1.f, 1.f, 1.f);
 uniform vec3 u_SpecularColor = 0.5f * vec3(1.f, 1.f, 1.f);
 uniform float u_Shininess = 10.f;
 
+uniform sampler2D tex;
+
 in VertexData
 {
 	vec3 Position;
@@ -27,5 +29,5 @@ void main()
 	float spec = clamp(dot(R, u_EyeDir), 0.f, 1.f);
 	
 	float dist = length(lightdir);
-	a_Colour = u_Color * vec4(fin.Colour.xyz * (u_AmbientColor + clamp(dot(-fin.Normal, normalize(lightdir)), 0.f, 1.f) * u_DiffuseColor + pow(spec, u_Shininess) * u_SpecularColor) / dist / dist * 40.f, 1.f);
+	a_Colour = fin.Colour * texture2D(tex, fin.UV) * vec4(fin.Colour.xyz * (u_AmbientColor + clamp(dot(-fin.Normal, normalize(lightdir)), 0.f, 1.f) * u_DiffuseColor + pow(spec, u_Shininess) * u_SpecularColor) / dist / dist * 40.f, 1.f);
 }

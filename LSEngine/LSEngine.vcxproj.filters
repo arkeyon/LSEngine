@@ -156,6 +156,9 @@
     <ClInclude Include="src\lsepch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\LSEngine\Maths\MathsMeshs.h" />
+    <ClInclude Include="src\LSEngine\Renderer\Mesh.h" />
+    <ClInclude Include="src\LSEngine\Renderer\BufferLayout.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Core\Application.cpp">

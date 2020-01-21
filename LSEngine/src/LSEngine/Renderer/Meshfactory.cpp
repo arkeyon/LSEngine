@@ -307,4 +307,9 @@ namespace LSE
 		indices[34] = 21;
 		indices[35] = 22;
 	}
+
+	void MeshFactory::generateCurve(vertex_t* vertices, uint32_t* indices, curvefunc_t curvefunc, curvecolourfunc_t curvecolourfunc)
+	{
+
+	}
 }

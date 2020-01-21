@@ -163,8 +163,11 @@
     <ClInclude Include="src\LSEngine\Events\KeyEvent.h" />
     <ClInclude Include="src\LSEngine\Events\MouseEvent.h" />
     <ClInclude Include="src\LSEngine\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\LSEngine\Maths\MathsMeshs.h" />
     <ClInclude Include="src\LSEngine\Renderer\Buffer.h" />
+    <ClInclude Include="src\LSEngine\Renderer\BufferLayout.h" />
     <ClInclude Include="src\LSEngine\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\LSEngine\Renderer\Mesh.h" />
     <ClInclude Include="src\LSEngine\Renderer\Meshfactory.h" />
     <ClInclude Include="src\LSEngine\Renderer\RenderCommand.h" />
     <ClInclude Include="src\LSEngine\Renderer\Renderer.h" />

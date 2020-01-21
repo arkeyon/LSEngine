@@ -13,14 +13,16 @@ namespace LSE {
 	class LSE_API MouseMovedEvent : public MouseEvent
 	{
 	public:
-		MouseMovedEvent(float x, float y)
-			: m_MouseX(x), m_MouseY(y)
+		MouseMovedEvent(float x, float y, float dx = 0.f, float dy = 0.f)
+			: m_MouseX(x), m_MouseY(y), m_DMouseX(dx), m_DMouseY(dy)
 		{
 
 		}
 
 		inline const float& GetX() const { return m_MouseX; };
 		inline const float& GetY() const { return m_MouseY; };
+		inline const float& GetDX() const { return m_DMouseX; };
+		inline const float& GetDY() const { return m_DMouseY; };
 
 		std::string ToString() const override
 		{
@@ -33,6 +35,7 @@ namespace LSE {
 
 	private:
 		float m_MouseX, m_MouseY;
+		float m_DMouseX, m_DMouseY;
 	};
 
 	class LSE_API MouseScrolledEvent : public MouseEvent

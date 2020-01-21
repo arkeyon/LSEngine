@@ -13,6 +13,8 @@
 #include "LSEngine/Renderer/Renderer.h"
 #include "LSEngine/Renderer/Meshfactory.h"
 
+#include "LSEngine/Events/MouseEvent.h"
+
 #include "Platform/Windows/WindowsTimer.h"
 
 #include "FreeImage.h"
@@ -61,6 +63,7 @@ namespace LSE {
 
 	void Application::OnEvent(Event& e)
 	{
+
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>([&](WindowCloseEvent& e)
 			{

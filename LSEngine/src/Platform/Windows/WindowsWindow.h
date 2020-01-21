@@ -21,8 +21,9 @@ namespace LSE {
 		inline void SetEventCallbackFn(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; };
 		void SetVSync(bool enabled) override;
 		inline bool IsVSync() override { return m_Data.VSync; }
+		virtual void SetCursorState(bool enabled) override;
 
-		inline virtual void* GetNativeWindow() override { return m_Window; }
+		virtual void* GetNativeWindow() override { return m_Window; }
 	private:
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();
@@ -33,6 +34,7 @@ namespace LSE {
 		{
 			std::string Title;
 			unsigned int Width, Height;
+			bool CursorState;
 			bool VSync;
 			EventCallbackFn EventCallback;
 		} m_Data;

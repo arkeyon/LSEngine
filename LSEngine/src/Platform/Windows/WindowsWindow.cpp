@@ -37,6 +37,7 @@ namespace LSE {
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
+		m_Data.CursorState = true;
 
 		LSE_CORE_INFO("Creating Window Title=\"{0}\" Width={1} Height={2}", props.Title, props.Width, props.Height);
 
@@ -129,9 +130,23 @@ namespace LSE {
 			{
 				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-				MouseMovedEvent e((float)(xpos), (float)(ypos));
-				data.EventCallback(e);
+				static float x = 0.f, y = 0.f;
 
+				static bool first = true;
+				if (first)
+				{
+					first = false;
+					MouseMovedEvent e((float)(xpos), (float)(ypos), 0.f, 0.f);
+					data.EventCallback(e);
+				}
+				else
+				{
+					MouseMovedEvent e((float)(xpos), (float)(ypos), (float)(xpos)-x, (float)(ypos)-y);
+					data.EventCallback(e);
+				}
+
+				x = (float)xpos;
+				y = (float)ypos;
 			});
 		
 		glfwSetWindowPosCallback(m_Window, [](GLFWwindow* window, int xpos, int ypos)
@@ -142,6 +157,9 @@ namespace LSE {
 				data.EventCallback(e);
 			});
 
+		if (glfwRawMouseMotionSupported()) glfwSetInputMode(m_Window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+		else LSE_CORE_WARN("Raw input not supported");
+
 		glfwSetErrorCallback(GLFWErrorCallback);
 	}
 
@@ -150,6 +168,13 @@ namespace LSE {
 		glfwSwapInterval((int)enabled);
 
 		m_Data.VSync = true;
+	}
+
+	void WindowsWindow::SetCursorState(bool enabled)
+	{
+		m_Data.CursorState = enabled;
+		if (enabled) glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		else glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	}
 
 	void WindowsWindow::OnUpdate()

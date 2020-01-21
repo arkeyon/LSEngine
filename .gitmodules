@@ -6,7 +6,7 @@
 	url = https://github.com/g-truc/glm
 [submodule "LSEngine/vendor/glfw"]
 	path = LSEngine/vendor/glfw
-	url = https://github.com/TheCherno/glfw
+	url = https://github.com/thecherno/glfw
 [submodule "LSEngine/vendor/imgui"]
 	path = LSEngine/vendor/imgui
 	url = https://github.com/TheCherno/imgui

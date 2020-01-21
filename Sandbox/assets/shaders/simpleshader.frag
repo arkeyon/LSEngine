@@ -29,5 +29,5 @@ void main()
 	float spec = clamp(dot(R, u_EyeDir), 0.f, 1.f);
 	
 	float dist = length(lightdir);
-	a_Colour = fin.Colour * texture2D(tex, fin.UV) * vec4(fin.Colour.xyz * (u_AmbientColor + clamp(dot(-fin.Normal, normalize(lightdir)), 0.f, 1.f) * u_DiffuseColor + pow(spec, u_Shininess) * u_SpecularColor) / dist / dist * 40.f, 1.f);
+	a_Colour = u_Color * fin.Colour * texture2D(tex, fin.UV) * vec4(fin.Colour.xyz * (u_AmbientColor + clamp(dot(-fin.Normal, normalize(lightdir)), 0.f, 1.f) * u_DiffuseColor + pow(spec, u_Shininess) * u_SpecularColor) / dist / dist * 40.f, 1.f);
 }

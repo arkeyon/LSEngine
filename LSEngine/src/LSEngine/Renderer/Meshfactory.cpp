@@ -19,8 +19,28 @@ namespace LSE
 
 	void MeshFactory::generateSphere(vertex_t* vertices, uint32_t* indices, const float& radius, const int& detail, vertex_t temp = {})
 	{
-		int width = detail * 2;
-		int height = detail;
+		const int width = detail * 2;
+		const int height = detail;
+		generateSphere(vertices, indices, radius, width, height, temp);
+	}
+
+	float a(float f)
+	{
+		return 1.f - fabsf(f * 2.f - 1.f);
+	}
+
+	float b(float f)
+	{
+		return a(fmodf(2.f * f, 2.f) / 2.f);
+	}
+
+	void MeshFactory::generateSphere(vertex_t* vertices, uint32_t* indices, const float& radius, const int& w, const int& h, vertex_t temp = {})
+	{
+
+		const int width = w + 1;
+		const int height = h + 1;
+
+		float cor = float(width % 2) * 0.5f;
 
 		for (int y = 0; y < height; y++)
 		{
@@ -35,11 +55,12 @@ namespace LSE
 				vertices[x + y * width] = temp;
 				vertices[x + y * width].a_Normal = glm::vec3(cos(yaw) * rr, sin(yaw) * rr, sin(pitch));
 				vertices[x + y * width].a_Position = vertices[x + y * width].a_Normal * radius;
-				vertices[x + y * width].a_UV = glm::vec2(1.f - abs((float)x / (width - 1.f) * 2.f - 1.f), 1.f - abs((float)y / (height - 1.f) * 2.f - 1.f));
+				vertices[x + y * width].a_UV = glm::vec2(b((float)(x + cor) / (width - 1.f)), b((float)y / (height - 1.f)));
 
-				//LSE_CORE_TRACE("{0},{1}\t{2},{3}", x, y, vertices[x + y * width].a_UV.x, vertices[x + y * width].a_UV.y);
 			}
 		}
+
+
 
 		for (int y = 0; y < height - 1; y++)
 		{
@@ -55,6 +76,7 @@ namespace LSE
 		//if (numofvertices)*numofvertices = width * height;
 		//if (numofindices)*numofindices = (width - 1) * (height - 1) * 6;
 	}
+
 
 	void MeshFactory::generateRectCorner(vertex_t* vertices, uint32_t* indices, float width, float height, float depth)
 	{

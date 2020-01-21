@@ -22,14 +22,18 @@ private:
 	LSE::Ref<LSE::Shader> m_Shader;
 	LSE::Ref<LSE::Camera3D> m_Camera;
 
-	LSE::Ref<LSE::Texture2D> m_XNORTexture;
+	bool m_Paused = false;
+
+	LSE::Ref<LSE::Texture2D> m_TestTexture;
 
 	float m_MoveSpeed = 20.f;
-	float m_RotateSpeed = 2.f;
+	float m_RotateSpeed = 8.f;
 
 	float m_FPS = 0.f;
 	float m_Frames = 0.f;
 	float m_Time = 0.f;
+
+	glm::vec2 m_PositionTickSum;
 
 	glm::vec4 m_Color = glm::vec4(1.f, 1.f, 1.f, 1.f);
 	glm::vec3 m_AmbientColor	 = 1.f * glm::vec3(1.f, 1.f, 1.f);
@@ -46,40 +50,43 @@ public:
 
 		m_Shader.reset(Shader::Create("assets/shaders/simpleshader.vert", "assets/shaders/simpleshader.frag"));
 		m_VertexArray.reset(VertexArray::Create());
-		m_Camera.reset(new PerspCamera3D(glm::vec3(0.f, 0.f, 0.f), glm::vec3(-glm::two_pi<float>() / 10.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 10000.f));
+		m_Camera.reset(new PerspCamera3D(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 10000.f));
 
 		{
 
-			const int detail = 80;
+			const int width = 22;
+			const int height = 4;
 
-			vertex_t* vertices = new vertex_t[detail * detail * 2];
-			uint32_t* indices = new uint32_t[(detail - 1) * (detail * 2 - 1) * 6];
+			vertex_t* vertices = new vertex_t[(width + 1) * (height + 1)];
+			uint32_t* indices = new uint32_t[width * height * 6];
 			vertex_t temp;
 			temp.a_Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
 			temp.a_Tex = 0;
-			MeshFactory::generateSphere(vertices, (uint32_t*)indices, 2.f, detail, temp);
+			MeshFactory::generateSphere(vertices, (uint32_t*)indices, 2.f, width, height, temp);
 
-			Ref<VertexBuffer> vertexBuffer(VertexBuffer::Create(detail * detail * 2 * sizeof(vertex_t), vertices));
+			Ref<VertexBuffer> vertexBuffer(VertexBuffer::Create((width + 1)* (height + 1) * sizeof(vertex_t), vertices));
 			vertexBuffer->SetLayout({
 				{ SDT::Float3, "a_Position" },
 				{ SDT::Float4, "a_Colour" },
 				{ SDT::Float3, "a_Normal" },
 				{ SDT::Float2, "a_UV" },
 				{ SDT::Float, "a_Tex" }
-				});
+			});
 
-			Ref<IndexBuffer> indexBuffer(IndexBuffer::Create((detail - 1) * (detail * 2 - 1) * 6, indices));
+			Ref<IndexBuffer> indexBuffer(IndexBuffer::Create(width* height * 6, indices));
 
 			m_VertexArray->AddVertexBuffer(vertexBuffer);
 			m_VertexArray->SetIndexBuffer(indexBuffer);
 		}
-		
+
 		RenderCommand::SetClearColour(glm::vec4(0.f, 0.f, 0.f, 1.f));
 		RenderCommand::EnableFaceCulling(true);
 		RenderCommand::EnableDepthTest(true);
-		//RenderCommand::EnabledWireframe(true);
 
-		m_XNORTexture = Texture2D::Create("assets/textures/TEST.png");
+		m_TestTexture = Texture2D::Create("assets/textures/TEST.png");
+
+		auto& window = Application::Get().GetWindow();
+		window.SetCursorState(false);
 	}
 
 	void OnUpdate(float delta) override
@@ -98,18 +105,23 @@ public:
 
 		RenderCommand::Clear();
 
-		m_Camera->MoveLocalView(
-			glm::vec3(
-				Input::IsKeyPressed(LSE_KEY_D) - Input::IsKeyPressed(LSE_KEY_A),
-				Input::IsKeyPressed(LSE_KEY_SPACE) - Input::IsKeyPressed(LSE_KEY_LEFT_SHIFT),
-				Input::IsKeyPressed(LSE_KEY_W) - Input::IsKeyPressed(LSE_KEY_S)
-			) * m_MoveSpeed * delta,
-			glm::vec3(
-				Input::IsKeyPressed(LSE_KEY_UP) - Input::IsKeyPressed(LSE_KEY_DOWN),
-				Input::IsKeyPressed(LSE_KEY_LEFT) - Input::IsKeyPressed(LSE_KEY_RIGHT),
-				0.f
-			) * m_RotateSpeed * delta
-		);
+		if (!m_Paused)
+		{
+			m_Camera->MoveLocalView(
+				glm::vec3(
+					Input::IsKeyPressed(LSE_KEY_D) - Input::IsKeyPressed(LSE_KEY_A),
+					Input::IsKeyPressed(LSE_KEY_SPACE) - Input::IsKeyPressed(LSE_KEY_LEFT_SHIFT),
+					Input::IsKeyPressed(LSE_KEY_W) - Input::IsKeyPressed(LSE_KEY_S)
+				) * m_MoveSpeed * delta,
+				glm::vec3(
+					m_PositionTickSum.y,
+					m_PositionTickSum.x,
+					0.f
+				) * m_RotateSpeed * delta
+			);
+		}
+
+		m_PositionTickSum = glm::vec2();
 
 		m_Shader->SetUniform4f("u_Color", m_Color);
 		m_Shader->SetUniform3f("u_AmbientColor", m_AmbientColor);
@@ -118,7 +130,8 @@ public:
 		m_Shader->SetUniform1f("u_Shininess", m_Shininess);
 
 		m_Shader->SetUniformi("tex", 0);
-		m_XNORTexture->Bind(0);
+		m_TestTexture->Bind(0);
+
 		Renderer::BeginScene(m_Camera);
 		Renderer::Submit(m_Shader, m_VertexArray);
 		Renderer::EndScene();
@@ -141,7 +154,27 @@ public:
 
 	void OnEvent(LSE::Event& e) override
 	{
+		using namespace LSE;
+		if (e.GetEventType() == EventType::MouseMoved)
+		{
+			auto& me = (MouseMovedEvent&)e;
 
+			m_PositionTickSum -= glm::vec2(me.GetDX(), me.GetDY());
+		}
+
+		EventDispatcher ed(e);
+		ed.Dispatch<KeyPressedEvent>([&](KeyPressedEvent& e)
+			{
+				if (((KeyPressedEvent&)e).GetKeyCode() == LSE_KEY_ESCAPE)
+				{
+
+					m_Paused = !m_Paused;
+					auto& window = Application::Get().GetWindow();
+					if (m_Paused) window.SetCursorState(true);
+					else window.SetCursorState(false);
+				}
+				return false;
+			});
 	}
 };
 

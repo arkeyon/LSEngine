@@ -7,7 +7,7 @@
 
 namespace LSE {
 
-	Shader* Shader::Create(std::string vertPath, std::string fragPath)
+	Shader* Shader::Create(const std::string& path)
 	{
 
 		switch (Renderer::GetAPI())
@@ -16,7 +16,7 @@ namespace LSE {
 			LSE_CORE_ASSERT(false, "Cant create Shader without RenderingAPI");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return new OpenGLShader(vertPath, fragPath);
+			return new OpenGLShader(path);
 		}
 		return nullptr;
 

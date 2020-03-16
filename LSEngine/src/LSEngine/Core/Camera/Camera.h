@@ -4,13 +4,18 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "LSEngine/Events/Event.h"
 
 namespace LSE {
 
 	class LSE_API Camera3D
 	{
 	public:
-		Camera3D(glm::vec3 pos, glm::vec3 angles, float ar = 16.f / 9.f, float zmin = 0.1f, float zmax = 100.f);
+		Camera3D(glm::vec3 pos, glm::vec3 angles, float ar = 16.f / 9.f, float zmin = 0.1f, float zmax = 100.f)
+			: m_Pos(pos), m_Angles(angles), m_AR(ar), m_ZMin(zmin), m_ZMax(zmax)
+		{}
+
+		virtual ~Camera3D() = default;
 
 		inline const glm::vec3& GetPos() const { return m_Pos; }
 		inline const glm::vec3& GetAngles() const { return m_Angles; }
@@ -23,11 +28,6 @@ namespace LSE {
 		inline const glm::mat4& GetViewMatrix() const { return m_ViewMatrix; }
 		inline const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
 		inline glm::mat4 GetVP() const { return m_ProjectionMatrix * m_ViewMatrix; }
-
-		static glm::mat4 FPViewMatrix(const glm::vec3& pos, const glm::vec3& angles, glm::vec3* forward = nullptr, glm::vec3* side = nullptr, glm::vec3* up = nullptr);
-		static glm::mat4 FPViewMatrix(const glm::vec3& pos, const glm::vec3& forward, const glm::vec3& side, const glm::vec3& up);
-		static void AngleVectors(const glm::vec3& angles, glm::vec3* forward = nullptr, glm::vec3* side = nullptr, glm::vec3* up = nullptr);
-		static void NormalizeAngles(glm::vec3& angles);
 	protected:
 		float m_AR;
 		float m_ZMin, m_ZMax;

@@ -7,7 +7,7 @@
 #include "LSEngine/Renderer/VertexArray.h"
 #include "LSEngine/Renderer/Meshfactory.h"
 #include "LSEngine/Renderer/Renderer.h"
-#include "LSEngine/Core/Camera/PerspectiveCamera.h"
+#include "LSEngine/Core/Camera/PerspectiveCameraController.h"
 #include "LSEngine/Core/Camera/OrthographicCamera.h"
 #include "LSEngine/Renderer/Shader.h"
 #include "LSEngine/Renderer/Texture.h"
@@ -15,25 +15,37 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/color_space.hpp>
 
+glm::mat3 star(glm::vec3& v)
+{
+	glm::mat3 result;
+	result[0][0] = 0.f;
+	result[1][0] = v.z;
+	result[2][0] = -v.y;
+	result[0][1] = -v.z;
+	result[1][1] = 0.f;
+	result[2][1] = v.x;
+	result[0][2] = v.y;
+	result[1][2] = -v.x;
+	result[2][2] = 0.f;
+
+	return result;
+}
+
 class ExampleLayer : public LSE::Layer
 {
 private:
-	LSE::Ref<LSE::VertexArray> m_VertexArray;
+	LSE::Ref<LSE::Model> m_Skybox, m_Cube;
 	LSE::Ref<LSE::Shader> m_Shader;
-	LSE::Ref<LSE::Camera3D> m_Camera;
+	LSE::Ref<LSE::PerspectiveCamera> m_Camera;
+	LSE::Ref<LSE::PerspectiveCameraController> m_CameraController;
 
 	bool m_Paused = false;
 
 	LSE::Ref<LSE::Texture2D> m_TestTexture;
 
-	float m_MoveSpeed = 20.f;
-	float m_RotateSpeed = 8.f;
-
 	float m_FPS = 0.f;
 	float m_Frames = 0.f;
 	float m_Time = 0.f;
-
-	glm::vec2 m_PositionTickSum;
 
 	glm::vec4 m_Color = glm::vec4(1.f, 1.f, 1.f, 1.f);
 	glm::vec3 m_AmbientColor	 = 1.f * glm::vec3(1.f, 1.f, 1.f);
@@ -47,41 +59,27 @@ public:
 		using namespace LSE;
 
 		RendererAPI::SetAPI(RendererAPI::API::OpenGL);
+		Renderer::Init();
 
-		m_Shader.reset(Shader::Create("assets/shaders/simpleshader.vert", "assets/shaders/simpleshader.frag"));
-		m_VertexArray.reset(VertexArray::Create());
-		m_Camera.reset(new PerspCamera3D(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 10000.f));
+		m_Camera.reset(new PerspectiveCamera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 1000.f));
+		m_CameraController.reset(new PerspectiveCameraController(m_Camera));
+
+		m_Shader.reset(Shader::Create("assets/shaders/simpleshader.glsl"));
+
+		m_Skybox = MakeRef<Model>();
+		m_Cube = MakeRef<Model>();
 
 		{
+			Ref<Mesh> mesh = MeshFactory::generateRectCorner(200.f, 200.f, 200.f);
+			mesh->Invert();
 
-			const int width = 22;
-			const int height = 4;
-
-			vertex_t* vertices = new vertex_t[(width + 1) * (height + 1)];
-			uint32_t* indices = new uint32_t[width * height * 6];
-			vertex_t temp;
-			temp.a_Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
-			temp.a_Tex = 0;
-			MeshFactory::generateSphere(vertices, (uint32_t*)indices, 2.f, width, height, temp);
-
-			Ref<VertexBuffer> vertexBuffer(VertexBuffer::Create((width + 1)* (height + 1) * sizeof(vertex_t), vertices));
-			vertexBuffer->SetLayout({
-				{ SDT::Float3, "a_Position" },
-				{ SDT::Float4, "a_Colour" },
-				{ SDT::Float3, "a_Normal" },
-				{ SDT::Float2, "a_UV" },
-				{ SDT::Float, "a_Tex" }
-			});
-
-			Ref<IndexBuffer> indexBuffer(IndexBuffer::Create(width* height * 6, indices));
-
-			m_VertexArray->AddVertexBuffer(vertexBuffer);
-			m_VertexArray->SetIndexBuffer(indexBuffer);
+			m_Skybox->AddMesh(mesh);
 		}
 
-		RenderCommand::SetClearColour(glm::vec4(0.f, 0.f, 0.f, 1.f));
-		RenderCommand::EnableFaceCulling(true);
-		RenderCommand::EnableDepthTest(true);
+		{
+			Ref<Mesh> mesh = MeshFactory::generateCubeCenter(20.f);
+			m_Cube->AddMesh(mesh);
+		}
 
 		m_TestTexture = Texture2D::Create("assets/textures/TEST.png");
 
@@ -89,9 +87,35 @@ public:
 		window.SetCursorState(false);
 	}
 
+	glm::vec3 pos = glm::vec3(20.f, 20.f, 20.f);
+	glm::vec3 vel = glm::vec3(0.f, 0.f, 0.f);
+	glm::mat3 rotation = glm::rotate(glm::mat4(), 0.f, glm::vec3());
+	glm::vec3 omega = glm::vec3(0.f, 0.f, 0.f);
+	float mass = 10.f;
+
 	void OnUpdate(float delta) override
 	{
 		using namespace LSE;
+
+		if (!m_Paused)
+		{
+			m_CameraController->OnUpdate(delta);
+		}
+
+
+
+		for (int i = 0; i < m_Cube->m_Meshs[0]->m_VerticesCount; ++i)
+		{
+			glm::vec3 r = rotation * m_Cube->m_Meshs[0]->m_Vertices[i].a_Position;
+			glm::vec3 p = r + pos;
+
+			if (p.z < 0.f)
+			{
+				float e = 1.f;
+				glm::vec3 n(0.f, 0.f, 1.f);
+				float j = -(1.f + e) * glm::dot(vel + glm::cross(omega, r), n) / (1.f / mass + );
+			}
+		}
 
 		m_Frames += 1.f;
 		m_Time += delta;
@@ -105,35 +129,17 @@ public:
 
 		RenderCommand::Clear();
 
-		if (!m_Paused)
-		{
-			m_Camera->MoveLocalView(
-				glm::vec3(
-					Input::IsKeyPressed(LSE_KEY_D) - Input::IsKeyPressed(LSE_KEY_A),
-					Input::IsKeyPressed(LSE_KEY_SPACE) - Input::IsKeyPressed(LSE_KEY_LEFT_SHIFT),
-					Input::IsKeyPressed(LSE_KEY_W) - Input::IsKeyPressed(LSE_KEY_S)
-				) * m_MoveSpeed * delta,
-				glm::vec3(
-					m_PositionTickSum.y,
-					m_PositionTickSum.x,
-					0.f
-				) * m_RotateSpeed * delta
-			);
-		}
-
-		m_PositionTickSum = glm::vec2();
-
-		m_Shader->SetUniform4f("u_Color", m_Color);
+		m_Shader->SetUniform4f("u_Color", m_Color);							  //TODO: Put in renderer
 		m_Shader->SetUniform3f("u_AmbientColor", m_AmbientColor);
 		m_Shader->SetUniform3f("u_DiffuseColor", m_DiffuseColor);
 		m_Shader->SetUniform3f("u_SpecularColor", m_SpecularColor);
-		m_Shader->SetUniform1f("u_Shininess", m_Shininess);
 
 		m_Shader->SetUniformi("tex", 0);
 		m_TestTexture->Bind(0);
 
 		Renderer::BeginScene(m_Camera);
-		Renderer::Submit(m_Shader, m_VertexArray);
+		Renderer::Submit(m_Shader, m_Skybox);
+		Renderer::Submit(m_Shader, m_Cube, glm::translate(glm::mat4(1.f), glm::vec3(15.f, 15.f, 15.f)));
 		Renderer::EndScene();
 	}
 
@@ -155,11 +161,10 @@ public:
 	void OnEvent(LSE::Event& e) override
 	{
 		using namespace LSE;
-		if (e.GetEventType() == EventType::MouseMoved)
-		{
-			auto& me = (MouseMovedEvent&)e;
 
-			m_PositionTickSum -= glm::vec2(me.GetDX(), me.GetDY());
+		if (!m_Paused)
+		{
+			m_CameraController->OnEvent(e);
 		}
 
 		EventDispatcher ed(e);
@@ -167,7 +172,6 @@ public:
 			{
 				if (((KeyPressedEvent&)e).GetKeyCode() == LSE_KEY_ESCAPE)
 				{
-
 					m_Paused = !m_Paused;
 					auto& window = Application::Get().GetWindow();
 					if (m_Paused) window.SetCursorState(true);

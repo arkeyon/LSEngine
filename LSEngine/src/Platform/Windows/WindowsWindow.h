@@ -35,6 +35,7 @@ namespace LSE {
 			std::string Title;
 			unsigned int Width, Height;
 			bool CursorState;
+			bool CursorStateChange;
 			bool VSync;
 			EventCallbackFn EventCallback;
 		} m_Data;

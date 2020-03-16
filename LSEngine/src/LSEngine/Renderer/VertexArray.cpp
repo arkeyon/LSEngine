@@ -6,7 +6,7 @@
 
 namespace LSE {
 
-	VertexArray* VertexArray::Create()
+	Ref<VertexArray> VertexArray::Create()
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -14,7 +14,7 @@ namespace LSE {
 			LSE_CORE_ASSERT(false, "Cant create VertexBuffer without RenderingAPI");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return new OpenGLVertexArray();
+			return MakeRef<OpenGLVertexArray>();
 		}
 		return nullptr;
 	}

@@ -30,8 +30,12 @@ namespace LSE {
 		Ref<ImGuiLayer> m_ImGuiLayer;
 
 		bool m_Running = true;
+		bool m_Minimized = false;
 		LayerStack m_LayerStack;
 	private:
+		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
+
 		static Application* s_Instance;
 	};
 

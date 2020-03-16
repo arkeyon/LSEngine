@@ -41,6 +41,7 @@ namespace LSE {
 		}
 
 		m_VertexBuffers.push_back(buffer);
+		//glBindVertexArray(0);
 	}
 
 	void OpenGLVertexArray::SetIndexBuffer(const Ref<IndexBuffer> buffer)
@@ -49,6 +50,7 @@ namespace LSE {
 		buffer->Bind();
 
 		m_IndexBuffer = buffer;
+		//glBindVertexArray(0);
 	}
 
 	const std::vector<Ref<VertexBuffer>>& OpenGLVertexArray::GetVertexBuffers() const

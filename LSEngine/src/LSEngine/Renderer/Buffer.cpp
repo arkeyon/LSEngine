@@ -16,7 +16,7 @@ namespace LSE {
 			m_Stride += element.Size;
 		}
 	}
-	VertexBuffer* VertexBuffer::Create(size_t size, void* vertices)
+	Ref<VertexBuffer> VertexBuffer::Create(size_t size, void* vertices)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -24,12 +24,12 @@ namespace LSE {
 			LSE_CORE_ASSERT(false, "Cant create VertexBuffer without RenderingAPI");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return new OpenGLVertexBuffer(size, vertices);
+			return MakeRef<OpenGLVertexBuffer>(size, vertices);
 		}
 		return nullptr;
 	}
 
-	IndexBuffer* IndexBuffer::Create(size_t count, uint32_t* indices)
+	Ref<IndexBuffer> IndexBuffer::Create(size_t count, uint32_t* indices)
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -37,7 +37,7 @@ namespace LSE {
 			LSE_CORE_ASSERT(false, "Cant create IndexBuffer without RenderingAPI");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return new OpenGLIndexBuffer(count, indices);
+			return MakeRef<OpenGLIndexBuffer>(count, indices);
 		}
 		return nullptr;
 	}

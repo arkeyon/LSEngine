@@ -156,16 +156,17 @@
     <ClInclude Include="src\lsepch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\LSEngine\Maths\MathsMeshs.h" />
     <ClInclude Include="src\LSEngine\Renderer\Mesh.h" />
     <ClInclude Include="src\LSEngine\Renderer\BufferLayout.h" />
+    <ClInclude Include="src\LSEngine\Core\Camera\PerspectiveCameraController.h" />
+    <ClInclude Include="src\LSEngine\Maths\Vector.h" />
+    <ClInclude Include="src\LSEngine\Renderer\Material.h" />
+    <ClInclude Include="src\LSEngine\Renderer\Model.h" />
+    <ClInclude Include="src\LSEngine\Utils\Misc.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Core\Application.cpp">
       <Filter>src\LSEngine\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LSEngine\Core\Camera\Camera.cpp">
-      <Filter>src\LSEngine\Core\Camera</Filter>
     </ClCompile>
     <ClCompile Include="src\LSEngine\Core\Camera\OrthographicCamera.cpp">
       <Filter>src\LSEngine\Core\Camera</Filter>
@@ -254,5 +255,9 @@
     <ClCompile Include="vendor\stb\stb_image.cpp">
       <Filter>vendor\stb</Filter>
     </ClCompile>
+    <ClCompile Include="src\LSEngine\Core\Camera\PerspectiveCameraController.cpp" />
+    <ClCompile Include="src\LSEngine\Renderer\Material.cpp" />
+    <ClCompile Include="src\LSEngine\Renderer\Model.cpp" />
+    <ClCompile Include="src\LSEngine\Renderer\Mesh.cpp" />
   </ItemGroup>
 </Project>

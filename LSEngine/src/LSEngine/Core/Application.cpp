@@ -63,14 +63,10 @@ namespace LSE {
 
 	void Application::OnEvent(Event& e)
 	{
-
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>([&](WindowCloseEvent& e)
-			{
-				m_Running = false;
-				return true;
-			});
-	
+		dispatcher.Dispatch<WindowCloseEvent>([&](WindowCloseEvent& e) { return OnWindowClose(e); });
+		dispatcher.Dispatch<WindowResizeEvent>([&](WindowResizeEvent& e) { return OnWindowResize(e); });
+
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
 		{
 			(*--it)->OnEvent(e);
@@ -89,8 +85,12 @@ namespace LSE {
 			float delta = timer.elapsed();
 			timer.reset();
 
-			for (Ref<Layer>& layer : m_LayerStack)
-				layer->OnUpdate(delta);
+			if (!m_Minimized)
+			{
+				for (Ref<Layer>& layer : m_LayerStack)
+					layer->OnUpdate(delta);
+			}
+
 			m_ImGuiLayer->Begin();
 			for (Ref<Layer>& layer : m_LayerStack)
 				layer->OnImGuiRender();
@@ -98,5 +98,24 @@ namespace LSE {
 
 			m_Window->OnUpdate();
 		}
+	}
+
+	bool Application::OnWindowClose(WindowCloseEvent& e)
+	{
+		m_Running = false;
+		return true;
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		if (e.GetWidth() == 0 || e.GetHeight() == 0)
+		{
+			m_Minimized = true;
+			return false;
+		}
+
+		m_Minimized = false;
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+		return false;
 	}
 }

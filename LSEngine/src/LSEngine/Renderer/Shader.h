@@ -19,7 +19,7 @@ namespace LSE {
 		virtual void SetUniform2f(const char* name, const glm::vec2& vector) = 0;
 		virtual void SetUniform1f(const char* name, const float& vector) = 0;
 
-		static Shader* Create(std::string vertexPath, std::string fragmentPath);
+		static Shader* Create(const std::string& path);
 	};
 
 }

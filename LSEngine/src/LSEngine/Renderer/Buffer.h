@@ -18,7 +18,7 @@ namespace LSE {
 		virtual const BufferLayout& GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
 
-		static VertexBuffer* Create(size_t size, void* vertices);
+		static Ref<VertexBuffer> Create(size_t size, void* vertices);
 	};
 
 	class LSE_API IndexBuffer
@@ -31,7 +31,7 @@ namespace LSE {
 
 		virtual uint32_t GetCount() const = 0;
 
-		static IndexBuffer* Create(size_t count, uint32_t* indices);
+		static Ref<IndexBuffer> Create(size_t count, uint32_t* indices);
 	};
 
 }

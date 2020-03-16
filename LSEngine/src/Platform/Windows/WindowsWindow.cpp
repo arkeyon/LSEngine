@@ -38,6 +38,7 @@ namespace LSE {
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
 		m_Data.CursorState = true;
+		m_Data.CursorStateChange = true;
 
 		LSE_CORE_INFO("Creating Window Title=\"{0}\" Width={1} Height={2}", props.Title, props.Width, props.Height);
 
@@ -132,10 +133,9 @@ namespace LSE {
 
 				static float x = 0.f, y = 0.f;
 
-				static bool first = true;
-				if (first)
+				if (data.CursorStateChange)
 				{
-					first = false;
+					data.CursorStateChange = false;
 					MouseMovedEvent e((float)(xpos), (float)(ypos), 0.f, 0.f);
 					data.EventCallback(e);
 				}
@@ -173,6 +173,7 @@ namespace LSE {
 	void WindowsWindow::SetCursorState(bool enabled)
 	{
 		m_Data.CursorState = enabled;
+		m_Data.CursorStateChange = true;
 		if (enabled) glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 		else glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	}

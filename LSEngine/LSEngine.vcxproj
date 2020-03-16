@@ -148,6 +148,7 @@
     <ClInclude Include="src\LSEngine\Core\Camera\Camera.h" />
     <ClInclude Include="src\LSEngine\Core\Camera\OrthographicCamera.h" />
     <ClInclude Include="src\LSEngine\Core\Camera\PerspectiveCamera.h" />
+    <ClInclude Include="src\LSEngine\Core\Camera\PerspectiveCameraController.h" />
     <ClInclude Include="src\LSEngine\Core\Core.h" />
     <ClInclude Include="src\LSEngine\Core\EntryPoint.h" />
     <ClInclude Include="src\LSEngine\Core\IOUtils.h" />
@@ -163,18 +164,21 @@
     <ClInclude Include="src\LSEngine\Events\KeyEvent.h" />
     <ClInclude Include="src\LSEngine\Events\MouseEvent.h" />
     <ClInclude Include="src\LSEngine\ImGui\ImGuiLayer.h" />
-    <ClInclude Include="src\LSEngine\Maths\MathsMeshs.h" />
+    <ClInclude Include="src\LSEngine\Maths\Vector.h" />
     <ClInclude Include="src\LSEngine\Renderer\Buffer.h" />
     <ClInclude Include="src\LSEngine\Renderer\BufferLayout.h" />
     <ClInclude Include="src\LSEngine\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\LSEngine\Renderer\Material.h" />
     <ClInclude Include="src\LSEngine\Renderer\Mesh.h" />
     <ClInclude Include="src\LSEngine\Renderer\Meshfactory.h" />
+    <ClInclude Include="src\LSEngine\Renderer\Model.h" />
     <ClInclude Include="src\LSEngine\Renderer\RenderCommand.h" />
     <ClInclude Include="src\LSEngine\Renderer\Renderer.h" />
     <ClInclude Include="src\LSEngine\Renderer\RendererAPI.h" />
     <ClInclude Include="src\LSEngine\Renderer\Shader.h" />
     <ClInclude Include="src\LSEngine\Renderer\Texture.h" />
     <ClInclude Include="src\LSEngine\Renderer\VertexArray.h" />
+    <ClInclude Include="src\LSEngine\Utils\Misc.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
@@ -188,9 +192,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Core\Application.cpp" />
-    <ClCompile Include="src\LSEngine\Core\Camera\Camera.cpp" />
     <ClCompile Include="src\LSEngine\Core\Camera\OrthographicCamera.cpp" />
     <ClCompile Include="src\LSEngine\Core\Camera\PerspectiveCamera.cpp" />
+    <ClCompile Include="src\LSEngine\Core\Camera\PerspectiveCameraController.cpp" />
     <ClCompile Include="src\LSEngine\Core\IOUtils.cpp" />
     <ClCompile Include="src\LSEngine\Core\Layer.cpp" />
     <ClCompile Include="src\LSEngine\Core\LayerStack.cpp" />
@@ -199,7 +203,10 @@
     <ClCompile Include="src\LSEngine\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\LSEngine\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\LSEngine\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\LSEngine\Renderer\Material.cpp" />
+    <ClCompile Include="src\LSEngine\Renderer\Mesh.cpp" />
     <ClCompile Include="src\LSEngine\Renderer\Meshfactory.cpp" />
+    <ClCompile Include="src\LSEngine\Renderer\Model.cpp" />
     <ClCompile Include="src\LSEngine\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\LSEngine\Renderer\Renderer.cpp" />
     <ClCompile Include="src\LSEngine\Renderer\RendererAPI.cpp" />

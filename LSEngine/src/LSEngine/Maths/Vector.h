@@ -19,13 +19,15 @@ namespace LSE { namespace Maths {
 
 	static void NormalizeAngles(glm::vec3& angles)
 	{
+
+		while (angles.x > glm::pi<float>()) angles.x -= glm::two_pi<float>(); //pitch
+		while (angles.x <= -glm::pi<float>()) angles.x += glm::two_pi<float>();
+
 		while (angles.y > glm::pi<float>()) angles.y -= glm::two_pi<float>();
-		while (angles.y < -glm::pi<float>()) angles.y += glm::two_pi<float>();
+		while (angles.y <= -glm::pi<float>()) angles.y += glm::two_pi<float>(); //yaw
 
-		if (angles.x > glm::half_pi<float>()) angles.x = glm::half_pi<float>();
-		if (angles.x < -glm::half_pi<float>()) angles.x = -glm::half_pi<float>();
-
-		angles.z = 0.f;
+		while (angles.z > glm::pi<float>()) angles.z -= glm::two_pi<float>();
+		while (angles.z <= -glm::pi<float>()) angles.z += glm::two_pi<float>(); //roll
 	}
 
 	static glm::mat4 FPViewMatrix(const glm::vec3& pos, const glm::vec3& forward, const glm::vec3& side, const glm::vec3& up)
@@ -66,10 +68,10 @@ namespace LSE { namespace Maths {
 		Result[1][1] = u.y;
 		Result[2][1] = u.z;
 		Result[3][1] = -glm::dot(u, pos);
-		Result[0][2] = f.x;
-		Result[1][2] = f.y;
-		Result[2][2] = f.z;
-		Result[3][2] = -glm::dot(f, pos);
+		Result[0][2] = -f.x;
+		Result[1][2] = -f.y;
+		Result[2][2] = -f.z;
+		Result[3][2] = glm::dot(f, pos);
 
 		return Result;
 	}

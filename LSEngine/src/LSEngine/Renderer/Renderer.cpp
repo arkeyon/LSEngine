@@ -29,6 +29,11 @@ namespace LSE {
 		s_SceneData->ViewDir = camera->GetDir();
 	}
 
+	void Renderer::BeginScene(const SceneData& camera)
+	{
+		*s_SceneData = camera;
+	}
+
 	void Renderer::EndScene()
 	{
 

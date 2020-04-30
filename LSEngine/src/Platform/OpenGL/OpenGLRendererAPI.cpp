@@ -5,9 +5,9 @@
 
 namespace LSE {
 
-	void OpenGLRendererAPI::Clear()
+	void OpenGLRendererAPI::Clear(bool Colour, bool Depth, bool Stencil)
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear((Colour ? GL_COLOR_BUFFER_BIT : 0) | (Depth ? GL_DEPTH_BUFFER_BIT : 0) | (Stencil ? GL_STENCIL_BUFFER_BIT : 0));
 	}
 
 	void OpenGLRendererAPI::SetClearColour(const glm::vec4& colour)
@@ -41,5 +41,34 @@ namespace LSE {
 	{
 		if (enabled) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+
+	void OpenGLRendererAPI::StencilDraw(bool enabled)
+	{
+		if (enabled)
+		{
+			glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+			glStencilFunc(GL_ALWAYS, 0, 1);
+			glStencilOp(GL_KEEP, GL_KEEP, GL_INVERT); // if zpass: 1111... , if zfail 0000 ...
+			glStencilMask(1);
+		}
+		else
+		{
+			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+			glStencilFunc(GL_EQUAL, 1, 1);
+			glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+		}
+	}
+
+	void OpenGLRendererAPI::EnableStencil(bool enabled)
+	{
+		if (enabled)
+		{
+			glEnable(GL_STENCIL_TEST);
+		}
+		else
+		{
+			glDisable(GL_STENCIL_TEST);
+		}
 	}
 }

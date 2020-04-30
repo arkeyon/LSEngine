@@ -32,8 +32,6 @@ namespace LSE {
 			Input::IsKeyPressed(LSE_KEY_W) - Input::IsKeyPressed(LSE_KEY_S)
 		);
 
-		//LSE_CORE_INFO("{0} {1}", m_AngleDirection.x, m_AngleDirection.y);
-
 		m_Camera->MoveLocalView(movedirection * m_MoveSpeed * delta, m_AngleDirection * m_Sensitivity * delta);
 		m_AngleDirection = glm::vec3();
 	}

@@ -9,7 +9,6 @@ namespace LSE {
 		: Camera3D(pos, angles, ar, zmin, zmax), m_XMin(xmin), m_XMax(xmax), m_YMin(ymin), m_YMax(ymax)
 	{
 		m_ProjectionMatrix = glm::ortho(m_XMin, m_XMax, m_YMin, m_YMax, m_ZMin, m_ZMax);
-		m_ViewMatrix = Maths::FPViewMatrix(m_Pos, m_Angles, &m_Forward, &m_Side, &m_Up);
 	}
 
 	void OrthoCamera3D::SetView(const glm::vec3& pos, const glm::vec3& angles)
@@ -17,8 +16,6 @@ namespace LSE {
 		m_Pos = pos;
 		m_Angles = angles;
 		Maths::NormalizeAngles(m_Angles);
-
-		m_ViewMatrix = Maths::FPViewMatrix(m_Pos, m_Angles, &m_Forward, &m_Side, &m_Up);
 	}
 
 	void OrthoCamera3D::MoveView(const glm::vec3& posoffs, const glm::vec3& angoffs)
@@ -26,17 +23,15 @@ namespace LSE {
 		m_Pos += posoffs;
 		m_Angles += angoffs;
 		Maths::NormalizeAngles(m_Angles);
-
-		m_ViewMatrix = Maths::FPViewMatrix(m_Pos, m_Angles, &m_Forward, &m_Side, &m_Up);
 	}
 
 	void OrthoCamera3D::MoveLocalView(const glm::vec3& localoffs, const glm::vec3& angoffs)
 	{
 		m_Angles += angoffs;
-		Maths::AngleVectors(m_Angles, &m_Forward, &m_Side, &m_Up);
+		glm::vec3 forward, side, up;
+		Maths::AngleVectors(m_Angles, &forward, &side, &up);
 		
-		m_Pos += localoffs.z * m_Forward + localoffs.x * m_Side + localoffs.y * m_Up;
-		m_ViewMatrix = Maths::FPViewMatrix(m_Pos, m_Forward, m_Side, m_Up);
-		//MoveView(localoffs, angoffs);
+		m_Pos += localoffs.z * forward + localoffs.x * side + localoffs.y * up;
 	}
+
 }

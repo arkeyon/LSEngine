@@ -54,7 +54,7 @@ namespace LSE {
 		s_Context->Init();
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
-		SetVSync(true);
+		SetVSync(false);
 		glfwSetInputMode(m_Window, GLFW_CURSOR_DISABLED, GLFW_CURSOR_NORMAL);
 
 		glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height)

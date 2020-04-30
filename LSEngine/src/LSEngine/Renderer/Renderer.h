@@ -10,11 +10,14 @@ namespace LSE {
 
 	class LSE_API Renderer
 	{
+	private:
+		struct SceneData;
 	public:
 		static void Init();
 		static void Shutdown();
 
 		static void BeginScene(const Ref<Camera3D>& camera);
+		static void BeginScene(const SceneData& camera);
 		static void EndScene();
 
 		static void OnWindowResize(uint32_t width, uint32_t height);

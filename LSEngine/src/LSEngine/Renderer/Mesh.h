@@ -33,6 +33,7 @@ namespace LSE {
 		}
 
 		void Invert();
+		void Transform(const glm::mat4& matrix);
 
 		int32_t m_VerticesCount;
 		const int32_t m_IndicesCount;

@@ -1,6 +1,7 @@
 #include <LSEngine.h>
 
 #include "imgui.h"
+#include "imgui_internal.h"
 
 #include "LSEngine/Core/Core.h"
 #include "LSEngine/Core/IOUtils.h"
@@ -13,7 +14,8 @@
 #include "LSEngine/Renderer/Texture.h"
 
 #include <glm/gtc/type_ptr.hpp>
-#include <glm/gtx/color_space.hpp>
+#include <glm/gtc/color_space.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 glm::mat3 star(glm::vec3& v)
 {
@@ -31,10 +33,25 @@ glm::mat3 star(glm::vec3& v)
 	return result;
 }
 
+struct Entity
+{
+	glm::vec3 pos;
+	glm::quat orin;
+
+	glm::mat4 getModelMat()
+	{
+		return glm::translate(glm::mat4(1.f), pos) * glm::mat4_cast(orin);
+	}
+};
+
 class ExampleLayer : public LSE::Layer
 {
 private:
-	LSE::Ref<LSE::Model> m_Skybox, m_Cube;
+	LSE::Ref<LSE::Model> m_Skybox, m_Cube, m_Door;
+
+	Entity m_Door1 = { glm::vec3(80.f, 80.f, 20.f), glm::angleAxis(0.f, glm::vec3(0.f, 0.f, 1.f)) };
+	Entity m_Door2 = { glm::vec3(120.f, 120.f, 20.f), glm::angleAxis(glm::quarter_pi<float>(), glm::vec3(1.f, 0.f, 0.f)) };
+
 	LSE::Ref<LSE::Shader> m_Shader;
 	LSE::Ref<LSE::PerspectiveCamera> m_Camera;
 	LSE::Ref<LSE::PerspectiveCameraController> m_CameraController;
@@ -61,13 +78,14 @@ public:
 		RendererAPI::SetAPI(RendererAPI::API::OpenGL);
 		Renderer::Init();
 
-		m_Camera.reset(new PerspectiveCamera(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 1000.f));
-		m_CameraController.reset(new PerspectiveCameraController(m_Camera));
+		m_Camera = MakeRef<PerspectiveCamera>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 1000.f);
+		m_CameraController = MakeRef<PerspectiveCameraController>(m_Camera);
 
 		m_Shader.reset(Shader::Create("assets/shaders/simpleshader.glsl"));
 
 		m_Skybox = MakeRef<Model>();
 		m_Cube = MakeRef<Model>();
+		m_Door = MakeRef<Model>();
 
 		{
 			Ref<Mesh> mesh = MeshFactory::generateRectCorner(200.f, 200.f, 200.f);
@@ -77,21 +95,22 @@ public:
 		}
 
 		{
-			Ref<Mesh> mesh = MeshFactory::generateCubeCenter(20.f);
+			Ref<Mesh> mesh = MeshFactory::generateCubeCenter(5.f);
 			m_Cube->AddMesh(mesh);
 		}
 
-		m_TestTexture = Texture2D::Create("assets/textures/TEST.png");
+		{
+			Ref<Mesh> mesh = MeshFactory::generatePlaneCorner(glm::vec3(20.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 40.f));
+			m_Door->AddMesh(mesh);
+		}
+
+		m_TestTexture = Texture2D::Create("assets/textures/BLANK.png");
 
 		auto& window = Application::Get().GetWindow();
 		window.SetCursorState(false);
-	}
 
-	glm::vec3 pos = glm::vec3(20.f, 20.f, 20.f);
-	glm::vec3 vel = glm::vec3(0.f, 0.f, 0.f);
-	glm::mat3 rotation = glm::rotate(glm::mat4(), 0.f, glm::vec3());
-	glm::vec3 omega = glm::vec3(0.f, 0.f, 0.f);
-	float mass = 10.f;
+		RenderCommand::EnableFaceCulling(true);
+	}
 
 	void OnUpdate(float delta) override
 	{
@@ -100,21 +119,6 @@ public:
 		if (!m_Paused)
 		{
 			m_CameraController->OnUpdate(delta);
-		}
-
-
-
-		for (int i = 0; i < m_Cube->m_Meshs[0]->m_VerticesCount; ++i)
-		{
-			glm::vec3 r = rotation * m_Cube->m_Meshs[0]->m_Vertices[i].a_Position;
-			glm::vec3 p = r + pos;
-
-			if (p.z < 0.f)
-			{
-				float e = 1.f;
-				glm::vec3 n(0.f, 0.f, 1.f);
-				float j = -(1.f + e) * glm::dot(vel + glm::cross(omega, r), n) / (1.f / mass + );
-			}
 		}
 
 		m_Frames += 1.f;
@@ -137,10 +141,37 @@ public:
 		m_Shader->SetUniformi("tex", 0);
 		m_TestTexture->Bind(0);
 
+		glm::quat dif = m_Door2.orin * glm::inverse(m_Door1.orin);
+		glm::vec3 ea = glm::eulerAngles(dif);
+
+		glm::vec3 posoffs = dif * (m_Camera->GetPos() - m_Door1.pos);
+
+		LSE_INFO("{0}\t{1}\t{2}\n", ea.x, ea.y, ea.z);
+
+		Ref<PerspectiveCamera> doorCamera = MakeRef<PerspectiveCamera>(*m_Camera);
+		doorCamera->SetView(m_Door2.pos + posoffs, doorCamera->GetAngles());
+
 		Renderer::BeginScene(m_Camera);
 		Renderer::Submit(m_Shader, m_Skybox);
-		Renderer::Submit(m_Shader, m_Cube, glm::translate(glm::mat4(1.f), glm::vec3(15.f, 15.f, 15.f)));
-		Renderer::EndScene();
+		Renderer::Submit(m_Shader, m_Door, m_Door2.getModelMat());
+
+		RenderCommand::EnableStencil(true);
+		RenderCommand::StencilDraw(true);
+		
+		Renderer::Submit(m_Shader, m_Door, m_Door1.getModelMat());
+		
+		RenderCommand::Clear(false, true, false);
+
+		RenderCommand::StencilDraw(false);
+
+		glm::vec3 forward, side, up;
+		Maths::AngleVectors(doorCamera->GetAngles(), &forward, &side, &up);
+		glm::mat4 vp = Maths::FPViewMatrix(doorCamera->GetPos(), forward, side, up);
+		Renderer::BeginScene({vp, doorCamera->GetPos(), forward});
+
+		Renderer::Submit(m_Shader, m_Skybox);
+
+		RenderCommand::EnableStencil(false);
 	}
 
 	void OnImGuiRender() override
@@ -148,7 +179,7 @@ public:
 		ImGui::Begin("Debug");
 		ImGui::Text((std::string("FPS: ") + std::to_string(m_FPS)).c_str());
 		ImGui::Text((std::string("Camera->Pos: ") + std::to_string(m_Camera->GetPos().x) + ", " + std::to_string(m_Camera->GetPos().y) + ", " + std::to_string(m_Camera->GetPos().z)).c_str());
-		ImGui::Text((std::string("Camera->Angles: ") + std::to_string(m_Camera->GetAngles().x) + ", " + std::to_string(m_Camera->GetAngles().y)).c_str());
+		ImGui::Text((std::string("Camera->Angles: ") + std::to_string(m_Camera->GetAngles().x) + ", " + std::to_string(m_Camera->GetAngles().y) + ", " + std::to_string(m_Camera->GetAngles().z)).c_str());
 		ImGui::Spacing();
 		ImGui::ColorEdit4("Color", &m_Color[0]);
 		ImGui::ColorEdit3("AmbientColor", &m_AmbientColor[0]);

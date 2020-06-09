@@ -4,7 +4,7 @@
 #include "LSEngine/Maths/Vector.h"
 
 namespace LSE {
-
+	/*
 	OrthoCamera3D::OrthoCamera3D(glm::vec3 pos, glm::vec3 angles, float ar, float xmin, float xmax, float ymin, float ymax, float zmin, float zmax)
 		: Camera3D(pos, angles, ar, zmin, zmax), m_XMin(xmin), m_XMax(xmax), m_YMin(ymin), m_YMax(ymax)
 	{
@@ -33,5 +33,5 @@ namespace LSE {
 		
 		m_Pos += localoffs.z * forward + localoffs.x * side + localoffs.y * up;
 	}
-
+	*/
 }

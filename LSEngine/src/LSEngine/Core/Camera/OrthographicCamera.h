@@ -3,7 +3,7 @@
 #include "Camera.h"
 
 namespace LSE {
-
+	/*
 	class LSE_API OrthoCamera3D : public Camera3D
 	{
 	public:
@@ -16,5 +16,5 @@ namespace LSE {
 		float m_XMin, m_XMax;
 		float m_YMin, m_YMax;
 	};
-
+	*/
 }

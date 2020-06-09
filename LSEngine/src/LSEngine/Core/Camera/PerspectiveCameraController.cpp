@@ -19,7 +19,7 @@ namespace LSE {
 		if (e.GetEventType() == EventType::MouseMoved)
 		{
 			MouseMovedEvent& me = (MouseMovedEvent&)e;
-			m_AngleDirection -= glm::vec3(me.GetDY(), me.GetDX(), 0.f);
+			m_AngleDirection += glm::vec3(me.GetDY(), -me.GetDX(), 0.f);
 		}
 	}
 
@@ -31,6 +31,8 @@ namespace LSE {
 			Input::IsKeyPressed(LSE_KEY_SPACE) - Input::IsKeyPressed(LSE_KEY_LEFT_SHIFT),
 			Input::IsKeyPressed(LSE_KEY_W) - Input::IsKeyPressed(LSE_KEY_S)
 		);
+
+		m_AngleDirection += glm::vec3(0.f, 0.f, (float)Input::IsKeyPressed(LSE_KEY_E) - (float)Input::IsKeyPressed(LSE_KEY_Q));
 
 		m_Camera->MoveLocalView(movedirection * m_MoveSpeed * delta, m_AngleDirection * m_Sensitivity * delta);
 		m_AngleDirection = glm::vec3();

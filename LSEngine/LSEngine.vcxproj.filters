@@ -19,8 +19,14 @@
     <Filter Include="src\LSEngine\ImGui">
       <UniqueIdentifier>{5BFBEFF9-47DF-B04F-B03F-ABA29C429BD1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\LSEngine\Maths">
+      <UniqueIdentifier>{9D8632FA-896A-F34F-F2CA-EDA2DECDDDD1}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\LSEngine\Renderer">
       <UniqueIdentifier>{37E8A731-A354-632C-6C48-FB89D8738594}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\LSEngine\Utils">
+      <UniqueIdentifier>{9187CDFA-7D6B-8E50-E6CB-88A3D2CE78D2}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Platform">
       <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
@@ -52,6 +58,9 @@
       <Filter>src\LSEngine\Core\Camera</Filter>
     </ClInclude>
     <ClInclude Include="src\LSEngine\Core\Camera\PerspectiveCamera.h">
+      <Filter>src\LSEngine\Core\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Core\Camera\PerspectiveCameraController.h">
       <Filter>src\LSEngine\Core\Camera</Filter>
     </ClInclude>
     <ClInclude Include="src\LSEngine\Core\Core.h">
@@ -99,13 +108,28 @@
     <ClInclude Include="src\LSEngine\ImGui\ImGuiLayer.h">
       <Filter>src\LSEngine\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="src\LSEngine\Maths\Vector.h">
+      <Filter>src\LSEngine\Maths</Filter>
+    </ClInclude>
     <ClInclude Include="src\LSEngine\Renderer\Buffer.h">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\BufferLayout.h">
       <Filter>src\LSEngine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\LSEngine\Renderer\GraphicsContext.h">
       <Filter>src\LSEngine\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\Material.h">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\Mesh.h">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\LSEngine\Renderer\Meshfactory.h">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\Model.h">
       <Filter>src\LSEngine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\LSEngine\Renderer\RenderCommand.h">
@@ -125,6 +149,9 @@
     </ClInclude>
     <ClInclude Include="src\LSEngine\Renderer\VertexArray.h">
       <Filter>src\LSEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Utils\Misc.h">
+      <Filter>src\LSEngine\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
       <Filter>src\Platform\OpenGL</Filter>
@@ -156,13 +183,12 @@
     <ClInclude Include="src\lsepch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\LSEngine\Renderer\Mesh.h" />
-    <ClInclude Include="src\LSEngine\Renderer\BufferLayout.h" />
-    <ClInclude Include="src\LSEngine\Core\Camera\PerspectiveCameraController.h" />
-    <ClInclude Include="src\LSEngine\Maths\Vector.h" />
-    <ClInclude Include="src\LSEngine\Renderer\Material.h" />
-    <ClInclude Include="src\LSEngine\Renderer\Model.h" />
-    <ClInclude Include="src\LSEngine\Utils\Misc.h" />
+    <ClInclude Include="src\LSEngine\Core\Camera\OrthographicCameraController.h" />
+    <ClInclude Include="src\LSEngine\Maths\Shapes\Curve.h" />
+    <ClInclude Include="src\LSEngine\ECS\Entity.h" />
+    <ClInclude Include="src\LSEngine\ECS\Component.h" />
+    <ClInclude Include="src\LSEngine\ECS\System.h" />
+    <ClInclude Include="src\LSEngine\ECS\ECSManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Core\Application.cpp">
@@ -172,6 +198,9 @@
       <Filter>src\LSEngine\Core\Camera</Filter>
     </ClCompile>
     <ClCompile Include="src\LSEngine\Core\Camera\PerspectiveCamera.cpp">
+      <Filter>src\LSEngine\Core\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Core\Camera\PerspectiveCameraController.cpp">
       <Filter>src\LSEngine\Core\Camera</Filter>
     </ClCompile>
     <ClCompile Include="src\LSEngine\Core\IOUtils.cpp">
@@ -198,7 +227,16 @@
     <ClCompile Include="src\LSEngine\Renderer\Buffer.cpp">
       <Filter>src\LSEngine\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\LSEngine\Renderer\Material.cpp">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Renderer\Mesh.cpp">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\LSEngine\Renderer\Meshfactory.cpp">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Renderer\Model.cpp">
       <Filter>src\LSEngine\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\LSEngine\Renderer\RenderCommand.cpp">
@@ -255,9 +293,10 @@
     <ClCompile Include="vendor\stb\stb_image.cpp">
       <Filter>vendor\stb</Filter>
     </ClCompile>
-    <ClCompile Include="src\LSEngine\Core\Camera\PerspectiveCameraController.cpp" />
-    <ClCompile Include="src\LSEngine\Renderer\Material.cpp" />
-    <ClCompile Include="src\LSEngine\Renderer\Model.cpp" />
-    <ClCompile Include="src\LSEngine\Renderer\Mesh.cpp" />
+    <ClCompile Include="src\LSEngine\Core\Camera\OrthographicCameraController.cpp" />
+    <ClCompile Include="src\LSEngine\ECS\ECSManager.cpp" />
+    <ClCompile Include="src\LSEngine\ECS\Entity.cpp" />
+    <ClCompile Include="src\LSEngine\ECS\Component.cpp" />
+    <ClCompile Include="src\LSEngine\ECS\System.cpp" />
   </ItemGroup>
 </Project>

@@ -58,7 +58,7 @@ namespace LSE { namespace Maths {
 	//	return Result;
 	//}
 
-	constexpr glm::mat4 space = glm::mat4(glm::vec4(0.f, 0.f, -1.f, 0.f), glm::vec4(-1.f, 0.f, 0.f, 0.f), glm::vec4(0.f, 1.f, 0.f, 0.f), glm::vec4(0.f, 0.f, 0.f, 1.f));
+	#define space glm::mat4(glm::vec4(0.f, 0.f, -1.f, 0.f), glm::vec4(-1.f, 0.f, 0.f, 0.f), glm::vec4(0.f, 1.f, 0.f, 0.f), glm::vec4(0.f, 0.f, 0.f, 1.f))
 
 	static glm::mat4 getCameraRotationInv(const glm::vec3& angles) { return mat4_cast(glm::angleAxis(angles.x, glm::vec3(0.f, 1.f, 0.f)) * glm::angleAxis(angles.z, glm::vec3(1.f, 0.f, 0.f)) * glm::angleAxis(angles.y, glm::vec3(0.f, 0.f, 1.f))); }
 	static glm::mat4 getCameraRotation(const glm::vec3& angles) { return mat4_cast(glm::angleAxis(angles.y, glm::vec3(0.f, 0.f, 1.f)) * glm::angleAxis(angles.z, glm::vec3(1.f, 0.f, 0.f)) * glm::angleAxis(angles.x, glm::vec3(0.f, 1.f, 0.f))); }

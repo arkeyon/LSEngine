@@ -48,4 +48,9 @@ namespace LSE {
 		m_Zoom = zoom;
 		m_ProjectionMatrix = glm::perspective(m_FOV / m_Zoom, m_AR, m_ZMin, m_ZMax);
 	}
+
+	const glm::mat4 PerspectiveCamera::GetViewMatrix() const
+	{
+		return Maths::FPViewMatrix(m_Pos, m_Angles);
+	}
 }

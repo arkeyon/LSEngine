@@ -66,4 +66,5 @@ void main()
 
 	float dist = length(lightdir);
 	a_Colour = u_Color * texture2D(tex, fin.UV) * vec4(fin.Colour.xyz * (u_AmbientColor + diffuse * u_DiffuseColor + spec * u_SpecularColor) * 20.f / dist, fin.Colour.z);
+	//a_Colour = u_Color * texture2D(tex, fin.UV) * vec4(fin.Colour.xyz * (u_AmbientColor + diffuse * u_DiffuseColor + spec * u_SpecularColor) * 20.f / dist, fin.Colour.z);
 }

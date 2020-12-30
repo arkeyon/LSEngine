@@ -13,6 +13,7 @@ namespace LSE {
 		virtual void SetView(const glm::vec3& pos, const glm::vec3& angles) override;
 		virtual void MoveView(const glm::vec3& posoffs, const glm::vec3& angoffs) override;
 		virtual void MoveLocalView(const glm::vec3& localoffs, const glm::vec3& angoffs) override;
+		virtual const glm::mat4 GetViewMatrix() const override;
 
 		void SetZoom(float zoom);
 

@@ -22,11 +22,11 @@ namespace LSE {
 		//return MakeRef<Mesh>(this);
 	}
 
-	void Mesh::Transform(const glm::mat4& matrix)
+	void Mesh::Transform(glm::mat4 matrix)
 	{
 		for (int i = 0; i < m_VerticesCount; ++i)
 		{
-			m_Vertices[i].a_Position = matrix * glm::vec4(m_Vertices[i].a_Position, 0.f);
+			m_Vertices[i].a_Position = glm::vec3(matrix * glm::vec4(m_Vertices[i].a_Position, 1.f));
 		}
 	}
 

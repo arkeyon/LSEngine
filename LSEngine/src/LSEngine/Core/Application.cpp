@@ -24,6 +24,8 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "LSEngine/ECS/ECSManager.h"
+
 namespace LSE {
 
 #define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
@@ -41,6 +43,9 @@ namespace LSE {
 		m_Window->SetEventCallbackFn(BIND_EVENT_FN(Application::OnEvent));
 
 		m_ImGuiLayer = MakeRef<ImGuiLayer>();
+
+		ECS->Init();
+
 		PushOverlay(m_ImGuiLayer);
 	}
 
@@ -102,7 +107,9 @@ namespace LSE {
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
+		LSE_CORE_TRACE("Window Close");
 		m_Running = false;
+		ECS->Destroy();
 		return true;
 	}
 

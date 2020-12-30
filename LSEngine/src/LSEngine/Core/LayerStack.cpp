@@ -10,7 +10,12 @@ namespace LSE {
 
 	LayerStack::~LayerStack()
 	{
-
+		for (auto it = m_Layers.begin(); it != m_Layers.end(); it++)
+		{
+			(*it)->OnDetach();
+		}
+		m_Layers.clear();
+		m_LayerInsertIndex = 0;
 	}
 
 	void LayerStack::PushLayer(Ref<Layer>& layer)
@@ -29,7 +34,9 @@ namespace LSE {
 		auto it = std::find(m_Layers.begin(), m_Layers.end(), layer);
 		if (it != m_Layers.end())
 		{
+			(*it)->OnDetach();
 			m_Layers.erase(it);
+			m_Layers.shrink_to_fit();
 			m_LayerInsertIndex--;
 		}
 	}
@@ -38,6 +45,9 @@ namespace LSE {
 	{
 		auto it = std::find(m_Layers.begin(), m_Layers.end(), overlay);
 		if (it != m_Layers.end())
+		{
+			(*it)->OnDetach();
 			m_Layers.erase(it);
+		}
 	}
 }

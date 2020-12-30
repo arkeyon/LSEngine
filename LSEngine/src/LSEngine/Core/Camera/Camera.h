@@ -31,8 +31,8 @@ namespace LSE {
 		virtual void SetView(const glm::vec3& pos, const glm::vec3& angles) = 0;
 		virtual void MoveView(const glm::vec3& posoffs, const glm::vec3& angoffs) = 0;
 		virtual void MoveLocalView(const glm::vec3& localoffs, const glm::vec3& angoffs) = 0;
+		virtual const glm::mat4 GetViewMatrix() const = 0;
 
-		inline const glm::mat4 GetViewMatrix() const { return Maths::FPViewMatrix(m_Pos, m_Angles); }
 		inline const glm::mat4& GetProjectionMatrix() const { return m_ProjectionMatrix; }
 		inline glm::mat4 GetVP() const { return m_ProjectionMatrix * GetViewMatrix(); }
 	protected:

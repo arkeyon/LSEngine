@@ -33,12 +33,13 @@ namespace LSE {
 		}
 
 		void Invert();
-		void Transform(const glm::mat4& matrix);
+		void Transform(glm::mat4 matrix);
 
 		int32_t m_VerticesCount;
 		const int32_t m_IndicesCount;
 
 		RendererPrimitives m_Primitive = RendererPrimitives::TRIANGLES;
+		Ref<Material> m_Material;
 
 		vertex_t* m_Vertices;
 		index_t* m_Indices;

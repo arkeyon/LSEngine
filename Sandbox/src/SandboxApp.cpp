@@ -14,56 +14,18 @@
 #include "LSEngine/Renderer/Texture.h"
 
 #include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/color_space.hpp>
+#include <glm/gtx/color_space.hpp>
 #include <glm/gtc/quaternion.hpp>
 
-glm::mat3 star(glm::vec3& v)
-{
-	glm::mat3 result;
-	result[0][0] = 0.f;
-	result[1][0] = v.z;
-	result[2][0] = -v.y;
-	result[0][1] = -v.z;
-	result[1][1] = 0.f;
-	result[2][1] = v.x;
-	result[0][2] = v.y;
-	result[1][2] = -v.x;
-	result[2][2] = 0.f;
+#include <list>
 
-	return result;
-}
+#include "ECS.h"
 
-class Entity
-{
-public:
-	glm::vec3 pos;
-	glm::quat orin;
-	glm::vec3 scale;
-
-	glm::mat4 getModelMat()
-	{
-		return glm::translate(glm::mat4(1.f), pos) * glm::mat4_cast(orin) * glm::scale(glm::mat4(1.f), scale);
-	}
-};
-
-class EntityComponent
-{
-private:
-	const int m_ComponentID;
-
-	inline const int GetComponentID() const { return m_ComponentID; }
-};
-
-struct WorldCollider : EntityComponent
-{
-
-};
+#define BIT(x) (1L << x)
 
 class ExampleLayer : public LSE::Layer
 {
 private:
-	LSE::Ref<LSE::Model> m_Skybox, m_Cube, m_Door;
-
 	LSE::Ref<LSE::Shader> m_Shader;
 	LSE::Ref<LSE::PerspectiveCamera> m_Camera;
 	LSE::Ref<LSE::PerspectiveCameraController> m_CameraController;
@@ -82,10 +44,10 @@ private:
 	glm::vec3 m_SpecularColor = 1.f * glm::vec3(1.f, 1.f, 1.f);
 	float m_Shininess = 10.f;
 
-	Entity m_Door1 = { glm::vec3(80.f, 80.f, 20.f), glm::angleAxis(0.f, glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f) };
-	Entity m_Door2 = { glm::vec3(120.f, 120.f, 20.f), glm::angleAxis(glm::quarter_pi<float>(), glm::vec3(1.f, 0.f, 0.f)), glm::vec3(0.1f, 0.1f, 0.1f) };
-
-	Entity m_Player = { glm::vec3(50.f, 50.f, 0.f), glm::angleAxis(0.f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(1.f, 1.f, 1.f) };
+	LSE::Ref<WorldEntity> m_Skybox;
+	LSE::Ref<WorldEntity> m_Door1;
+	LSE::Ref<WorldEntity> m_Door2;
+	LSE::Ref<WorldEntity> m_Player;
 
 public:
 	ExampleLayer()
@@ -101,33 +63,50 @@ public:
 
 		m_Shader.reset(Shader::Create("assets/shaders/simpleshader.glsl"));
 
-		m_Skybox = MakeRef<Model>();
-		m_Cube = MakeRef<Model>();
-		m_Door = MakeRef<Model>();
+		LSE::Ref<LSE::Model> skybox = MakeRef<Model>();
+		LSE::Ref<LSE::Model> cube = MakeRef<Model>();
+		LSE::Ref<LSE::Model> door = MakeRef<Model>();
 
 		{
 			Ref<Mesh> mesh = MeshFactory::generateRectCorner(200.f, 200.f, 200.f);
 			mesh->Invert();
 
-			m_Skybox->AddMesh(mesh);
+			skybox->AddMesh(mesh);
 		}
 
 		{
 			Ref<Mesh> mesh = MeshFactory::generateCubeCenter(5.f);
-			m_Cube->AddMesh(mesh);
+			cube->AddMesh(mesh);
 		}
 
 		{
-			Ref<Mesh> mesh = MeshFactory::generatePlaneCorner(glm::vec3(20.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 40.f));
-			m_Door->AddMesh(mesh);
+			MeshFactory::surfacefunc_t surface = [](const float& u, const float& v)
+			{
+				return glm::vec3(u, 10.f * cos(v), 10.f * sin(v));
+			};
+
+			MeshFactory::surfacecolourfunc_t colorsurface = [](const float& u, const float& v)
+			{
+				return glm::vec4(glm::rgbColor(glm::vec3(v / glm::two_pi<float>() * 360.f, 1.f, 1.f)), 1.f);
+			};
+
+			Ref<Mesh> mesh = MeshFactory::paramatricSurface(surface, 0.f, 100.f, 5, 0.f, glm::two_pi<float>(), 20, colorsurface);
+			mesh->Invert();
+
+			door->AddMesh(mesh);
 		}
+
+		m_Skybox = ECS->CreateEntity<WorldEntity>(glm::vec3(0.f, 0.f, 0.f), glm::angleAxis(0.f, glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), skybox);
+		m_Door1 = ECS->CreateEntity<WorldEntity>(glm::vec3(80.f, 80.f, 20.f), glm::angleAxis(0.f, glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), door);
+		m_Door2 = ECS->CreateEntity<WorldEntity>(glm::vec3(120.f, 120.f, 20.f), glm::angleAxis(glm::quarter_pi<float>(), glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), door);
+		//m_Player = MakeRef<WorldEntity>(glm::vec3(50.f, 50.f, 0.f), glm::angleAxis(0.f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(1.f, 1.f, 1.f), m_Cube);
 
 		m_TestTexture = Texture2D::Create("assets/textures/BLANK.png");
 
 		auto& window = Application::Get().GetWindow();
 		window.SetCursorState(false);
 
-		RenderCommand::EnableFaceCulling(false);
+		RenderCommand::EnableFaceCulling(true);
 	}
 
 	void OnUpdate(float delta) override
@@ -159,25 +138,18 @@ public:
 		m_Shader->SetUniformi("tex", 0);
 		m_TestTexture->Bind(0);
 
-		glm::mat4 im = m_Door1.getModelMat() * glm::inverse(m_Door2.getModelMat());
-
 		Renderer::BeginScene(m_Camera);
-		Renderer::Submit(m_Shader, m_Skybox);
-		Renderer::Submit(m_Shader, m_Cube, glm::inverse(m_Camera->GetViewMatrix() * im));
-		//Renderer::Submit(m_Shader, m_Door, m_Door1.getModelMat());
-		Renderer::Submit(m_Shader, m_Door, m_Door2.getModelMat());
 
-		RenderCommand::EnableStencil(true);
-		RenderCommand::StencilDraw(true);
-		Renderer::Submit(m_Shader, m_Door, m_Door1.getModelMat());
-		RenderCommand::StencilDraw(false);
-		RenderCommand::Clear(false, true, false);
+		auto a = m_Skybox->GetComponent<Renderable>();
+		auto b = m_Door1->GetComponent<Renderable>();
+		auto c = m_Door2->GetComponent<Renderable>();
 
-		Renderer::BeginScene({ m_Camera->GetVP() * im, im * glm::vec4(m_Camera->GetPos(), 1.f), m_Camera->GetDir() });
-		Renderer::Submit(m_Shader, m_Skybox);
-		Renderer::Submit(m_Shader, m_Door, m_Door1.getModelMat());
-
-		RenderCommand::EnableStencil(false);
+		LSE_TRACE("{0}", a);
+		Renderer::Submit(m_Shader, a->m_Model);
+		LSE_TRACE("{0}", b);
+		Renderer::Submit(m_Shader, b->m_Model, m_Door1->GetComponent<ReferenceFrame>()->getModelMat());
+		LSE_TRACE("{0}", c);
+		Renderer::Submit(m_Shader, c->m_Model, m_Door2->GetComponent<ReferenceFrame>()->getModelMat());
 	}
 
 	void OnImGuiRender() override
@@ -232,7 +204,7 @@ public:
 
 	~Sandbox()
 	{
-
+		
 	}
 };
 

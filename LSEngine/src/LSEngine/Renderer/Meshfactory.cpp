@@ -142,14 +142,14 @@ namespace LSE
 		mesh->m_Vertices[9 ].a_Position = vec3(0.f, depth, height);
 		mesh->m_Vertices[10].a_Position = vec3(0.f, depth, 0.f);
 		mesh->m_Vertices[11].a_Position = vec3(0.f, 0.f, 0.f);
-		//mesh->m_Vertices[8 ].a_Normal = vec3(-1.f, 0.f, 0.f);
-		//mesh->m_Vertices[9 ].a_Normal = vec3(-1.f, 0.f, 0.f);
-		//mesh->m_Vertices[10].a_Normal = vec3(-1.f, 0.f, 0.f);
-		//mesh->m_Vertices[11].a_Normal = vec3(-1.f, 0.f, 0.f);
-		mesh->m_Vertices[8 ].a_Colour = vec4(0.f, 0.f, 1.f, 1.f); //BLUE
-		mesh->m_Vertices[9 ].a_Colour = vec4(0.f, 0.f, 1.f, 1.f);
-		mesh->m_Vertices[10].a_Colour = vec4(0.f, 0.f, 1.f, 1.f);
-		mesh->m_Vertices[11].a_Colour = vec4(0.f, 0.f, 1.f, 1.f);
+		mesh->m_Vertices[8 ].a_Normal = vec3(-1.f, 0.f, 0.f);
+		mesh->m_Vertices[9 ].a_Normal = vec3(-1.f, 0.f, 0.f);
+		mesh->m_Vertices[10].a_Normal = vec3(-1.f, 0.f, 0.f);
+		mesh->m_Vertices[11].a_Normal = vec3(-1.f, 0.f, 0.f);
+		//mesh->m_Vertices[8 ].a_Colour = vec4(0.f, 0.f, 1.f, 1.f); //BLUE
+		//mesh->m_Vertices[9 ].a_Colour = vec4(0.f, 0.f, 1.f, 1.f);
+		//mesh->m_Vertices[10].a_Colour = vec4(0.f, 0.f, 1.f, 1.f);
+		//mesh->m_Vertices[11].a_Colour = vec4(0.f, 0.f, 1.f, 1.f);
 		mesh->m_Vertices[8 ].a_Colour = vec4(1.f, 1.f, 1.f, 1.f); //BLUE
 		mesh->m_Vertices[9 ].a_Colour = vec4(1.f, 1.f, 1.f, 1.f);
 		mesh->m_Vertices[10].a_Colour = vec4(1.f, 1.f, 1.f, 1.f);
@@ -540,21 +540,35 @@ namespace LSE
 		return mesh;
 	}
 
-	//Ref<Mesh> MeshFactory::generateCurve(curvefunc_t curvefunc, float tstart, float tend, const int tsteps, curvecolourfunc_t curvecolourfunc)
-	//{
-	//	//Ref<Mesh>& mesh = MakeRef<Mesh>(tsteps);
-	//}
+	Ref<Mesh> MeshFactory::paramatric(parametricfunc_t curvefunc, float tstart, float tend, const int tsteps, parametriccolourfunc_t curvecolourfunc)
+	{
+		Ref<Mesh> mesh = MakeRef<Mesh>(tsteps, 2 * tsteps - 2);
 
-	Ref<Mesh> MeshFactory::generateSurface(surfacefunc_t curvefunc, float ustart, float uend, const int usteps, float vstart, float vend, const int vsteps, surfacecolourfunc_t curvecolourfunc)
+		for (int i = 0; i < tsteps; i++)
+		{
+			mesh->m_Vertices[i].a_Position = curvefunc(tstart + (tend - tstart) * (float)i / (float)(tsteps - 1));
+			mesh->m_Vertices[i].a_Colour = curvecolourfunc(tstart + (tend - tstart) * (float)i / (float)(tsteps - 1));
+		}
+
+		for (int i = 0; i < tsteps - 1; i++)
+		{
+			mesh->m_Indices[2 * i] = i;
+			mesh->m_Indices[2 * i + 1] = i + 1;
+		}
+
+		return mesh;
+	}
+
+	Ref<Mesh> MeshFactory::paramatricSurface(surfacefunc_t curvefunc, float ustart, float uend, const int usteps, float vstart, float vend, const int vsteps, surfacecolourfunc_t curvecolourfunc)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(usteps * vsteps, (usteps - 1) * (vsteps - 1) * 6);
 
 		for (int y = 0; y < vsteps; y++)
 		{
-			float v = (float)y / vsteps * (vend - vstart) + vstart;
+			float v = (float)y / (vsteps - 1) * (vend - vstart) + vstart;
 			for (int x = 0; x < usteps; x++)
 			{
-				float u = (float)x / usteps * (uend - ustart) + ustart;
+				float u = (float)x / (usteps - 1) * (uend - ustart) + ustart;
 
 				auto& vert = mesh->m_Vertices[x + y * usteps];
 				auto p = curvefunc(u, v);

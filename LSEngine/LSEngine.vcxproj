@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>lsepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;FREEIMAGE_LIB;IMGUI_IMPL_OPENGL_LOADER_GLAD;GLFW_INCLUDE_NONE;LSE_PLATFORM_WINDOWS;LSE_DEBUG;LSE_ENABLE_ASSERTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\gli;vendor\FreeImage\include;vendor\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\gli;vendor\FreeImage\include;vendor\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -98,14 +98,14 @@
       <PrecompiledHeaderFile>lsepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;FREEIMAGE_LIB;IMGUI_IMPL_OPENGL_LOADER_GLAD;GLFW_INCLUDE_NONE;LSE_PLATFORM_WINDOWS;LSE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\gli;vendor\FreeImage\include;vendor\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\gli;vendor\FreeImage\include;vendor\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -123,7 +123,7 @@
       <PrecompiledHeaderFile>lsepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;FREEIMAGE_LIB;IMGUI_IMPL_OPENGL_LOADER_GLAD;GLFW_INCLUDE_NONE;LSE_PLATFORM_WINDOWS;LSE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\gli;vendor\FreeImage\include;vendor\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\glfw\include;vendor\glad\include;vendor\imgui;vendor\glm;vendor\gli;vendor\FreeImage\include;vendor\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -147,6 +147,7 @@
     <ClInclude Include="src\LSEngine\Core\Application.h" />
     <ClInclude Include="src\LSEngine\Core\Camera\Camera.h" />
     <ClInclude Include="src\LSEngine\Core\Camera\OrthographicCamera.h" />
+    <ClInclude Include="src\LSEngine\Core\Camera\OrthographicCameraController.h" />
     <ClInclude Include="src\LSEngine\Core\Camera\PerspectiveCamera.h" />
     <ClInclude Include="src\LSEngine\Core\Camera\PerspectiveCameraController.h" />
     <ClInclude Include="src\LSEngine\Core\Core.h" />
@@ -159,11 +160,16 @@
     <ClInclude Include="src\LSEngine\Core\Log.h" />
     <ClInclude Include="src\LSEngine\Core\Timer.h" />
     <ClInclude Include="src\LSEngine\Core\Window.h" />
+    <ClInclude Include="src\LSEngine\ECS\Component.h" />
+    <ClInclude Include="src\LSEngine\ECS\ECSManager.h" />
+    <ClInclude Include="src\LSEngine\ECS\Entity.h" />
+    <ClInclude Include="src\LSEngine\ECS\System.h" />
     <ClInclude Include="src\LSEngine\Events\ApplicationEvent.h" />
     <ClInclude Include="src\LSEngine\Events\Event.h" />
     <ClInclude Include="src\LSEngine\Events\KeyEvent.h" />
     <ClInclude Include="src\LSEngine\Events\MouseEvent.h" />
     <ClInclude Include="src\LSEngine\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\LSEngine\Maths\Shapes\Curve.h" />
     <ClInclude Include="src\LSEngine\Maths\Vector.h" />
     <ClInclude Include="src\LSEngine\Renderer\Buffer.h" />
     <ClInclude Include="src\LSEngine\Renderer\BufferLayout.h" />
@@ -193,6 +199,7 @@
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Core\Application.cpp" />
     <ClCompile Include="src\LSEngine\Core\Camera\OrthographicCamera.cpp" />
+    <ClCompile Include="src\LSEngine\Core\Camera\OrthographicCameraController.cpp" />
     <ClCompile Include="src\LSEngine\Core\Camera\PerspectiveCamera.cpp" />
     <ClCompile Include="src\LSEngine\Core\Camera\PerspectiveCameraController.cpp" />
     <ClCompile Include="src\LSEngine\Core\IOUtils.cpp" />
@@ -200,6 +207,10 @@
     <ClCompile Include="src\LSEngine\Core\LayerStack.cpp" />
     <ClCompile Include="src\LSEngine\Core\Log.cpp" />
     <ClCompile Include="src\LSEngine\Core\Window.cpp" />
+    <ClCompile Include="src\LSEngine\ECS\Component.cpp" />
+    <ClCompile Include="src\LSEngine\ECS\ECSManager.cpp" />
+    <ClCompile Include="src\LSEngine\ECS\Entity.cpp" />
+    <ClCompile Include="src\LSEngine\ECS\System.cpp" />
     <ClCompile Include="src\LSEngine\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\LSEngine\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\LSEngine\Renderer\Buffer.cpp" />

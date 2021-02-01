@@ -131,17 +131,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LSEngine\LSEngine.vcxproj">
-      <Project>{7AF2543D-66BF-AF48-8FD8-9DF07B04E5D6}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="src\Workspace1App.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="assets\shaders\doorshader.glsl" />
-    <None Include="assets\shaders\simpleshader.glsl" />
-    <None Include="assets\shaders\simpletexshader.glsl" />
+    <ProjectReference Include="..\LSEngine\LSEngine.vcxproj">
+      <Project>{7AF2543D-66BF-AF48-8FD8-9DF07B04E5D6}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

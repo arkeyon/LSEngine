@@ -8,7 +8,7 @@
 
 #define ENTITYCOMPONENT_TYPE(type)\
 	static const int StaticGetType() { return type; }\
-	inline int GetType() const override { return type; }
+	inline int GetType() const override { return StaticGetType(); }
 
 namespace LSE {
 
@@ -18,6 +18,7 @@ namespace LSE {
 	{
 	public:
 		Ref<Entity> m_Parent;
+		//int m_Type;
 
 		EntityComponent(Entity* parent);
 

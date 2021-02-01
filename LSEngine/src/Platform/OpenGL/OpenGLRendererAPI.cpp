@@ -71,4 +71,11 @@ namespace LSE {
 			glDisable(GL_STENCIL_TEST);
 		}
 	}
+
+	float OpenGLRendererAPI::GetPixelDepth(int x, int y)
+	{
+		float depth;
+		glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+		return depth;
+	}
 }

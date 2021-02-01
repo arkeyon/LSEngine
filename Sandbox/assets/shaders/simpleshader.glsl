@@ -40,9 +40,9 @@ uniform vec3 lightpos = vec3(100.f, 100.f, 180.f);
 uniform vec3 u_EyeDir;
 
 uniform vec4 u_Color = vec4(1.f, 1.f, 1.f, 1.f);
-uniform vec3 u_AmbientColor = 0.5f * vec3(1.f, 1.f, 1.f);
-uniform vec3 u_DiffuseColor = 0.5f * vec3(1.f, 1.f, 1.f);
-uniform vec3 u_SpecularColor = 0.5f * vec3(1.f, 1.f, 1.f);
+uniform vec3 u_AmbientColor = vec3(1.f, 1.f, 1.f);
+uniform vec3 u_DiffuseColor = vec3(1.f, 1.f, 1.f);
+uniform vec3 u_SpecularColor = vec3(1.f, 1.f, 1.f);
 uniform float u_Shininess = 10.f;
 
 uniform sampler2D tex;

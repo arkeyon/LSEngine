@@ -1,12 +1,12 @@
 #pragma once
 
+#include "LSEngine/Core/Core.h"
+
 #include "Entity.h"
 #include "Component.h"
 #include "System.h"
 
-#include <unordered_map>
-
-#define MAX_ENTITIES 64
+#define MAX_ENTITIES 10
 
 namespace LSE {
 
@@ -23,24 +23,21 @@ namespace LSE {
 		int CreateComponent(Entity* parent, Args... args)
 		{
 			Ref<T> component = MakeRef<T>(parent, args...);
-			static int id = 0;
 			auto ptr = std::dynamic_pointer_cast<EntityComponent>(component);
-			m_Components[id++] = ptr;
-			return id;
+			m_Components[s_Compcount++] = ptr;
+			return s_Compcount;
 		}
 
 		template <class T>
 		Ref<T> GetComponent(Entity* parent)
 		{
-			for (auto p : m_Components)
+			for (auto comp : m_Components)
 			{
-				Ref<EntityComponent> comp = p.second;
-				LSE_CORE_TRACE("{0}", comp);
-				if (!comp.get()) continue;
+				if (!comp) continue;
 				if (comp->GetType() != T::StaticGetType()) continue;
 				if (comp->m_Parent.get() == parent) return std::dynamic_pointer_cast<T>(comp);
 			}
-			return nullptr;
+			return Ref<T>((T*)nullptr);
 		}
 
 		template <class T>
@@ -73,8 +70,10 @@ namespace LSE {
 		static ECSManager* s_Singleton;
 
 	private:
-		std::unordered_map<int, Ref<Entity>> m_Entities;
-		std::unordered_map<int, Ref<EntityComponent>> m_Components;
+		std::array<Ref<Entity>, MAX_ENTITIES> m_Entities;
+		std::array<Ref<EntityComponent>, 100> m_Components;
+
+		static int s_Compcount;
 	};
 
 }

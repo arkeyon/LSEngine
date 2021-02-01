@@ -39,7 +39,7 @@ namespace LSE {
 
 	}
 
-	void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform)
+	/*void Renderer::Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform)
 	{
 		shader->Bind();
 
@@ -49,7 +49,7 @@ namespace LSE {
 
 		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);
-	}
+	}*/
 
 	void Renderer::Submit(const Ref<Shader>& shader, Ref<Model> model, const glm::mat4& transform)
 	{

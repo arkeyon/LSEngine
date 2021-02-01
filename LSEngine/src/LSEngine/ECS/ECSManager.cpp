@@ -4,6 +4,7 @@
 namespace LSE {
 
 	ECSManager* ECSManager::s_Singleton = new ECSManager();
+	int ECSManager::s_Compcount = 0;
 
 	ECSManager::ECSManager()
 	{
@@ -17,11 +18,12 @@ namespace LSE {
 
 	void ECSManager::Destroy()
 	{
-		for (std::pair<const int, Ref<EntityComponent>> p : m_Components)
-		{
-			Ref<EntityComponent> comp = p.second;
-			if (!comp) continue;
-		}
+		//for (Ref<EntityComponent> comp : m_Components)
+		//{
+		//	if (!comp) continue;
+		//}
 	}
+
+
 
 }

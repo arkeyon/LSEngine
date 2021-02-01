@@ -11,6 +11,7 @@ namespace LSE {
 	{
 		std::string Title;
 		unsigned int Width, Height;
+		bool Fullscreen;
 
 		WindowProps()
 			:Title("DefaultTitle"), Width(640), Height(480)
@@ -18,8 +19,8 @@ namespace LSE {
 
 		}
 
-		WindowProps(std::string title, unsigned int width, unsigned int height)
-			:Title(title), Width(width), Height(height)
+		WindowProps(std::string title, unsigned int width, unsigned int height, bool fullscreen)
+			:Title(title), Width(width), Height(height), Fullscreen(fullscreen)
 		{
 
 		}

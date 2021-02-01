@@ -24,6 +24,7 @@ namespace LSE {
 		virtual void EnableWireframe(bool enabled) = 0;
 		virtual void StencilDraw(bool enabled) = 0;
 		virtual void EnableStencil(bool enabled) = 0;
+		virtual float GetPixelDepth(int x, int y) = 0;
 
 		virtual void SetViewPort(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
 

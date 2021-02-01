@@ -26,6 +26,8 @@ class Renderable : public LSE::EntityComponent
 public:
 	LSE::Ref<LSE::Model> m_Model;
 
+	Renderable() = default;
+
 	Renderable(LSE::Entity* parent, LSE::Ref<LSE::Model> model);
 
 	ENTITYCOMPONENT_TYPE(ENTITYCOMPONENT_RENDER)

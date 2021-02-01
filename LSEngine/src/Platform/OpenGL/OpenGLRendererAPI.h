@@ -15,6 +15,7 @@ namespace LSE {
 		virtual void EnableWireframe(bool enabled) override;
 		virtual void StencilDraw(bool enabled) override;
 		virtual void EnableStencil(bool enabled) override;
+		virtual float GetPixelDepth(int x, int y) override;
 
 		virtual void SetViewPort(uint32_t x, uint32_t y, uint32_t width, uint32_t height) override;
 

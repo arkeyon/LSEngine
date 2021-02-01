@@ -6,6 +6,18 @@
 
 namespace LSE { namespace Maths {
 
+	static glm::mat4 ScreenInverse(const unsigned int& width, const unsigned int& height)
+	{
+		float w = (float)width;
+		float h = (float)height;
+
+		glm::mat4 screen(1.f);
+		screen[0] = glm::vec4(2.f / w, 0.f, 0.f, 0.f);
+		screen[1] = glm::vec4(0.f, 2.f / h, 0.f, 0.f);
+		screen[3] = glm::vec4(-1.f, -1.f, 0.f, 1.f);
+		return screen;
+	}
+
 	static void AngleVectors(const glm::vec3& angles, glm::vec3* forward = nullptr, glm::vec3* side = nullptr, glm::vec3* up = nullptr)
 	{
 		float cospitch = cosf(angles.x);

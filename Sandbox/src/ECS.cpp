@@ -9,7 +9,7 @@ WorldCollider::WorldCollider(LSE::Entity* parent, const float& staticfriction, c
 }
 
 Renderable::Renderable(LSE::Entity* parent, LSE::Ref<LSE::Model> model)
-	: EntityComponent(parent)
+	: EntityComponent(parent), m_Model(model)
 {
 
 }

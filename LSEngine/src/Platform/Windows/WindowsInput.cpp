@@ -45,11 +45,12 @@ namespace LSE {
 
 	std::pair<float, float> WindowsInput::GetMousePosImpl() const
 	{
-		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
+		auto& window = Application::Get().GetWindow();
+		auto nativewindow = static_cast<GLFWwindow*>(window.GetNativeWindow());
 
 		double xpos, ypos;
-		glfwGetCursorPos(window, &xpos, &ypos);
+		glfwGetCursorPos(nativewindow, &xpos, &ypos);
 
-		return { (float)xpos, (float)ypos };
+		return { (float)xpos, window.GetHeight() - (float)ypos };
 	}
 }

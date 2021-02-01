@@ -38,16 +38,9 @@ private:
 	float m_Frames = 0.f;
 	float m_Time = 0.f;
 
-	glm::vec4 m_Color = glm::vec4(1.f, 1.f, 1.f, 1.f);
-	glm::vec3 m_AmbientColor = 1.f * glm::vec3(1.f, 1.f, 1.f);
-	glm::vec3 m_DiffuseColor = 1.f * glm::vec3(1.f, 1.f, 1.f);
-	glm::vec3 m_SpecularColor = 1.f * glm::vec3(1.f, 1.f, 1.f);
-	float m_Shininess = 10.f;
-
 	LSE::Ref<WorldEntity> m_Skybox;
 	LSE::Ref<WorldEntity> m_Door1;
 	LSE::Ref<WorldEntity> m_Door2;
-	LSE::Ref<WorldEntity> m_Player;
 
 public:
 	ExampleLayer()
@@ -90,16 +83,15 @@ public:
 				return glm::vec4(glm::rgbColor(glm::vec3(v / glm::two_pi<float>() * 360.f, 1.f, 1.f)), 1.f);
 			};
 
-			Ref<Mesh> mesh = MeshFactory::paramatricSurface(surface, 0.f, 100.f, 5, 0.f, glm::two_pi<float>(), 20, colorsurface);
-			mesh->Invert();
+			Ref<Mesh> body = MeshFactory::paramatricSurface(surface, 0.f, 100.f, 5, 0.f, glm::two_pi<float>(), 20, colorsurface);
+			body->Invert();
 
-			door->AddMesh(mesh);
+			door->AddMesh(body);
 		}
 
 		m_Skybox = ECS->CreateEntity<WorldEntity>(glm::vec3(0.f, 0.f, 0.f), glm::angleAxis(0.f, glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), skybox);
 		m_Door1 = ECS->CreateEntity<WorldEntity>(glm::vec3(80.f, 80.f, 20.f), glm::angleAxis(0.f, glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), door);
 		m_Door2 = ECS->CreateEntity<WorldEntity>(glm::vec3(120.f, 120.f, 20.f), glm::angleAxis(glm::quarter_pi<float>(), glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), door);
-		//m_Player = MakeRef<WorldEntity>(glm::vec3(50.f, 50.f, 0.f), glm::angleAxis(0.f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(1.f, 1.f, 1.f), m_Cube);
 
 		m_TestTexture = Texture2D::Create("assets/textures/BLANK.png");
 
@@ -107,6 +99,8 @@ public:
 		window.SetCursorState(false);
 
 		RenderCommand::EnableFaceCulling(true);
+		RenderCommand::EnableDepthTest(true);
+		//RenderCommand::EnabledWireframe(true);
 	}
 
 	void OnUpdate(float delta) override
@@ -130,26 +124,16 @@ public:
 
 		RenderCommand::Clear();
 
-		m_Shader->SetUniform4f("u_Color", m_Color);							  //TODO: Put in renderer
-		m_Shader->SetUniform3f("u_AmbientColor", m_AmbientColor);
-		m_Shader->SetUniform3f("u_DiffuseColor", m_DiffuseColor);
-		m_Shader->SetUniform3f("u_SpecularColor", m_SpecularColor);
-
+		//TODO: Put in renderer
+		
 		m_Shader->SetUniformi("tex", 0);
 		m_TestTexture->Bind(0);
 
 		Renderer::BeginScene(m_Camera);
 
-		auto a = m_Skybox->GetComponent<Renderable>();
-		auto b = m_Door1->GetComponent<Renderable>();
-		auto c = m_Door2->GetComponent<Renderable>();
-
-		LSE_TRACE("{0}", a);
-		Renderer::Submit(m_Shader, a->m_Model);
-		LSE_TRACE("{0}", b);
-		Renderer::Submit(m_Shader, b->m_Model, m_Door1->GetComponent<ReferenceFrame>()->getModelMat());
-		LSE_TRACE("{0}", c);
-		Renderer::Submit(m_Shader, c->m_Model, m_Door2->GetComponent<ReferenceFrame>()->getModelMat());
+		Renderer::Submit(m_Shader, m_Skybox->GetComponent<Renderable>()->m_Model);
+		Renderer::Submit(m_Shader, m_Door1->GetComponent<Renderable>()->m_Model, m_Door1->GetComponent<ReferenceFrame>()->getModelMat());
+		Renderer::Submit(m_Shader, m_Door2->GetComponent<Renderable>()->m_Model, m_Door2->GetComponent<ReferenceFrame>()->getModelMat());
 	}
 
 	void OnImGuiRender() override
@@ -158,15 +142,6 @@ public:
 		ImGui::Text((std::string("FPS: ") + std::to_string(m_FPS)).c_str());
 		ImGui::Text((std::string("Camera->Pos: ") + std::to_string(m_Camera->GetPos().x) + ", " + std::to_string(m_Camera->GetPos().y) + ", " + std::to_string(m_Camera->GetPos().z)).c_str());
 		ImGui::Text((std::string("Camera->Angles: ") + std::to_string(m_Camera->GetAngles().x) + ", " + std::to_string(m_Camera->GetAngles().y) + ", " + std::to_string(m_Camera->GetAngles().z)).c_str());
-		if (m_Paused)
-		{
-			ImGui::Spacing();
-			ImGui::ColorEdit4("Color", &m_Color[0]);
-			ImGui::ColorEdit3("AmbientColor", &m_AmbientColor[0]);
-			ImGui::ColorEdit3("DiffuseColor", &m_DiffuseColor[0]);
-			ImGui::ColorEdit3("SpecularColor", &m_SpecularColor[0]);
-			ImGui::SliderFloat("Shininess", &m_Shininess, 1.f, 10.f, "%.3f", 3.f);
-		}
 		ImGui::End();
 	}
 
@@ -198,6 +173,7 @@ class Sandbox : public LSE::Application
 {
 public:
 	Sandbox()
+		: Application(1920, 1080)
 	{
 		PushLayer(MakeScope<ExampleLayer>());
 	}

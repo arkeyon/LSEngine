@@ -18,22 +18,13 @@ namespace LSE {
 		~Entity();
 
 		template <typename T, typename... Args>
-		inline int AddComponent(Args... args)
-		{
-			return ECSManager::s_Singleton->CreateComponent<T>(this, args...);
-		}
+		inline int AddComponent(Args... args) { return ECSManager::s_Singleton->CreateComponent<T>(this, args...); }
 
 		template <class T>
-		inline void RemoveComponent()
-		{
-			ECSManager::s_Singleton->DeleteComponent<T>(this);
-		}
+		inline void RemoveComponent() { ECSManager::s_Singleton->DeleteComponent<T>(this); }
 
 		template <class T>
-		inline Ref<T>& GetComponent()
-		{
-			return ECS->GetComponent<T>(this);
-		}
+		inline Ref<T> GetComponent() { return ECS->GetComponent<T>(this); }
 	};
 
 }

@@ -14,12 +14,15 @@ namespace LSE {
 		static Ref<Mesh> generateSphere(const float& radius, const int& detail, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
 		static Ref<Mesh> generateSphere(const float& radius, const int& w, const int& h, glm::vec4 colour = {1.f, 1.f, 1.f, 1.f});
 
-		static Ref<Mesh> generateRectCorner(float width, float height, float depth);
-		static Ref<Mesh> generateRectCenter(float width, float height, float depth);
+		static Ref<Mesh> generateCubeCorner(float size, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
+		static Ref<Mesh> generateCubeCenter(float size, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
 
-		static Ref<Mesh> generateCubeCorner(float size);
-		static Ref<Mesh> generateCubeCenter(float size);
+		static Ref<Mesh> generateRectCorner(float width, float height, float depth, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
+		static Ref<Mesh> generateColourRectCorner(float width, float height, float depth);
+		static Ref<Mesh> generateRectCenter(float width, float height, float depth, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
+		static Ref<Mesh> generateColourRectCenter(float width, float height, float depth);
 
+		static Ref<Mesh> MeshFactory::generatePlaneCenter(glm::vec3 x, glm::vec3 y);
 		static Ref<Mesh> MeshFactory::generatePlaneCorner(glm::vec3 x, glm::vec3 y);
 
 		static Ref<Mesh> generateRectCenterSharedVertices(float width, float height, float depth);

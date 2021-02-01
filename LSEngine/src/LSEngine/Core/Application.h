@@ -13,7 +13,7 @@ namespace LSE {
 	class LSE_API Application
 	{
 	public:
-		Application();
+		Application(unsigned int width, unsigned int height, bool fullscreen = false);
 		virtual ~Application();
 
 		void Run();

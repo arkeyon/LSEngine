@@ -17,6 +17,7 @@ namespace LSE {
 		inline static void EnabledWireframe(bool enabled = true) { s_RenderAPI->EnableWireframe(enabled); };
 		inline static void StencilDraw(bool enabled = true) { s_RenderAPI->StencilDraw(enabled); };
 		inline static void EnableStencil(bool enabled = true) { s_RenderAPI->EnableStencil(enabled); };
+		inline static float GetPixelDepth(int x, int y) { return s_RenderAPI->GetPixelDepth(x, y); };
 
 		inline static void DrawIndexed(const Ref<VertexArray>& vertexArray) { s_RenderAPI->DrawIndexed(vertexArray); }
 	private:

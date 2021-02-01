@@ -26,7 +26,7 @@ namespace LSE {
 		static void OnWindowResize(uint32_t width, uint32_t height);
 
 		static void Submit(const Ref<Shader>& shader,  Ref<Model> model, const glm::mat4& transform = glm::mat4(1.f));
-		static void Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.f));
+		//static void Submit(const Ref<Shader>& shader, const Ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.f));
 
 		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 	private:
@@ -37,6 +37,12 @@ namespace LSE {
 			glm::vec3 ViewDir;
 		};
 
+		struct Batch
+		{
+			Ref<VertexArray> m_VAO;
+		};
+
+		static std::vector<Batch> m_Batches;
 		static Ref<SceneData> s_SceneData;
 	};
 }

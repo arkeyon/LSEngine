@@ -29,6 +29,8 @@ namespace LSE {
 		}
 
 		virtual void SetView(const glm::vec3& pos, const glm::vec3& angles) = 0;
+		virtual void SetAngles(const glm::vec3& angles) { m_Angles = angles; }
+		virtual void SetPos(const glm::vec3& pos) { m_Pos = pos; }
 		virtual void MoveView(const glm::vec3& posoffs, const glm::vec3& angoffs) = 0;
 		virtual void MoveLocalView(const glm::vec3& localoffs, const glm::vec3& angoffs) = 0;
 		virtual const glm::mat4 GetViewMatrix() const = 0;

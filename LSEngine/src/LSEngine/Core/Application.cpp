@@ -32,13 +32,13 @@ namespace LSE {
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application()
+	Application::Application(unsigned int width, unsigned int height, bool fullscreen)
 	{
 		s_Instance = this;
 
 		FreeImage_Initialise();
 
-		m_Window = Scope<Window>(Window::Create(WindowProps("Title", 1280, 720)));
+		m_Window = Scope<Window>(Window::Create(WindowProps("Title", width, height, fullscreen)));
 		m_Window->SetVSync(false);
 		m_Window->SetEventCallbackFn(BIND_EVENT_FN(Application::OnEvent));
 

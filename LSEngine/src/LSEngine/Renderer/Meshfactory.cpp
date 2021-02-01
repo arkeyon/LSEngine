@@ -24,14 +24,14 @@ namespace LSE
 		return generateSphere(radius, width, height, colour);
 	}
 
-	Ref<Mesh> MeshFactory::generateCubeCorner(float size)
+	Ref<Mesh> MeshFactory::generateCubeCorner(float size, glm::vec4 colour)
 	{
-		return MeshFactory::generateRectCorner(size, size, size);
+		return MeshFactory::generateRectCorner(size, size, size, colour);
 	}
 
-	Ref<Mesh> MeshFactory::generateCubeCenter(float size)
+	Ref<Mesh> MeshFactory::generateCubeCenter(float size, glm::vec4 colour)
 	{
-		return MeshFactory::generateRectCenter(size, size, size);
+		return MeshFactory::generateRectCenter(size, size, size, colour);
 	}
 
 	float a(float f)
@@ -91,7 +91,7 @@ namespace LSE
 	}
 
 
-	Ref<Mesh> MeshFactory::generateRectCorner(float width, float height, float depth)
+	Ref<Mesh> MeshFactory::generateColourRectCorner(float width, float height, float depth)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(24, 36);
 
@@ -209,10 +209,10 @@ namespace LSE
 		mesh->m_Vertices[21].a_Normal = vec3(0.f, -1.f, 0.f);
 		mesh->m_Vertices[22].a_Normal = vec3(0.f, -1.f, 0.f);
 		mesh->m_Vertices[23].a_Normal = vec3(0.f, -1.f, 0.f);
-	mesh->m_Vertices[20].a_Colour = vec4(1.f, 0.f, 1.f, 1.f); //PURPLE
-	mesh->m_Vertices[21].a_Colour = vec4(1.f, 0.f, 1.f, 1.f);
-	mesh->m_Vertices[22].a_Colour = vec4(1.f, 0.f, 1.f, 1.f);
-	mesh->m_Vertices[23].a_Colour = vec4(1.f, 0.f, 1.f, 1.f);
+		mesh->m_Vertices[20].a_Colour = vec4(1.f, 0.f, 1.f, 1.f); //PURPLE
+		mesh->m_Vertices[21].a_Colour = vec4(1.f, 0.f, 1.f, 1.f);
+		mesh->m_Vertices[22].a_Colour = vec4(1.f, 0.f, 1.f, 1.f);
+		mesh->m_Vertices[23].a_Colour = vec4(1.f, 0.f, 1.f, 1.f);
 		//mesh->m_Vertices[20].a_Colour = vec4(1.f, 1.f, 1.f, 1.f); //PURPLE
 		//mesh->m_Vertices[21].a_Colour = vec4(1.f, 1.f, 1.f, 1.f);
 		//mesh->m_Vertices[22].a_Colour = vec4(1.f, 1.f, 1.f, 1.f);
@@ -267,14 +267,167 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::generatePlaneCorner(glm::vec3 x, glm::vec3 y)
+
+	Ref<Mesh> MeshFactory::generateRectCorner(float width, float height, float depth, glm::vec4 colour)
+	{
+		Ref<Mesh> mesh = MakeRef<Mesh>(24, 36);
+
+		using namespace glm;
+		mesh->m_Vertices[0].a_Position = vec3(0.f, 0.f, 0.f); //BOTTOM
+		mesh->m_Vertices[1].a_Position = vec3(0.f, depth, 0.f);
+		mesh->m_Vertices[2].a_Position = vec3(width, depth, 0.f);
+		mesh->m_Vertices[3].a_Position = vec3(width, 0.f, 0.f);
+		mesh->m_Vertices[0].a_Normal = vec3(0.f, 0.f, -1.f);
+		mesh->m_Vertices[1].a_Normal = vec3(0.f, 0.f, -1.f);
+		mesh->m_Vertices[2].a_Normal = vec3(0.f, 0.f, -1.f);
+		mesh->m_Vertices[3].a_Normal = vec3(0.f, 0.f, -1.f);
+		mesh->m_Vertices[0].a_Colour = colour;
+		mesh->m_Vertices[1].a_Colour = colour;
+		mesh->m_Vertices[2].a_Colour = colour;
+		mesh->m_Vertices[3].a_Colour = colour;
+		mesh->m_Vertices[0].a_UV = vec2(0.f, 0.f);
+		mesh->m_Vertices[1].a_UV = vec2(0.f, 1.f);
+		mesh->m_Vertices[2].a_UV = vec2(1.f, 1.f);
+		mesh->m_Vertices[3].a_UV = vec2(1.f, 0.f);
+
+		mesh->m_Vertices[4].a_Position = vec3(0.f, depth, height); //TOP
+		mesh->m_Vertices[5].a_Position = vec3(0.f, 0.f, height);
+		mesh->m_Vertices[6].a_Position = vec3(width, 0.f, height);
+		mesh->m_Vertices[7].a_Position = vec3(width, depth, height);
+		mesh->m_Vertices[4].a_Normal = vec3(0.f, 0.f, +1.f);
+		mesh->m_Vertices[5].a_Normal = vec3(0.f, 0.f, +1.f);
+		mesh->m_Vertices[6].a_Normal = vec3(0.f, 0.f, +1.f);
+		mesh->m_Vertices[7].a_Normal = vec3(0.f, 0.f, +1.f);
+		mesh->m_Vertices[4].a_Colour = colour;
+		mesh->m_Vertices[5].a_Colour = colour;
+		mesh->m_Vertices[6].a_Colour = colour;
+		mesh->m_Vertices[7].a_Colour = colour;
+		mesh->m_Vertices[4].a_UV = vec2(0.01f, 0.01f);
+		mesh->m_Vertices[5].a_UV = vec2(0.01f, 0.99f);
+		mesh->m_Vertices[6].a_UV = vec2(0.99f, 0.99f);
+		mesh->m_Vertices[7].a_UV = vec2(0.99f, 0.01f);
+
+		mesh->m_Vertices[8].a_Position = vec3(0.f, 0.f, height); //LEFT
+		mesh->m_Vertices[9].a_Position = vec3(0.f, depth, height);
+		mesh->m_Vertices[10].a_Position = vec3(0.f, depth, 0.f);
+		mesh->m_Vertices[11].a_Position = vec3(0.f, 0.f, 0.f);
+		mesh->m_Vertices[8].a_Normal = vec3(-1.f, 0.f, 0.f);
+		mesh->m_Vertices[9].a_Normal = vec3(-1.f, 0.f, 0.f);
+		mesh->m_Vertices[10].a_Normal = vec3(-1.f, 0.f, 0.f);
+		mesh->m_Vertices[11].a_Normal = vec3(-1.f, 0.f, 0.f);
+		mesh->m_Vertices[8 ].a_Colour = colour;
+		mesh->m_Vertices[9 ].a_Colour = colour;
+		mesh->m_Vertices[10].a_Colour = colour;
+		mesh->m_Vertices[11].a_Colour = colour;
+		mesh->m_Vertices[8].a_UV = vec2(0.f, 0.f);
+		mesh->m_Vertices[9].a_UV = vec2(0.f, 1.f);
+		mesh->m_Vertices[10].a_UV = vec2(1.f, 1.f);
+		mesh->m_Vertices[11].a_UV = vec2(1.f, 0.f);
+
+		mesh->m_Vertices[12].a_Position = vec3(width, 0.f, 0.f); //RIGHT
+		mesh->m_Vertices[13].a_Position = vec3(width, depth, 0.f);
+		mesh->m_Vertices[14].a_Position = vec3(width, depth, height);
+		mesh->m_Vertices[15].a_Position = vec3(width, 0.f, height);
+		mesh->m_Vertices[12].a_Normal = vec3(+1.f, 0.f, 0.f);
+		mesh->m_Vertices[13].a_Normal = vec3(+1.f, 0.f, 0.f);
+		mesh->m_Vertices[14].a_Normal = vec3(+1.f, 0.f, 0.f);
+		mesh->m_Vertices[15].a_Normal = vec3(+1.f, 0.f, 0.f);
+		mesh->m_Vertices[12].a_Colour = colour;
+		mesh->m_Vertices[13].a_Colour = colour;
+		mesh->m_Vertices[14].a_Colour = colour;
+		mesh->m_Vertices[15].a_Colour = colour;
+		mesh->m_Vertices[12].a_UV = vec2(0.f, 0.f);
+		mesh->m_Vertices[13].a_UV = vec2(0.f, 1.f);
+		mesh->m_Vertices[14].a_UV = vec2(1.f, 1.f);
+		mesh->m_Vertices[15].a_UV = vec2(1.f, 0.f);
+
+		mesh->m_Vertices[16].a_Position = vec3(0.f, depth, 0.f); //BACK
+		mesh->m_Vertices[17].a_Position = vec3(0.f, depth, height);
+		mesh->m_Vertices[18].a_Position = vec3(width, depth, height);
+		mesh->m_Vertices[19].a_Position = vec3(width, depth, 0.f);
+		mesh->m_Vertices[16].a_Normal = vec3(0.f, +1.f, 0.f);
+		mesh->m_Vertices[17].a_Normal = vec3(0.f, +1.f, 0.f);
+		mesh->m_Vertices[18].a_Normal = vec3(0.f, +1.f, 0.f);
+		mesh->m_Vertices[19].a_Normal = vec3(0.f, +1.f, 0.f);
+		mesh->m_Vertices[16].a_Colour = colour;
+		mesh->m_Vertices[17].a_Colour = colour;
+		mesh->m_Vertices[18].a_Colour = colour;
+		mesh->m_Vertices[19].a_Colour = colour;
+		mesh->m_Vertices[16].a_UV = vec2(0.f, 0.f);
+		mesh->m_Vertices[17].a_UV = vec2(0.f, 1.f);
+		mesh->m_Vertices[18].a_UV = vec2(1.f, 1.f);
+		mesh->m_Vertices[19].a_UV = vec2(1.f, 0.f);
+
+		mesh->m_Vertices[20].a_Position = vec3(0.f, 0.f, height); //FRONT
+		mesh->m_Vertices[21].a_Position = vec3(0.f, 0.f, 0.f);
+		mesh->m_Vertices[22].a_Position = vec3(width, 0.f, 0.f);
+		mesh->m_Vertices[23].a_Position = vec3(width, 0.f, height);
+		mesh->m_Vertices[20].a_Normal = vec3(0.f, -1.f, 0.f);
+		mesh->m_Vertices[21].a_Normal = vec3(0.f, -1.f, 0.f);
+		mesh->m_Vertices[22].a_Normal = vec3(0.f, -1.f, 0.f);
+		mesh->m_Vertices[23].a_Normal = vec3(0.f, -1.f, 0.f);
+		mesh->m_Vertices[20].a_Colour = colour;
+		mesh->m_Vertices[21].a_Colour = colour;
+		mesh->m_Vertices[22].a_Colour = colour;
+		mesh->m_Vertices[23].a_Colour = colour;
+		mesh->m_Vertices[20].a_UV = vec2(0.f, 0.f);
+		mesh->m_Vertices[21].a_UV = vec2(0.f, 1.f);
+		mesh->m_Vertices[22].a_UV = vec2(1.f, 1.f);
+		mesh->m_Vertices[23].a_UV = vec2(1.f, 0.f);
+
+		mesh->m_Indices[0] = 0; //BOTTOM
+		mesh->m_Indices[1] = 1;
+		mesh->m_Indices[2] = 3;
+		mesh->m_Indices[3] = 3;
+		mesh->m_Indices[4] = 1;
+		mesh->m_Indices[5] = 2;
+
+		mesh->m_Indices[6] = 4; //TOP
+		mesh->m_Indices[7] = 5;
+		mesh->m_Indices[8] = 7;
+		mesh->m_Indices[9] = 7;
+		mesh->m_Indices[10] = 5;
+		mesh->m_Indices[11] = 6;
+
+		mesh->m_Indices[12] = 8; //LEFT
+		mesh->m_Indices[13] = 9;
+		mesh->m_Indices[14] = 11;
+		mesh->m_Indices[15] = 11;
+		mesh->m_Indices[16] = 9;
+		mesh->m_Indices[17] = 10;
+
+		mesh->m_Indices[18] = 12; //RIGHT
+		mesh->m_Indices[19] = 13;
+		mesh->m_Indices[20] = 15;
+		mesh->m_Indices[21] = 15;
+		mesh->m_Indices[22] = 13;
+		mesh->m_Indices[23] = 14;
+
+		mesh->m_Indices[24] = 16; //BACK
+		mesh->m_Indices[25] = 17;
+		mesh->m_Indices[26] = 19;
+		mesh->m_Indices[27] = 19;
+		mesh->m_Indices[28] = 17;
+		mesh->m_Indices[29] = 18;
+
+		mesh->m_Indices[30] = 20; //FRONT
+		mesh->m_Indices[31] = 21;
+		mesh->m_Indices[32] = 23;
+		mesh->m_Indices[33] = 23;
+		mesh->m_Indices[34] = 21;
+		mesh->m_Indices[35] = 22;
+
+		return mesh;
+	}
+
+	Ref<Mesh> MeshFactory::generatePlaneCenter(glm::vec3 x, glm::vec3 y)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(4, 6);
 
 		glm::vec3 normal = glm::normalize(glm::cross(x, y));
 
 		using namespace glm;
-		mesh->m_Vertices[0].a_Position = vec3(-0.5f * (x.x + y.x), -0.5f * (x.y + y.y), -0.5f * (x.z + y.z)); //BOTTOM
+		mesh->m_Vertices[0].a_Position = vec3(-0.5f * (x.x + y.x), -0.5f * (x.y + y.y), -0.5f * (x.z + y.z));
 		mesh->m_Vertices[1].a_Position = vec3(+0.5f * (x.x - y.x), +0.5f * (x.y - y.y), +0.5f * (x.z - y.z));
 		mesh->m_Vertices[2].a_Position = vec3(+0.5f * (x.x + y.x), +0.5f * (x.y + y.y), +0.5f * (x.z + y.z));
 		mesh->m_Vertices[3].a_Position = vec3(-0.5f * (x.x - y.x), -0.5f * (x.y - y.y), -0.5f * (x.z - y.z));
@@ -291,7 +444,41 @@ namespace LSE
 		mesh->m_Vertices[2].a_UV = vec2(1.f, 1.f);
 		mesh->m_Vertices[3].a_UV = vec2(1.f, 0.f);
 
-		mesh->m_Indices[0] = 0; //FRONT
+		mesh->m_Indices[0] = 0;
+		mesh->m_Indices[1] = 1;
+		mesh->m_Indices[2] = 3;
+		mesh->m_Indices[3] = 3;
+		mesh->m_Indices[4] = 1;
+		mesh->m_Indices[5] = 2;
+
+		return mesh;
+	}
+
+	Ref<Mesh> MeshFactory::generatePlaneCorner(glm::vec3 i, glm::vec3 j)
+	{
+		Ref<Mesh> mesh = MakeRef<Mesh>(4, 6);
+
+		glm::vec3 normal = glm::normalize(glm::cross(i, j));
+
+		using namespace glm;
+		mesh->m_Vertices[0].a_Position = vec3(0.f, 0.f, 0.f);
+		mesh->m_Vertices[1].a_Position = vec3(i.x, i.y, i.z);
+		mesh->m_Vertices[2].a_Position = vec3(i.x + j.x, i.y + j.y, i.z + j.z);
+		mesh->m_Vertices[3].a_Position = vec3(j.x, j.y, j.z);
+		mesh->m_Vertices[0].a_Normal = normal;
+		mesh->m_Vertices[1].a_Normal = normal;
+		mesh->m_Vertices[2].a_Normal = normal;
+		mesh->m_Vertices[3].a_Normal = normal;
+		mesh->m_Vertices[0].a_Colour = vec4(1.f, 1.f, 1.f, 1.f);
+		mesh->m_Vertices[1].a_Colour = vec4(1.f, 1.f, 1.f, 1.f);
+		mesh->m_Vertices[2].a_Colour = vec4(1.f, 1.f, 1.f, 1.f);
+		mesh->m_Vertices[3].a_Colour = vec4(1.f, 1.f, 1.f, 1.f);
+		mesh->m_Vertices[0].a_UV = vec2(0.f, 0.f);
+		mesh->m_Vertices[1].a_UV = vec2(0.f, 1.f);
+		mesh->m_Vertices[2].a_UV = vec2(1.f, 1.f);
+		mesh->m_Vertices[3].a_UV = vec2(1.f, 0.f);
+
+		mesh->m_Indices[0] = 0;
 		mesh->m_Indices[1] = 1;
 		mesh->m_Indices[2] = 3;
 		mesh->m_Indices[3] = 3;
@@ -384,7 +571,7 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::generateRectCenter(float width, float height, float depth)
+	Ref<Mesh> MeshFactory::generateRectCenter(float width, float height, float depth, glm::vec4 colour)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(24, 36);
 
@@ -401,10 +588,10 @@ namespace LSE
 		mesh->m_Vertices[1 ].a_Normal = vec3( 0.f,  0.f, -1.f);
 		mesh->m_Vertices[2 ].a_Normal = vec3( 0.f,  0.f, -1.f);
 		mesh->m_Vertices[3 ].a_Normal = vec3( 0.f,  0.f, -1.f);
-		mesh->m_Vertices[0 ].a_Colour = vec4(1.f, 0.f, 0.f, 1.f); //RED
-		mesh->m_Vertices[1 ].a_Colour = vec4(1.f, 0.f, 0.f, 1.f);
-		mesh->m_Vertices[2 ].a_Colour = vec4(1.f, 0.f, 0.f, 1.f);
-		mesh->m_Vertices[3 ].a_Colour = vec4(1.f, 0.f, 0.f, 1.f);
+		mesh->m_Vertices[0 ].a_Colour = colour;
+		mesh->m_Vertices[1 ].a_Colour = colour;
+		mesh->m_Vertices[2 ].a_Colour = colour;
+		mesh->m_Vertices[3 ].a_Colour = colour;
 		mesh->m_Vertices[0 ].a_UV = vec2(0.f, 0.f);
 		mesh->m_Vertices[1 ].a_UV = vec2(0.f, 1.f);
 		mesh->m_Vertices[2 ].a_UV = vec2(1.f, 1.f);
@@ -418,10 +605,10 @@ namespace LSE
 		mesh->m_Vertices[5 ].a_Normal = vec3( 0.f,  0.f, +1.f);
 		mesh->m_Vertices[6 ].a_Normal = vec3( 0.f,  0.f, +1.f);
 		mesh->m_Vertices[7 ].a_Normal = vec3( 0.f,  0.f, +1.f);
-		mesh->m_Vertices[4 ].a_Colour = vec4(0.f, 1.f, 0.f, 1.f); //GREEN
-		mesh->m_Vertices[5 ].a_Colour = vec4(0.f, 1.f, 0.f, 1.f);
-		mesh->m_Vertices[6 ].a_Colour = vec4(0.f, 1.f, 0.f, 1.f);
-		mesh->m_Vertices[7 ].a_Colour = vec4(0.f, 1.f, 0.f, 1.f);
+		mesh->m_Vertices[4 ].a_Colour = colour;
+		mesh->m_Vertices[5 ].a_Colour = colour;
+		mesh->m_Vertices[6 ].a_Colour = colour;
+		mesh->m_Vertices[7 ].a_Colour = colour;
 		mesh->m_Vertices[4 ].a_UV = vec2(0.f, 0.f);
 		mesh->m_Vertices[5 ].a_UV = vec2(0.f, 1.f);
 		mesh->m_Vertices[6 ].a_UV = vec2(1.f, 1.f);
@@ -435,10 +622,10 @@ namespace LSE
 		mesh->m_Vertices[9 ].a_Normal = vec3(-1.f,  0.f,  0.f);
 		mesh->m_Vertices[10].a_Normal = vec3(-1.f,  0.f,  0.f);
 		mesh->m_Vertices[11].a_Normal = vec3(-1.f,  0.f,  0.f);
-		mesh->m_Vertices[8 ].a_Colour = vec4(0.f, 0.f, 1.f, 1.f); //BLUE
-		mesh->m_Vertices[9 ].a_Colour = vec4(0.f, 0.f, 1.f, 1.f);
-		mesh->m_Vertices[10].a_Colour = vec4(0.f, 0.f, 1.f, 1.f);
-		mesh->m_Vertices[11].a_Colour = vec4(0.f, 0.f, 1.f, 1.f);
+		mesh->m_Vertices[8 ].a_Colour = colour;
+		mesh->m_Vertices[9 ].a_Colour = colour;
+		mesh->m_Vertices[10].a_Colour = colour;
+		mesh->m_Vertices[11].a_Colour = colour;
 		mesh->m_Vertices[8 ].a_UV = vec2(0.01f, 0.01f);
 		mesh->m_Vertices[9 ].a_UV = vec2(0.01f, 0.99f);
 		mesh->m_Vertices[10].a_UV = vec2(0.99f, 0.99f);
@@ -452,10 +639,10 @@ namespace LSE
 		mesh->m_Vertices[13].a_Normal = vec3(+1.f,  0.f,  0.f);
 		mesh->m_Vertices[14].a_Normal = vec3(+1.f,  0.f,  0.f);
 		mesh->m_Vertices[15].a_Normal = vec3(+1.f,  0.f,  0.f);
-		mesh->m_Vertices[12].a_Colour = vec4(1.f, 1.f, 0.f, 1.f); //YELLOW
-		mesh->m_Vertices[13].a_Colour = vec4(1.f, 1.f, 0.f, 1.f);
-		mesh->m_Vertices[14].a_Colour = vec4(1.f, 1.f, 0.f, 1.f);
-		mesh->m_Vertices[15].a_Colour = vec4(1.f, 1.f, 0.f, 1.f);
+		mesh->m_Vertices[12].a_Colour = colour;
+		mesh->m_Vertices[13].a_Colour = colour;
+		mesh->m_Vertices[14].a_Colour = colour;
+		mesh->m_Vertices[15].a_Colour = colour;
 		mesh->m_Vertices[12].a_UV = vec2(0.f, 0.f);
 		mesh->m_Vertices[13].a_UV = vec2(0.f, 1.f);
 		mesh->m_Vertices[14].a_UV = vec2(1.f, 1.f);
@@ -469,10 +656,10 @@ namespace LSE
 		mesh->m_Vertices[17].a_Normal = vec3( 0.f, +1.f,  0.f);
 		mesh->m_Vertices[18].a_Normal = vec3( 0.f, +1.f,  0.f);
 		mesh->m_Vertices[19].a_Normal = vec3( 0.f, +1.f,  0.f);
-		mesh->m_Vertices[16].a_Colour = vec4(0.f, 1.f, 1.f, 1.f); //AQUA
-		mesh->m_Vertices[17].a_Colour = vec4(0.f, 1.f, 1.f, 1.f);
-		mesh->m_Vertices[18].a_Colour = vec4(0.f, 1.f, 1.f, 1.f);
-		mesh->m_Vertices[19].a_Colour = vec4(0.f, 1.f, 1.f, 1.f);
+		mesh->m_Vertices[16].a_Colour = colour;
+		mesh->m_Vertices[17].a_Colour = colour;
+		mesh->m_Vertices[18].a_Colour = colour;
+		mesh->m_Vertices[19].a_Colour = colour;
 		mesh->m_Vertices[16].a_UV = vec2(0.f, 0.f);
 		mesh->m_Vertices[17].a_UV = vec2(0.f, 1.f);
 		mesh->m_Vertices[18].a_UV = vec2(1.f, 1.f);
@@ -486,10 +673,10 @@ namespace LSE
 		mesh->m_Vertices[21].a_Normal = vec3( 0.f, -1.f,  0.f);
 		mesh->m_Vertices[22].a_Normal = vec3( 0.f, -1.f,  0.f);
 		mesh->m_Vertices[23].a_Normal = vec3( 0.f, -1.f,  0.f);
-		mesh->m_Vertices[20].a_Colour = vec4(1.f, 0.f, 1.f, 1.f); //PURPLE
-		mesh->m_Vertices[21].a_Colour = vec4(1.f, 0.f, 1.f, 1.f);
-		mesh->m_Vertices[22].a_Colour = vec4(1.f, 0.f, 1.f, 1.f);
-		mesh->m_Vertices[23].a_Colour = vec4(1.f, 0.f, 1.f, 1.f);
+		mesh->m_Vertices[20].a_Colour = colour;
+		mesh->m_Vertices[21].a_Colour = colour;
+		mesh->m_Vertices[22].a_Colour = colour;
+		mesh->m_Vertices[23].a_Colour = colour;
 		mesh->m_Vertices[20].a_UV = vec2(0.f, 0.f);
 		mesh->m_Vertices[21].a_UV = vec2(0.f, 1.f);
 		mesh->m_Vertices[22].a_UV = vec2(1.f, 1.f);
@@ -506,6 +693,163 @@ namespace LSE
 		mesh->m_Indices[7 ] = 5;
 		mesh->m_Indices[8 ] = 7;
 		mesh->m_Indices[9 ] = 7;
+		mesh->m_Indices[10] = 5;
+		mesh->m_Indices[11] = 6;
+
+		mesh->m_Indices[12] = 8; //LEFT
+		mesh->m_Indices[13] = 9;
+		mesh->m_Indices[14] = 11;
+		mesh->m_Indices[15] = 11;
+		mesh->m_Indices[16] = 9;
+		mesh->m_Indices[17] = 10;
+
+		mesh->m_Indices[18] = 12; //RIGHT
+		mesh->m_Indices[19] = 13;
+		mesh->m_Indices[20] = 15;
+		mesh->m_Indices[21] = 15;
+		mesh->m_Indices[22] = 13;
+		mesh->m_Indices[23] = 14;
+
+		mesh->m_Indices[24] = 16; //BACK
+		mesh->m_Indices[25] = 17;
+		mesh->m_Indices[26] = 19;
+		mesh->m_Indices[27] = 19;
+		mesh->m_Indices[28] = 17;
+		mesh->m_Indices[29] = 18;
+
+		mesh->m_Indices[30] = 20; //FRONT
+		mesh->m_Indices[31] = 21;
+		mesh->m_Indices[32] = 23;
+		mesh->m_Indices[33] = 23;
+		mesh->m_Indices[34] = 21;
+		mesh->m_Indices[35] = 22;
+
+		return mesh;
+	}
+
+
+	Ref<Mesh> MeshFactory::generateColourRectCenter(float width, float height, float depth)
+	{
+		Ref<Mesh> mesh = MakeRef<Mesh>(24, 36);
+
+		float depthover2 = depth / 2.f;
+		float widthover2 = width / 2.f;
+		float heightover2 = height / 2.f;
+
+		using namespace glm;
+		mesh->m_Vertices[0].a_Position = vec3(-widthover2, -depthover2, -heightover2); //BOTTOM
+		mesh->m_Vertices[1].a_Position = vec3(-widthover2, +depthover2, -heightover2);
+		mesh->m_Vertices[2].a_Position = vec3(+widthover2, +depthover2, -heightover2);
+		mesh->m_Vertices[3].a_Position = vec3(+widthover2, -depthover2, -heightover2);
+		mesh->m_Vertices[0].a_Normal = vec3(0.f, 0.f, -1.f);
+		mesh->m_Vertices[1].a_Normal = vec3(0.f, 0.f, -1.f);
+		mesh->m_Vertices[2].a_Normal = vec3(0.f, 0.f, -1.f);
+		mesh->m_Vertices[3].a_Normal = vec3(0.f, 0.f, -1.f);
+		mesh->m_Vertices[0].a_Colour = vec4(1.f, 0.f, 0.f, 1.f); //RED
+		mesh->m_Vertices[1].a_Colour = vec4(1.f, 0.f, 0.f, 1.f);
+		mesh->m_Vertices[2].a_Colour = vec4(1.f, 0.f, 0.f, 1.f);
+		mesh->m_Vertices[3].a_Colour = vec4(1.f, 0.f, 0.f, 1.f);
+		mesh->m_Vertices[0].a_UV = vec2(0.f, 0.f);
+		mesh->m_Vertices[1].a_UV = vec2(0.f, 1.f);
+		mesh->m_Vertices[2].a_UV = vec2(1.f, 1.f);
+		mesh->m_Vertices[3].a_UV = vec2(1.f, 0.f);
+
+		mesh->m_Vertices[4].a_Position = vec3(-widthover2, +depthover2, +heightover2); //TOP
+		mesh->m_Vertices[5].a_Position = vec3(-widthover2, -depthover2, +heightover2);
+		mesh->m_Vertices[6].a_Position = vec3(+widthover2, -depthover2, +heightover2);
+		mesh->m_Vertices[7].a_Position = vec3(+widthover2, +depthover2, +heightover2);
+		mesh->m_Vertices[4].a_Normal = vec3(0.f, 0.f, +1.f);
+		mesh->m_Vertices[5].a_Normal = vec3(0.f, 0.f, +1.f);
+		mesh->m_Vertices[6].a_Normal = vec3(0.f, 0.f, +1.f);
+		mesh->m_Vertices[7].a_Normal = vec3(0.f, 0.f, +1.f);
+		mesh->m_Vertices[4].a_Colour = vec4(0.f, 1.f, 0.f, 1.f); //GREEN
+		mesh->m_Vertices[5].a_Colour = vec4(0.f, 1.f, 0.f, 1.f);
+		mesh->m_Vertices[6].a_Colour = vec4(0.f, 1.f, 0.f, 1.f);
+		mesh->m_Vertices[7].a_Colour = vec4(0.f, 1.f, 0.f, 1.f);
+		mesh->m_Vertices[4].a_UV = vec2(0.f, 0.f);
+		mesh->m_Vertices[5].a_UV = vec2(0.f, 1.f);
+		mesh->m_Vertices[6].a_UV = vec2(1.f, 1.f);
+		mesh->m_Vertices[7].a_UV = vec2(1.f, 0.f);
+
+		mesh->m_Vertices[8].a_Position = vec3(-widthover2, -depthover2, +heightover2); //LEFT
+		mesh->m_Vertices[9].a_Position = vec3(-widthover2, +depthover2, +heightover2);
+		mesh->m_Vertices[10].a_Position = vec3(-widthover2, +depthover2, -heightover2);
+		mesh->m_Vertices[11].a_Position = vec3(-widthover2, -depthover2, -heightover2);
+		mesh->m_Vertices[8].a_Normal = vec3(-1.f, 0.f, 0.f);
+		mesh->m_Vertices[9].a_Normal = vec3(-1.f, 0.f, 0.f);
+		mesh->m_Vertices[10].a_Normal = vec3(-1.f, 0.f, 0.f);
+		mesh->m_Vertices[11].a_Normal = vec3(-1.f, 0.f, 0.f);
+		mesh->m_Vertices[8].a_Colour = vec4(0.f, 0.f, 1.f, 1.f); //BLUE
+		mesh->m_Vertices[9].a_Colour = vec4(0.f, 0.f, 1.f, 1.f);
+		mesh->m_Vertices[10].a_Colour = vec4(0.f, 0.f, 1.f, 1.f);
+		mesh->m_Vertices[11].a_Colour = vec4(0.f, 0.f, 1.f, 1.f);
+		mesh->m_Vertices[8].a_UV = vec2(0.01f, 0.01f);
+		mesh->m_Vertices[9].a_UV = vec2(0.01f, 0.99f);
+		mesh->m_Vertices[10].a_UV = vec2(0.99f, 0.99f);
+		mesh->m_Vertices[11].a_UV = vec2(0.99f, 0.01f);
+
+		mesh->m_Vertices[12].a_Position = vec3(+widthover2, -depthover2, -heightover2); //RIGHT
+		mesh->m_Vertices[13].a_Position = vec3(+widthover2, +depthover2, -heightover2);
+		mesh->m_Vertices[14].a_Position = vec3(+widthover2, +depthover2, +heightover2);
+		mesh->m_Vertices[15].a_Position = vec3(+widthover2, -depthover2, +heightover2);
+		mesh->m_Vertices[12].a_Normal = vec3(+1.f, 0.f, 0.f);
+		mesh->m_Vertices[13].a_Normal = vec3(+1.f, 0.f, 0.f);
+		mesh->m_Vertices[14].a_Normal = vec3(+1.f, 0.f, 0.f);
+		mesh->m_Vertices[15].a_Normal = vec3(+1.f, 0.f, 0.f);
+		mesh->m_Vertices[12].a_Colour = vec4(1.f, 1.f, 0.f, 1.f); //YELLOW
+		mesh->m_Vertices[13].a_Colour = vec4(1.f, 1.f, 0.f, 1.f);
+		mesh->m_Vertices[14].a_Colour = vec4(1.f, 1.f, 0.f, 1.f);
+		mesh->m_Vertices[15].a_Colour = vec4(1.f, 1.f, 0.f, 1.f);
+		mesh->m_Vertices[12].a_UV = vec2(0.f, 0.f);
+		mesh->m_Vertices[13].a_UV = vec2(0.f, 1.f);
+		mesh->m_Vertices[14].a_UV = vec2(1.f, 1.f);
+		mesh->m_Vertices[15].a_UV = vec2(1.f, 0.f);
+
+		mesh->m_Vertices[16].a_Position = vec3(-widthover2, +depthover2, -heightover2); //BACK
+		mesh->m_Vertices[17].a_Position = vec3(-widthover2, +depthover2, +heightover2);
+		mesh->m_Vertices[18].a_Position = vec3(+widthover2, +depthover2, +heightover2);
+		mesh->m_Vertices[19].a_Position = vec3(+widthover2, +depthover2, -heightover2);
+		mesh->m_Vertices[16].a_Normal = vec3(0.f, +1.f, 0.f);
+		mesh->m_Vertices[17].a_Normal = vec3(0.f, +1.f, 0.f);
+		mesh->m_Vertices[18].a_Normal = vec3(0.f, +1.f, 0.f);
+		mesh->m_Vertices[19].a_Normal = vec3(0.f, +1.f, 0.f);
+		mesh->m_Vertices[16].a_Colour = vec4(0.f, 1.f, 1.f, 1.f); //AQUA
+		mesh->m_Vertices[17].a_Colour = vec4(0.f, 1.f, 1.f, 1.f);
+		mesh->m_Vertices[18].a_Colour = vec4(0.f, 1.f, 1.f, 1.f);
+		mesh->m_Vertices[19].a_Colour = vec4(0.f, 1.f, 1.f, 1.f);
+		mesh->m_Vertices[16].a_UV = vec2(0.f, 0.f);
+		mesh->m_Vertices[17].a_UV = vec2(0.f, 1.f);
+		mesh->m_Vertices[18].a_UV = vec2(1.f, 1.f);
+		mesh->m_Vertices[19].a_UV = vec2(1.f, 0.f);
+
+		mesh->m_Vertices[20].a_Position = vec3(-widthover2, -depthover2, +heightover2); //FRONT
+		mesh->m_Vertices[21].a_Position = vec3(-widthover2, -depthover2, -heightover2);
+		mesh->m_Vertices[22].a_Position = vec3(+widthover2, -depthover2, -heightover2);
+		mesh->m_Vertices[23].a_Position = vec3(+widthover2, -depthover2, +heightover2);
+		mesh->m_Vertices[20].a_Normal = vec3(0.f, -1.f, 0.f);
+		mesh->m_Vertices[21].a_Normal = vec3(0.f, -1.f, 0.f);
+		mesh->m_Vertices[22].a_Normal = vec3(0.f, -1.f, 0.f);
+		mesh->m_Vertices[23].a_Normal = vec3(0.f, -1.f, 0.f);
+		mesh->m_Vertices[20].a_Colour = vec4(1.f, 0.f, 1.f, 1.f); //PURPLE
+		mesh->m_Vertices[21].a_Colour = vec4(1.f, 0.f, 1.f, 1.f);
+		mesh->m_Vertices[22].a_Colour = vec4(1.f, 0.f, 1.f, 1.f);
+		mesh->m_Vertices[23].a_Colour = vec4(1.f, 0.f, 1.f, 1.f);
+		mesh->m_Vertices[20].a_UV = vec2(0.f, 0.f);
+		mesh->m_Vertices[21].a_UV = vec2(0.f, 1.f);
+		mesh->m_Vertices[22].a_UV = vec2(1.f, 1.f);
+		mesh->m_Vertices[23].a_UV = vec2(1.f, 0.f);
+
+		mesh->m_Indices[0] = 0; //BOTTOM
+		mesh->m_Indices[1] = 1;
+		mesh->m_Indices[2] = 3;
+		mesh->m_Indices[3] = 3;
+		mesh->m_Indices[4] = 1;
+		mesh->m_Indices[5] = 2;
+
+		mesh->m_Indices[6] = 4; //TOP
+		mesh->m_Indices[7] = 5;
+		mesh->m_Indices[8] = 7;
+		mesh->m_Indices[9] = 7;
 		mesh->m_Indices[10] = 5;
 		mesh->m_Indices[11] = 6;
 

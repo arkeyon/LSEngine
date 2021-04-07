@@ -1,3 +1,4 @@
+/*
 #include <LSEngine.h>
 
 #include "imgui.h"
@@ -16,6 +17,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/color_space.hpp>
 #include <glm/gtc/quaternion.hpp>
+
+#include "LSEngine/Renderer/PlanetFactory.h"
 
 #include <list>
 
@@ -39,8 +42,7 @@ private:
 	float m_Time = 0.f;
 
 	LSE::Ref<WorldEntity> m_Skybox;
-	LSE::Ref<WorldEntity> m_Door1;
-	LSE::Ref<WorldEntity> m_Door2;
+	LSE::Ref<WorldEntity> m_Sphere;
 
 public:
 	ExampleLayer()
@@ -57,41 +59,16 @@ public:
 		m_Shader.reset(Shader::Create("assets/shaders/simpleshader.glsl"));
 
 		LSE::Ref<LSE::Model> skybox = MakeRef<Model>();
-		LSE::Ref<LSE::Model> cube = MakeRef<Model>();
-		LSE::Ref<LSE::Model> door = MakeRef<Model>();
+		LSE::Ref<LSE::Model> sphere = MakeRef<Model>();
 
 		{
-			Ref<Mesh> mesh = MeshFactory::generateRectCorner(200.f, 200.f, 200.f);
-			mesh->Invert();
-
-			skybox->AddMesh(mesh);
-		}
-
-		{
-			Ref<Mesh> mesh = MeshFactory::generateCubeCenter(5.f);
-			cube->AddMesh(mesh);
-		}
-
-		{
-			MeshFactory::surfacefunc_t surface = [](const float& u, const float& v)
-			{
-				return glm::vec3(u, 10.f * cos(v), 10.f * sin(v));
-			};
-
-			MeshFactory::surfacecolourfunc_t colorsurface = [](const float& u, const float& v)
-			{
-				return glm::vec4(glm::rgbColor(glm::vec3(v / glm::two_pi<float>() * 360.f, 1.f, 1.f)), 1.f);
-			};
-
-			Ref<Mesh> body = MeshFactory::paramatricSurface(surface, 0.f, 100.f, 5, 0.f, glm::two_pi<float>(), 20, colorsurface);
-			body->Invert();
-
-			door->AddMesh(body);
+			Ref<Mesh> skyboxmesh = MeshFactory::rectCorner(200.f, 200.f, 200.f);
+			skyboxmesh->Invert();
+			skybox->AddMesh(skyboxmesh);
 		}
 
 		m_Skybox = ECS->CreateEntity<WorldEntity>(glm::vec3(0.f, 0.f, 0.f), glm::angleAxis(0.f, glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), skybox);
-		m_Door1 = ECS->CreateEntity<WorldEntity>(glm::vec3(80.f, 80.f, 20.f), glm::angleAxis(0.f, glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), door);
-		m_Door2 = ECS->CreateEntity<WorldEntity>(glm::vec3(120.f, 120.f, 20.f), glm::angleAxis(glm::quarter_pi<float>(), glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), door);
+		m_Sphere = ECS->CreateEntity<WorldEntity>(glm::vec3(100.f, 100.f, 100.f), glm::angleAxis(0.f, glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), PlanetFactory::Planet(80.f));
 
 		m_TestTexture = Texture2D::Create("assets/textures/BLANK.png");
 
@@ -131,9 +108,10 @@ public:
 
 		Renderer::BeginScene(m_Camera);
 
-		Renderer::Submit(m_Shader, m_Skybox->GetComponent<Renderable>()->m_Model);
-		Renderer::Submit(m_Shader, m_Door1->GetComponent<Renderable>()->m_Model, m_Door1->GetComponent<ReferenceFrame>()->getModelMat());
-		Renderer::Submit(m_Shader, m_Door2->GetComponent<Renderable>()->m_Model, m_Door2->GetComponent<ReferenceFrame>()->getModelMat());
+		//Renderer::Submit(m_Shader, m_Skybox->GetComponent<Renderable>()->m_Model);
+		//RenderCommand::EnabledWireframe(true);
+		Renderer::Submit(m_Shader, m_Sphere->GetComponent<Renderable>()->m_Model, m_Sphere->GetComponent<ReferenceFrame>()->getModelMat());
+		//RenderCommand::EnabledWireframe(false);
 	}
 
 	void OnImGuiRender() override
@@ -188,3 +166,4 @@ LSE::Application* LSE::CreateApplication()
 {
 	return new Sandbox();
 }
+*/

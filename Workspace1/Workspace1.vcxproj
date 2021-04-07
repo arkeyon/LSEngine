@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Workspace1App.cpp" />
+    <ClCompile Include="src\Workspace1App2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LSEngine\LSEngine.vcxproj">

@@ -1,4 +1,4 @@
-/*
+
 #include <LSEngine.h>
 
 #include "imgui.h"
@@ -21,6 +21,7 @@
 #include <list>
 
 #include "LSEngine/ECS/Entity.h"
+#include "ECS.h"
 
 #define BIT(x) (1L << x)
 
@@ -70,35 +71,37 @@ public:
 		m_Door = MakeRef<Model>();
 
 		{
-			Ref<Mesh> mesh = MeshFactory::generateRectCorner(200.f, 200.f, 200.f);
+			Ref<Mesh> mesh = MeshFactory::rectCorner(200.f, 200.f, 200.f);
 			mesh->Invert();
-
+		
 			m_Skybox->AddMesh(mesh);
 		}
-
+		
 		{
-			Ref<Mesh> mesh = MeshFactory::generateCubeCenter(5.f);
+			Ref<Mesh> mesh = MeshFactory::cubeCenter(5.f);
 			m_Cube->AddMesh(mesh);
 		}
+		
+		//{
+		//	MeshFactory::surfacefunc_t surface = [](const float& u, const float& v)
+		//	{
+		//		return glm::vec3(u, 10.f * cos(v), 10.f * sin(v));
+		//	};
+		//
+		//	MeshFactory::surfacecolourfunc_t colorsurface = [](const float& u, const float& v)
+		//	{
+		//		return glm::vec4(glm::rgbColor(glm::vec3(v / glm::two_pi<float>() * 360.f, 1.f, 1.f)), 1.f);
+		//	};
+		//
+		//	Ref<Mesh> mesh = MeshFactory::paramatricSurface(surface, 0.f, 100.f, 5, 0.f, glm::two_pi<float>(), 20, colorsurface);
+		//	//mesh->Invert();
+		//	m_Door->AddMesh(mesh);
+		//}
 
-		{
-			MeshFactory::surfacefunc_t surface = [](const float& u, const float& v)
-			{
-				return glm::vec3(u, 10.f * cos(v), 10.f * sin(v));
-			};
+		m_Door->AddMesh(MeshFactory::planeCorner(glm::vec3(20.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 80.f)));
 
-			MeshFactory::surfacecolourfunc_t colorsurface = [](const float& u, const float& v)
-			{
-				return glm::vec4(glm::rgbColor(glm::vec3(v / glm::two_pi<float>() * 360.f, 1.f, 1.f)), 1.f);
-			};
-
-			Ref<Mesh> mesh = MeshFactory::paramatricSurface(surface, 0.f, 100.f, 5, 0.f, glm::two_pi<float>(), 20, colorsurface);
-			//mesh->Invert();
-			m_Door->AddMesh(mesh);
-		}
-
-		m_Door1 = MakeRef<WorldEntity>(glm::vec3(80.f, 80.f, 20.f), glm::angleAxis(0.f, glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), m_Door);
-		m_Door2 = MakeRef<WorldEntity>(glm::vec3(120.f, 120.f, 20.f), glm::angleAxis(glm::quarter_pi<float>(), glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), m_Door);
+		m_Door1 = MakeRef<WorldEntity>(glm::vec3(80.f, 80.f, 0.f), glm::angleAxis(0.f, glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), m_Door);
+		m_Door2 = MakeRef<WorldEntity>(glm::vec3(120.f, 120.f, 0.f), glm::angleAxis(glm::quarter_pi<float>(), glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), m_Door);
 		m_Player = MakeRef<WorldEntity>(glm::vec3(50.f, 50.f, 0.f), glm::angleAxis(0.f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(1.f, 1.f, 1.f), m_Cube);
 
 		m_TestTexture = Texture2D::Create("assets/textures/BLANK.png");
@@ -106,7 +109,8 @@ public:
 		auto& window = Application::Get().GetWindow();
 		window.SetCursorState(false);
 
-		RenderCommand::EnableFaceCulling(true);
+		RenderCommand::EnableFaceCulling(false);
+		RenderCommand::EnableDepthTest(true);
 	}
 
 	void OnUpdate(float delta) override
@@ -157,7 +161,7 @@ public:
 
 		RenderCommand::EnableStencil(false);
 
-		m_Door2->GetComponent<ReferenceFrame>()->m_Orin *= glm::angleAxis(delta * 0.5f, glm::vec3(1.f, 0.f, 0.f));
+		//m_Door2->GetComponent<ReferenceFrame>()->m_Orin *= glm::angleAxis(delta * 0.5f, glm::vec3(1.f, 0.f, 0.f));
 	}
 
 	void OnImGuiRender() override
@@ -202,4 +206,22 @@ public:
 	}
 };
 
-*/
+class Sandbox : public LSE::Application
+{
+public:
+	Sandbox()
+		: Application(1920, 1080)
+	{
+		PushLayer(MakeScope<ExampleLayer>());
+	}
+
+	~Sandbox()
+	{
+
+	}
+};
+
+LSE::Application* LSE::CreateApplication()
+{
+	return new Sandbox();
+}

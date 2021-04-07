@@ -4,6 +4,8 @@
 #include "LSEngine/Renderer/BufferLayout.h"
 #include "LSEngine/Renderer/Material.h"
 
+#include <array>
+
 #include <glm/glm.hpp>
 
 namespace LSE {
@@ -34,6 +36,7 @@ namespace LSE {
 
 		void Invert();
 		void Transform(glm::mat4 matrix);
+		void Insert(Ref<Mesh> mesh, int vertexoffs, int indexoffs);
 
 		int32_t m_VerticesCount;
 		const int32_t m_IndicesCount;

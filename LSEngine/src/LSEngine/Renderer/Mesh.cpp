@@ -30,4 +30,10 @@ namespace LSE {
 		}
 	}
 
+	void Mesh::Insert(Ref<Mesh> mesh, int vertexoffs, int indexoffs)
+	{
+		if (mesh->m_VerticesCount) memcpy(&(m_Vertices[vertexoffs]), mesh->m_Vertices, sizeof(vertex_t) * mesh->m_VerticesCount);
+		if (mesh->m_IndicesCount) memcpy(&(m_Indices[indexoffs]), mesh->m_Indices, sizeof(index_t) * mesh->m_IndicesCount);
+		for (int i = 0; i < mesh->m_IndicesCount; i++) { m_Indices[i + indexoffs] += vertexoffs; }
+	}
 }

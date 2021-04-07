@@ -11,21 +11,30 @@ namespace LSE {
 	class LSE_API MeshFactory
 	{
 	public:
-		static Ref<Mesh> generateSphere(const float& radius, const int& detail, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
-		static Ref<Mesh> generateSphere(const float& radius, const int& w, const int& h, glm::vec4 colour = {1.f, 1.f, 1.f, 1.f});
+		static Ref<Mesh> cubeSphere(const float& radius, const int& detail, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f }, std::vector<int>* strides = nullptr);
+		static Ref<Mesh> cubeEllipsoid(const float& a, const float& b, const float& c, const int& detail, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f }, std::vector<int>* strides = nullptr);
 
-		static Ref<Mesh> generateCubeCorner(float size, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
-		static Ref<Mesh> generateCubeCenter(float size, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
+		static Ref<Mesh> sphere(const float& radius, const int& detail, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
+		static Ref<Mesh> sphere(const float& radius, const int& w, const int& h, glm::vec4 colour = {1.f, 1.f, 1.f, 1.f});
 
-		static Ref<Mesh> generateRectCorner(float width, float height, float depth, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
-		static Ref<Mesh> generateColourRectCorner(float width, float height, float depth);
-		static Ref<Mesh> generateRectCenter(float width, float height, float depth, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
-		static Ref<Mesh> generateColourRectCenter(float width, float height, float depth);
+		static Ref<Mesh> cubeCorner(float size, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
+		static Ref<Mesh> cubeCenter(float size, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
+		static Ref<Mesh> griddedCubeCenter(float size, int detail, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f }, std::vector<int>* strides = nullptr);
 
-		static Ref<Mesh> MeshFactory::generatePlaneCenter(glm::vec3 x, glm::vec3 y);
-		static Ref<Mesh> MeshFactory::generatePlaneCorner(glm::vec3 x, glm::vec3 y);
+		static Ref<Mesh> rectCorner(float width, float height, float depth, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
+		static Ref<Mesh> colourRectCorner(float width, float height, float depth);
 
-		static Ref<Mesh> generateRectCenterSharedVertices(float width, float height, float depth);
+		static Ref<Mesh> rectCenter(float width, float height, float depth, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
+		static Ref<Mesh> griddedRectCenter(float width, float height, float depth, int wdetail, int hdetail, int ddetail, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f }, std::vector<int>* strides = nullptr);
+		static Ref<Mesh> colourRectCenter(float width, float height, float depth);
+
+		static Ref<Mesh> planeCenter(glm::vec3 x, glm::vec3 y);
+		static Ref<Mesh> planeCorner(glm::vec3 x, glm::vec3 y);
+
+		static Ref<Mesh> gridCenter(glm::vec3 xdir, glm::vec3 y, int xdetail, int ydetail, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
+		static Ref<Mesh> gridCorner(glm::vec3 xdir, glm::vec3 y, int xdetail, int ydetail, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
+
+		static Ref<Mesh> rectCenterSharedVertices(float width, float height, float depth);
 
 		typedef glm::vec3(*parametricfunc_t)(const float& t);
 		typedef glm::vec4(*parametriccolourfunc_t)(const float& t);

@@ -1,6 +1,8 @@
 #include "lsepch.h"
 #include "Meshfactory.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+
 namespace LSE
 {
 
@@ -17,21 +19,60 @@ namespace LSE
 		0, 3, 1, 1, 3, 2
 	};
 
-	Ref<Mesh> MeshFactory::generateSphere(const float& radius, const int& detail, glm::vec4 colour)
+	Ref<Mesh> MeshFactory::cubeSphere(const float& radius, const int& detail, glm::vec4 colour, std::vector<int>* strides)
+	{
+		using namespace glm;
+		Ref<Mesh> mesh = griddedCubeCenter(1.f, detail, colour, strides);
+		for (int i = 0; i < mesh->m_VerticesCount; i++)
+		{
+			vertex_t& v = mesh->m_Vertices[i];
+			vec3& p = v.a_Position;
+			vec3 n = p / sqrtf(p.x * p.x + p.y * p.y + p.z * p.z);
+			v.a_Position = n * radius;
+			v.a_Normal = n;
+		}
+
+		return mesh;
+	}
+
+	Ref<Mesh> MeshFactory::cubeEllipsoid(const float& a, const float& b, const float& c, const int& detail, glm::vec4 colour, std::vector<int>* strides)
+	{
+		using namespace glm;
+
+		float av = (1.f / a + 1.f / b + 1.f / c);
+
+		int ad = (int)(av * a * detail);
+		int bd = (int)(av * b * detail);
+		int cd = (int)(av * c * detail);
+
+		Ref<Mesh> mesh = griddedRectCenter(a, b, c, ad, bd, cd, colour, strides);
+		for (int i = 0; i < mesh->m_VerticesCount; i++)
+		{
+			vertex_t& v = mesh->m_Vertices[i];
+			vec3& p = v.a_Position;
+			vec3 n = v.a_Position / sqrtf(p.x * p.x / a / a + p.y * p.y / b / b + p.z * p.z / c / c);
+			v.a_Position = n;
+			v.a_Normal = normalize(n);
+		}
+
+		return mesh;
+	}
+
+	Ref<Mesh> MeshFactory::sphere(const float& radius, const int& detail, glm::vec4 colour)
 	{
 		const int width = detail * 2;
 		const int height = detail;
-		return generateSphere(radius, width, height, colour);
+		return sphere(radius, width, height, colour);
 	}
 
-	Ref<Mesh> MeshFactory::generateCubeCorner(float size, glm::vec4 colour)
+	Ref<Mesh> MeshFactory::cubeCorner(float size, glm::vec4 colour)
 	{
-		return MeshFactory::generateRectCorner(size, size, size, colour);
+		return MeshFactory::rectCorner(size, size, size, colour);
 	}
 
-	Ref<Mesh> MeshFactory::generateCubeCenter(float size, glm::vec4 colour)
+	Ref<Mesh> MeshFactory::cubeCenter(float size, glm::vec4 colour)
 	{
-		return MeshFactory::generateRectCenter(size, size, size, colour);
+		return MeshFactory::rectCenter(size, size, size, colour);
 	}
 
 	float a(float f)
@@ -44,7 +85,7 @@ namespace LSE
 		return a(fmodf(2.f * f, 2.f) / 2.f);
 	}
 
-	Ref<Mesh> MeshFactory::generateSphere(const float& radius, const int& w, const int& h, glm::vec4 colour)
+	Ref<Mesh> MeshFactory::sphere(const float& radius, const int& w, const int& h, glm::vec4 colour)
 	{
 
 		const int width = w + 1;
@@ -91,7 +132,7 @@ namespace LSE
 	}
 
 
-	Ref<Mesh> MeshFactory::generateColourRectCorner(float width, float height, float depth)
+	Ref<Mesh> MeshFactory::colourRectCorner(float width, float height, float depth)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(24, 36);
 
@@ -268,7 +309,7 @@ namespace LSE
 	}
 
 
-	Ref<Mesh> MeshFactory::generateRectCorner(float width, float height, float depth, glm::vec4 colour)
+	Ref<Mesh> MeshFactory::rectCorner(float width, float height, float depth, glm::vec4 colour)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(24, 36);
 
@@ -420,7 +461,7 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::generatePlaneCenter(glm::vec3 x, glm::vec3 y)
+	Ref<Mesh> MeshFactory::planeCenter(glm::vec3 x, glm::vec3 y)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(4, 6);
 
@@ -454,7 +495,7 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::generatePlaneCorner(glm::vec3 i, glm::vec3 j)
+	Ref<Mesh> MeshFactory::planeCorner(glm::vec3 i, glm::vec3 j)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(4, 6);
 
@@ -488,7 +529,81 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::generateRectCenterSharedVertices(float width, float height, float depth)
+	Ref<Mesh> MeshFactory::gridCenter(glm::vec3 xdir, glm::vec3 ydir, int xdetail, int ydetail, glm::vec4 colour)
+	{
+		Ref<Mesh> mesh = MakeRef<Mesh>(xdetail * ydetail, (xdetail - 1) * (ydetail - 1) * 6);
+
+		using namespace glm;
+
+		for (int y = 0; y < ydetail; y++)
+		{
+			vec3 v = ((float)y / (ydetail - 1) - 0.5f) * ydir;
+			for (int x = 0; x < xdetail; x++)
+			{
+				vec3 u = ((float)x / (xdetail - 1) - 0.5f) * xdir;
+
+				auto& vert = mesh->m_Vertices[x + y * xdetail];
+				vert.a_Position = u + v;
+				vert.a_Colour = colour;
+				vert.a_Normal = glm::normalize(glm::cross(xdir, ydir));
+				vert.a_Tex = -1.f;
+				vert.a_UV = glm::vec2((float)x / (xdetail - 1.f), (float)y / (ydetail - 1.f));
+			}
+		}
+
+		for (int v = 0; v < ydetail - 1; v++)
+		{
+			for (int u = 0; u < xdetail - 1; u++)
+			{
+				for (int n = 0; n < 6; n++)
+				{
+					glm::ivec2 vert = tvertices[tindices[n]];
+					mesh->m_Indices[(u + v * (xdetail - 1)) * 6 + n] = (vert.x + u) + (vert.y + v) * xdetail;
+				}
+			}
+		}
+
+		return mesh;
+	}
+
+	Ref<Mesh> MeshFactory::gridCorner(glm::vec3 xdir, glm::vec3 ydir, int xdetail, int ydetail, glm::vec4 colour)
+	{
+		Ref<Mesh> mesh = MakeRef<Mesh>(xdetail * ydetail, (xdetail - 1) * (ydetail - 1) * 6);
+
+		using namespace glm;
+
+		for (int y = 0; y < ydetail; y++)
+		{
+			vec3 v = (float)y / (ydetail - 1) * ydir;
+			for (int x = 0; x < xdetail; x++)
+			{
+				vec3 u = (float)x / (xdetail - 1) * xdir;
+
+				auto& vert = mesh->m_Vertices[x + y * xdetail];
+				vert.a_Position = u + v;
+				vert.a_Colour = colour;
+				vert.a_Normal = glm::normalize(glm::cross(u, v));
+				vert.a_Tex = -1.f;
+				vert.a_UV = glm::vec2((float)x / (xdetail - 1.f), (float)y / (ydetail - 1.f));
+			}
+		}
+
+		for (int v = 0; v < ydetail - 1; v++)
+		{
+			for (int u = 0; u < xdetail - 1; u++)
+			{
+				for (int n = 0; n < 6; n++)
+				{
+					glm::ivec2 vert = tvertices[tindices[n]];
+					mesh->m_Indices[(u + v * (xdetail - 1)) * 6 + n] = (vert.x + u) + (vert.y + v) * xdetail;
+				}
+			}
+		}
+
+		return mesh;
+	}
+
+	Ref<Mesh> MeshFactory::rectCenterSharedVertices(float width, float height, float depth)
 	{
 		float depthover2 = depth / 2.f;
 		float widthover2 = width / 2.f;
@@ -571,7 +686,7 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::generateRectCenter(float width, float height, float depth, glm::vec4 colour)
+	Ref<Mesh> MeshFactory::rectCenter(float width, float height, float depth, glm::vec4 colour)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(24, 36);
 
@@ -727,8 +842,229 @@ namespace LSE
 		return mesh;
 	}
 
+	Ref<Mesh> MeshFactory::griddedCubeCenter(float size, int detail, glm::vec4 colour, std::vector<int>* strides)
+	{
+		return griddedRectCenter(size, size, size, detail, detail, detail, colour, strides);
+	}
 
-	Ref<Mesh> MeshFactory::generateColourRectCenter(float width, float height, float depth)
+	Ref<Mesh> MeshFactory::griddedRectCenter(float width, float height, float depth, int wdetail, int hdetail, int ddetail, glm::vec4 colour, std::vector<int>* strides)
+	{
+		using namespace glm;
+
+		float wd = (float)(wdetail - 3) / (float)(wdetail - 1);
+		float hd = (float)(hdetail - 3) / (float)(hdetail - 1);
+
+		Ref<Mesh> bottom = gridCenter(vec3(-width, 0.f, 0.f), vec3(0.f, depth, 0.f), wdetail, ddetail, colour);
+		Ref<Mesh> top	 = gridCenter(vec3(width, 0.f, 0.f), vec3(0.f, depth, 0.f), wdetail, ddetail, colour);
+
+		Ref<Mesh> right	 = gridCenter(vec3(0.f, depth, 0.f), vec3(0.f, 0.f, height * hd), ddetail, hdetail - 2, colour);
+		Ref<Mesh> left	 = gridCenter(vec3(0.f, -depth, 0.f), vec3(0.f, 0.f, height * hd), ddetail, hdetail - 2, colour);
+
+		Ref<Mesh> back	 = gridCenter(vec3(-width * wd, 0.f, 0.f), vec3(0.f, 0.f, height * hd), wdetail - 2, hdetail - 2, colour);
+		Ref<Mesh> front	 = gridCenter(vec3(width * wd, 0.f, 0.f), vec3(0.f, 0.f, height * hd), wdetail - 2, hdetail - 2, colour);
+
+
+		bottom->Transform(glm::translate(mat4(1.f), vec3(0.f, 0.f, -height / 2.f)));
+		top->Transform(glm::translate(mat4(1.f), vec3(0.f, 0.f, height / 2.f)));
+		right->Transform(glm::translate(mat4(1.f), vec3(width / 2.f, 0.f, 0.f)));
+		left->Transform(glm::translate(mat4(1.f), vec3(-width / 2.f, 0.f, 0.f)));
+		back->Transform(glm::translate(mat4(1.f), vec3(0.f, depth / 2.f, 0.f)));
+		front->Transform(glm::translate(mat4(1.f), vec3(0.f, -depth / 2.f, 0.f)));
+
+		int vertoffs = 0;
+		int bottomvertoffs = vertoffs;
+		int topvertoffs = vertoffs += bottom->m_VerticesCount;
+		int rightvertoffs = vertoffs += top->m_VerticesCount;
+		int leftvertoffs = vertoffs += right->m_VerticesCount;
+		int backvertoffs = vertoffs += left->m_VerticesCount;
+		int frontvertoffs = vertoffs += back->m_VerticesCount;
+		int indeoffs = 0;
+
+		if (strides)
+		{
+			strides->push_back(bottomvertoffs);
+			strides->push_back(topvertoffs);
+			strides->push_back(rightvertoffs);
+			strides->push_back(leftvertoffs);
+			strides->push_back(backvertoffs);
+			strides->push_back(frontvertoffs);
+		}
+
+		Ref<Mesh> gaps = MakeRef<Mesh>(0, (ddetail - 1) * 6 * 4 + (wdetail - 1) * 6 * 4 + (hdetail - 2 - 1) * 6 * 4);
+		int gindeoffs = 0;
+
+		//for (int i = 0; i < (ddetail - 1) * 6; i++) gaps->m_Indices[gindeoffs++] = ;
+
+		gaps->m_Indices[gindeoffs++] = bottomvertoffs + wdetail - 2;
+		gaps->m_Indices[gindeoffs++] = leftvertoffs + ddetail - 1;
+		gaps->m_Indices[gindeoffs++] = bottomvertoffs + wdetail - 1; //FRONT BOTTOM LEFT
+		gaps->m_Indices[gindeoffs++] = bottomvertoffs + wdetail - 2;
+		gaps->m_Indices[gindeoffs++] = frontvertoffs;
+		gaps->m_Indices[gindeoffs++] = leftvertoffs + ddetail - 1;
+
+		gaps->m_Indices[gindeoffs++] = bottomvertoffs;
+		gaps->m_Indices[gindeoffs++] = rightvertoffs;
+		gaps->m_Indices[gindeoffs++] = frontvertoffs + wdetail - 3; // FRONT BOTTOM RIGHT
+		gaps->m_Indices[gindeoffs++] = bottomvertoffs;
+		gaps->m_Indices[gindeoffs++] = frontvertoffs + wdetail - 3;
+		gaps->m_Indices[gindeoffs++] = bottomvertoffs + 1;
+
+		gaps->m_Indices[gindeoffs++] = frontvertoffs + (hdetail - 3) * (wdetail - 2); // FRONT TOP LEFT
+		gaps->m_Indices[gindeoffs++] = topvertoffs;
+		gaps->m_Indices[gindeoffs++] = leftvertoffs + ddetail - 1 + (hdetail - 3) * ddetail;
+		gaps->m_Indices[gindeoffs++] = frontvertoffs + (hdetail - 3) * (wdetail - 2);
+		gaps->m_Indices[gindeoffs++] = topvertoffs + 1;
+		gaps->m_Indices[gindeoffs++] = topvertoffs;
+
+		gaps->m_Indices[gindeoffs++] = rightvertoffs + (hdetail - 3) * ddetail; // FRONT TOP RIGHT
+		gaps->m_Indices[gindeoffs++] = topvertoffs + wdetail - 1;
+		gaps->m_Indices[gindeoffs++] = topvertoffs + wdetail - 2;
+		gaps->m_Indices[gindeoffs++] = rightvertoffs + (hdetail - 3) * ddetail;
+		gaps->m_Indices[gindeoffs++] = topvertoffs + wdetail - 2;
+		gaps->m_Indices[gindeoffs++] = frontvertoffs + +(hdetail - 3) * (wdetail - 2) + wdetail - 3;
+
+		for (int i = 0; i < wdetail - 3; i++)
+			for (int n = 0; n < 6; n++)
+			{
+				const int& x = tvertices[tindices[n]].x;
+				const int& y = tvertices[tindices[n]].y;
+				gaps->m_Indices[gindeoffs++] = y * (frontvertoffs + i + x) + (1 - y) * (wdetail - (bottomvertoffs + i + 1 + x) - 1);
+			}
+
+		for (int i = 0; i < wdetail - 3; i++)
+			for (int n = 0; n < 6; n++)
+			{
+				const int& x = tvertices[tindices[n]].x;
+				const int& y = tvertices[tindices[n]].y;
+				gaps->m_Indices[gindeoffs++] = (1 - y) * (frontvertoffs + i + x + (hdetail - 3) * (wdetail - 2)) + y * (topvertoffs + i + 1 + x);
+			}
+
+		for (int i = 0; i < hdetail - 3; i++)
+			for (int n = 0; n < 6; n++)
+			{
+				const int& x = tvertices[tindices[n]].x;
+				const int& y = tvertices[tindices[n]].y;
+				gaps->m_Indices[gindeoffs++] = x * (frontvertoffs + (i + y) * (wdetail - 2)) + (1 - x) * (leftvertoffs + (i + y) * ddetail + ddetail - 1);
+			}
+		
+		for (int i = 0; i < hdetail - 3; i++)
+			for (int n = 0; n < 6; n++)
+			{
+				const int& x = tvertices[tindices[n]].x;
+				const int& y = tvertices[tindices[n]].y;
+				gaps->m_Indices[gindeoffs++] = (1 - x) * (frontvertoffs + (i + y) * (wdetail - 2) + wdetail - 3) + x * (rightvertoffs + (i + y) * ddetail);
+			}
+
+		
+		for (int i = 0; i < ddetail - 1; i++)
+			for (int n = 0; n < 6; n++)
+			{
+				const int& x = tvertices[tindices[n]].x;
+				const int& y = tvertices[tindices[n]].y;
+				gaps->m_Indices[gindeoffs++] = (1 - y) * (leftvertoffs + ddetail - (i + x) - 1) + y * (bottomvertoffs + (i + x) * wdetail + wdetail - 1);
+			}
+
+		for (int i = 0; i < ddetail - 1; i++)
+			for (int n = 0; n < 6; n++)
+			{
+				const int& x = tvertices[tindices[n]].x;
+				const int& y = tvertices[tindices[n]].y;
+				gaps->m_Indices[gindeoffs++] = y * (leftvertoffs + ddetail - (i + x) - 1 + (hdetail - 3) * ddetail) + (1 - y) * (topvertoffs + (i + x) * wdetail);
+			}
+
+		for (int i = 0; i < ddetail - 1; i++)
+			for (int n = 0; n < 6; n++)
+			{
+				const int& x = tvertices[tindices[n]].x;
+				const int& y = tvertices[tindices[n]].y;
+				gaps->m_Indices[gindeoffs++] = y * (rightvertoffs + i + x) + (1 - y) * (bottomvertoffs + (i + x) * wdetail);
+			}
+
+		for (int i = 0; i < ddetail - 1; i++)
+			for (int n = 0; n < 6; n++)
+			{
+				const int& x = tvertices[tindices[n]].x;
+				const int& y = tvertices[tindices[n]].y;
+				gaps->m_Indices[gindeoffs++] = (1 - y) * (rightvertoffs + i + x + (hdetail - 3) * ddetail) + y * (topvertoffs + (i + x) * wdetail + wdetail - 1);
+			}
+
+		
+		gaps->m_Indices[gindeoffs++] = bottomvertoffs + wdetail - 1 + (ddetail - 1) * wdetail; //BACK BOTTOM LEFT
+		gaps->m_Indices[gindeoffs++] = backvertoffs + wdetail - 3;
+		gaps->m_Indices[gindeoffs++] = bottomvertoffs + wdetail - 2 + (ddetail - 1) * wdetail;
+		gaps->m_Indices[gindeoffs++] = bottomvertoffs + wdetail - 1 + (ddetail - 1) * wdetail;
+		gaps->m_Indices[gindeoffs++] = leftvertoffs;
+		gaps->m_Indices[gindeoffs++] = backvertoffs + wdetail - 3;
+
+		gaps->m_Indices[gindeoffs++] = bottomvertoffs + (ddetail - 1) * wdetail; //FRONT BOTTOM RIGHT
+		gaps->m_Indices[gindeoffs++] = bottomvertoffs + 1 + (ddetail - 1) * wdetail;
+		gaps->m_Indices[gindeoffs++] = rightvertoffs + ddetail - 1;
+		gaps->m_Indices[gindeoffs++] = bottomvertoffs + 1 + (ddetail - 1) * wdetail;
+		gaps->m_Indices[gindeoffs++] = backvertoffs;
+		gaps->m_Indices[gindeoffs++] = rightvertoffs + ddetail - 1;
+
+		gaps->m_Indices[gindeoffs++] = backvertoffs + (hdetail - 3) * (wdetail - 2);
+		gaps->m_Indices[gindeoffs++] = topvertoffs + + wdetail - 1 + (ddetail - 1) * wdetail;
+		gaps->m_Indices[gindeoffs++] = rightvertoffs + (hdetail - 3) * ddetail +  ddetail - 1;
+		gaps->m_Indices[gindeoffs++] = backvertoffs + (hdetail - 3) * (wdetail - 2);
+		gaps->m_Indices[gindeoffs++] = topvertoffs + wdetail - 2 + (ddetail - 1) * wdetail;
+		gaps->m_Indices[gindeoffs++] = topvertoffs + + wdetail - 1 + (ddetail - 1) * wdetail; //BACK TOP LEFT
+
+		gaps->m_Indices[gindeoffs++] = backvertoffs + (hdetail - 3) * (wdetail - 2) + wdetail - 3;
+		gaps->m_Indices[gindeoffs++] = leftvertoffs + (hdetail - 3) * ddetail;
+		gaps->m_Indices[gindeoffs++] = topvertoffs + (ddetail - 1) * wdetail + 1;
+		gaps->m_Indices[gindeoffs++] = leftvertoffs + (hdetail - 3) * ddetail;
+		gaps->m_Indices[gindeoffs++] = topvertoffs + (ddetail - 1) * wdetail;
+		gaps->m_Indices[gindeoffs++] = topvertoffs + (ddetail - 1) * wdetail + 1;
+
+		
+
+		for (int i = 0; i < wdetail - 3; i++)
+			for (int n = 0; n < 6; n++)
+			{
+				const int& x = tvertices[tindices[n]].x;
+				const int& y = tvertices[tindices[n]].y;
+				gaps->m_Indices[gindeoffs++] = y * (backvertoffs + i + x) + (1 - y) * (bottomvertoffs + i + 1 + x + wdetail * (ddetail - 1));
+			}
+		
+		for (int i = 0; i < wdetail - 3; i++)
+			for (int n = 0; n < 6; n++)
+			{
+				const int& x = tvertices[tindices[n]].x;
+				const int& y = tvertices[tindices[n]].y;
+				gaps->m_Indices[gindeoffs++] = (1 - y) * (backvertoffs + i + x + (hdetail - 3) * (wdetail - 2)) + y * (topvertoffs + wdetail - (i + 1 + x) - 1 + wdetail * (ddetail - 1));
+			}
+		
+		for (int i = 0; i < hdetail - 3; i++)
+			for (int n = 0; n < 6; n++)
+			{
+				const int& x = tvertices[tindices[n]].x;
+				const int& y = tvertices[tindices[n]].y;
+				gaps->m_Indices[gindeoffs++] = x * (backvertoffs + (i + y) * (wdetail - 2)) + (1 - x) * (rightvertoffs + (i + y) * ddetail + ddetail - 1);
+			}
+		
+		for (int i = 0; i < hdetail - 3; i++)
+			for (int n = 0; n < 6; n++)
+			{
+				const int& x = tvertices[tindices[n]].x;
+				const int& y = tvertices[tindices[n]].y;
+				gaps->m_Indices[gindeoffs++] = (1 - x) * (backvertoffs + (i + y) * (wdetail - 2) + wdetail - 3) + x * (leftvertoffs + (i + y) * ddetail);
+			}
+			
+		Ref<Mesh> mesh = MakeRef<Mesh>(wdetail * ddetail * 2 + ddetail * (hdetail - 2) * 2 + (wdetail - 2) * (hdetail - 2) * 2, (wdetail - 1) * (ddetail - 1) * 12 + (hdetail - 1) * (ddetail - 1) * 12 + (wdetail - 1) * (hdetail - 1) * 12);
+		mesh->Insert(bottom, bottomvertoffs, 0);
+		mesh->Insert(top	, topvertoffs, indeoffs += bottom->m_IndicesCount);
+		mesh->Insert(right	, rightvertoffs, indeoffs += top->m_IndicesCount);
+		mesh->Insert(left	, leftvertoffs, indeoffs += right->m_IndicesCount);
+		mesh->Insert(back	, backvertoffs, indeoffs += left->m_IndicesCount);
+		mesh->Insert(front	, frontvertoffs, indeoffs += back->m_IndicesCount);
+
+		mesh->Insert(gaps, 0, indeoffs += front->m_IndicesCount);
+
+		return mesh;
+	}
+
+	Ref<Mesh> MeshFactory::colourRectCenter(float width, float height, float depth)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(24, 36);
 

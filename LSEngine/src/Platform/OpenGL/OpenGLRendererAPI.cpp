@@ -48,14 +48,16 @@ namespace LSE {
 		if (enabled)
 		{
 			glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-			glStencilFunc(GL_ALWAYS, 0, 1);
-			glStencilOp(GL_KEEP, GL_KEEP, GL_INVERT); // if zpass: 1111... , if zfail 0000 ...
+			glDepthMask(GL_FALSE);
+			glStencilFunc(GL_ALWAYS, 0, 0xFF);
+			glStencilOp(GL_KEEP, GL_KEEP, GL_INVERT);
 			glStencilMask(1);
 		}
 		else
 		{
 			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-			glStencilFunc(GL_EQUAL, 1, 1);
+			glDepthMask(GL_TRUE);
+			glStencilFunc(GL_LEQUAL, 1, 0xFF);
 			glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 		}
 	}

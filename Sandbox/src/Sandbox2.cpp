@@ -21,7 +21,7 @@
 #include <list>
 
 #include "LSEngine/ECS/Entity.h"
-#include "ECS.h"
+#include "LSEngine/ECS/Objects/ECS.h"
 
 #define BIT(x) (1L << x)
 
@@ -145,23 +145,11 @@ public:
 		glm::mat4 im = m_Door1->GetComponent<ReferenceFrame>()->getModelMat() * glm::inverse(m_Door2->GetComponent<ReferenceFrame>()->getModelMat());
 
 		Renderer::BeginScene(m_Camera);
+
 		Renderer::Submit(m_Shader, m_Skybox);
-		Renderer::Submit(m_Shader, m_Cube, glm::inverse(m_Camera->GetViewMatrix() * im));
-		Renderer::Submit(m_Shader, m_Door, m_Door2->GetComponent<ReferenceFrame>()->getModelMat());
+		Renderer::Submit(m_Shader, m_Door1->GetComponent<Renderable>()->m_Model, m_Door1->GetComponent<ReferenceFrame>()->getModelMat());
 
-		RenderCommand::EnableStencil(true);
-		RenderCommand::StencilDraw(true);
-		Renderer::Submit(m_Shader, m_Door, m_Door1->GetComponent<ReferenceFrame>()->getModelMat());
-		RenderCommand::StencilDraw(false);
-		RenderCommand::Clear(false, true, false);
-
-		Renderer::BeginScene({ m_Camera->GetVP() * im, im * glm::vec4(m_Camera->GetPos(), 1.f), m_Camera->GetDir() });
-		Renderer::Submit(m_Shader, m_Skybox);
-		Renderer::Submit(m_Shader, m_Door, m_Door1->GetComponent<ReferenceFrame>()->getModelMat());
-
-		RenderCommand::EnableStencil(false);
-
-		//m_Door2->GetComponent<ReferenceFrame>()->m_Orin *= glm::angleAxis(delta * 0.5f, glm::vec3(1.f, 0.f, 0.f));
+		Renderer::EndScene();
 	}
 
 	void OnImGuiRender() override

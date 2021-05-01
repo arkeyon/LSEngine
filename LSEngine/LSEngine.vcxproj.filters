@@ -49,6 +49,9 @@
     <Filter Include="vendor\stb">
       <UniqueIdentifier>{8BD3C5A8-778B-07F6-E092-E051CC69A2E6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\LSEngine\ECS\Objects">
+      <UniqueIdentifier>{5a3c9854-4c16-4839-8cef-1abdaa23bef7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\LSEngine.h">
@@ -210,6 +213,7 @@
     <ClInclude Include="src\lsepch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\LSEngine\ECS\Objects\ECS.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Core\Application.cpp">
@@ -332,5 +336,6 @@
     <ClCompile Include="vendor\stb\stb_image.cpp">
       <Filter>vendor\stb</Filter>
     </ClCompile>
+    <ClCompile Include="src\LSEngine\ECS\Objects\ECS.cpp" />
   </ItemGroup>
 </Project>

@@ -13,7 +13,7 @@ namespace LSE {
 		virtual void EnableDepthTest(bool enabled) override;
 		virtual void EnableFaceCulling(bool enabled) override;
 		virtual void EnableWireframe(bool enabled) override;
-		virtual void StencilDraw(bool enabled) override;
+		virtual void StencilDraw(int enabled) override;
 		virtual void EnableStencil(bool enabled) override;
 		virtual float GetPixelDepth(int x, int y) override;
 

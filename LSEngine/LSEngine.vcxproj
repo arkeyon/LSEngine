@@ -163,6 +163,7 @@
     <ClInclude Include="src\LSEngine\ECS\Component.h" />
     <ClInclude Include="src\LSEngine\ECS\ECSManager.h" />
     <ClInclude Include="src\LSEngine\ECS\Entity.h" />
+    <ClInclude Include="src\LSEngine\ECS\Objects\ECS.h" />
     <ClInclude Include="src\LSEngine\ECS\System.h" />
     <ClInclude Include="src\LSEngine\Events\ApplicationEvent.h" />
     <ClInclude Include="src\LSEngine\Events\Event.h" />
@@ -211,6 +212,7 @@
     <ClCompile Include="src\LSEngine\ECS\Component.cpp" />
     <ClCompile Include="src\LSEngine\ECS\ECSManager.cpp" />
     <ClCompile Include="src\LSEngine\ECS\Entity.cpp" />
+    <ClCompile Include="src\LSEngine\ECS\Objects\ECS.cpp" />
     <ClCompile Include="src\LSEngine\ECS\System.cpp" />
     <ClCompile Include="src\LSEngine\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\LSEngine\ImGui\ImGuiLayer.cpp" />

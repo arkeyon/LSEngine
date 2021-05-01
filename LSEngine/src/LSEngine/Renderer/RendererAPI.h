@@ -22,7 +22,7 @@ namespace LSE {
 		virtual void EnableDepthTest(bool enabled) = 0;
 		virtual void EnableFaceCulling(bool enabled) = 0;
 		virtual void EnableWireframe(bool enabled) = 0;
-		virtual void StencilDraw(bool enabled) = 0;
+		virtual void StencilDraw(int enabled) = 0;
 		virtual void EnableStencil(bool enabled) = 0;
 		virtual float GetPixelDepth(int x, int y) = 0;
 

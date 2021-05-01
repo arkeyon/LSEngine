@@ -15,7 +15,7 @@ namespace LSE {
 		inline static void EnableDepthTest(bool enabled = true) { s_RenderAPI->EnableDepthTest(enabled); }
 		inline static void EnableFaceCulling(bool enabled = true) { s_RenderAPI->EnableFaceCulling(enabled); }
 		inline static void EnabledWireframe(bool enabled = true) { s_RenderAPI->EnableWireframe(enabled); };
-		inline static void StencilDraw(bool enabled = true) { s_RenderAPI->StencilDraw(enabled); };
+		inline static void StencilDraw(int enabled = 0) { s_RenderAPI->StencilDraw(enabled); };
 		inline static void EnableStencil(bool enabled = true) { s_RenderAPI->EnableStencil(enabled); };
 		inline static float GetPixelDepth(int x, int y) { return s_RenderAPI->GetPixelDepth(x, y); };
 

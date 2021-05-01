@@ -43,22 +43,36 @@ namespace LSE {
 		else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
-	void OpenGLRendererAPI::StencilDraw(bool enabled)
+	void OpenGLRendererAPI::StencilDraw(int enabled)
 	{
-		if (enabled)
+		if (enabled == 0)
 		{
+			glEnable(GL_STENCIL_TEST);
 			glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 			glDepthMask(GL_FALSE);
-			glStencilFunc(GL_ALWAYS, 0, 0xFF);
-			glStencilOp(GL_KEEP, GL_KEEP, GL_INVERT);
-			glStencilMask(1);
+			//glStencilMask(0xFF);
+			glStencilFunc(GL_NEVER, 0, 0xFF);
+			glStencilOp(GL_INVERT, GL_KEEP, GL_KEEP);
+		}
+		else if (enabled == 1)
+		{
+			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+			glDepthMask(GL_TRUE);
+			//glStencilMask(0x00);
+			glStencilFunc(GL_LEQUAL, 1, 0xFF);
+			glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+		}
+		else if (enabled == 2)
+		{
+			glDisable(GL_STENCIL_TEST);
+			glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+			glDepthMask(GL_TRUE);
+			//glStencilMask(0x00);
+			glClear(GL_DEPTH_BUFFER_BIT);
 		}
 		else
 		{
 			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-			glDepthMask(GL_TRUE);
-			glStencilFunc(GL_LEQUAL, 1, 0xFF);
-			glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 		}
 	}
 

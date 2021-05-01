@@ -131,8 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Workspace1App.cpp" />
-    <ClCompile Include="src\Workspace1App2.cpp" />
+    <ClCompile Include="src\Logic.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LSEngine\LSEngine.vcxproj">

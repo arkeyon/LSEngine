@@ -131,10 +131,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\ECS.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\ECS.cpp" />
     <ClCompile Include="src\Sandbox2.cpp" />
     <ClCompile Include="src\SandboxApp.cpp" />
   </ItemGroup>

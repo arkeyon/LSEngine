@@ -206,7 +206,7 @@ public:
 
 		{
 			m_TileModel = MakeRef<LSE::Model>();
-			Ref<Mesh> tilemesh = MeshFactory::generatePlaneCorner(glm::vec3(1.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
+			Ref<Mesh> tilemesh = MeshFactory::planeCorner(glm::vec3(1.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
 			tilemesh->Transform(glm::translate(glm::mat4(1.f), glm::vec3(0.5f, 0.5f, 0.f)) * glm::rotate(glm::mat4(1.f), -glm::half_pi<float>(), glm::vec3(0.f, 0.f, 1.f)) * glm::scale(glm::mat4(1.f), glm::vec3(0.9f, 0.9f, 1.f)));
 			m_TileModel->AddMesh(tilemesh);
 		}
@@ -322,6 +322,7 @@ class Sandbox : public LSE::Application
 {
 public:
 	Sandbox()
+		:LSE::Application(1280, 720)
 	{
 		PushLayer(MakeScope<ExampleLayer>());
 	}

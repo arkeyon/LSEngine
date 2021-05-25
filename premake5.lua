@@ -133,6 +133,60 @@ workspace "LSEngine"
             runtime "Release"
             optimize "on"
 
+	project "MathWorkspace"
+        location "MathWorkspace"
+        kind "ConsoleApp"
+        language "C++"
+        cppdialect "C++17"
+        staticruntime "on"
+    
+        targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+        objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+        
+        files
+        {
+            "%{prj.name}/src/**.h",
+            "%{prj.name}/src/**.cpp",
+        }
+        
+        includedirs
+        {
+            "LSEngine/src",
+            "%{IncludeDir.spdlog}",
+            "%{IncludeDir.GLM}",
+            "%{IncludeDir.imgui}",
+            "%{IncludeDir.FreeImage}",
+            "%{IncludeDir.stb}"
+        }
+        
+        links
+        {
+            "LSEngine"
+        }
+    
+        filter "system:windows"
+            systemversion "latest"
+        
+            defines
+            {
+                "LSE_PLATFORM_WINDOWS",
+             }
+        
+        filter "configurations:Debug"
+            defines "LSE_DEBUG"
+            runtime "Debug"
+            symbols "on"
+        
+        filter "configurations:Release"
+            defines "LSE_RELEASE"
+            runtime "Release"
+            optimize "on"
+        
+        filter "configurations:Dist"
+            defines "LSE_DIST"
+            runtime "Release"
+            optimize "on"
+
     project "LSEngine"
         location "LSEngine"
         kind "StaticLib"

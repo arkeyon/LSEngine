@@ -15,10 +15,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F4C124E3-60A1-A37E-69B9-2E55D5170AE0}</ProjectGuid>
+    <ProjectGuid>{DE7D513B-4A3E-CD71-1379-16EF7FF8114E}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Sandbox</RootNamespace>
+    <RootNamespace>MathWorkspace</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -55,23 +55,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\bin\Debug-windows-x86_64\Sandbox\</OutDir>
-    <IntDir>..\bin-int\Debug-windows-x86_64\Sandbox\</IntDir>
-    <TargetName>Sandbox</TargetName>
+    <OutDir>..\bin\Debug-windows-x86_64\MathWorkspace\</OutDir>
+    <IntDir>..\bin-int\Debug-windows-x86_64\MathWorkspace\</IntDir>
+    <TargetName>MathWorkspace</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\bin\Release-windows-x86_64\Sandbox\</OutDir>
-    <IntDir>..\bin-int\Release-windows-x86_64\Sandbox\</IntDir>
-    <TargetName>Sandbox</TargetName>
+    <OutDir>..\bin\Release-windows-x86_64\MathWorkspace\</OutDir>
+    <IntDir>..\bin-int\Release-windows-x86_64\MathWorkspace\</IntDir>
+    <TargetName>MathWorkspace</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\bin\Dist-windows-x86_64\Sandbox\</OutDir>
-    <IntDir>..\bin-int\Dist-windows-x86_64\Sandbox\</IntDir>
-    <TargetName>Sandbox</TargetName>
+    <OutDir>..\bin\Dist-windows-x86_64\MathWorkspace\</OutDir>
+    <IntDir>..\bin-int\Dist-windows-x86_64\MathWorkspace\</IntDir>
+    <TargetName>MathWorkspace</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -131,13 +131,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Procedural.cpp" />
-    <ClCompile Include="src\Sandbox2.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\LSEngine\LSEngine.vcxproj">
       <Project>{7AF2543D-66BF-AF48-8FD8-9DF07B04E5D6}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Sandbox2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

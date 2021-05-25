@@ -170,6 +170,7 @@
     <ClInclude Include="src\LSEngine\Events\KeyEvent.h" />
     <ClInclude Include="src\LSEngine\Events\MouseEvent.h" />
     <ClInclude Include="src\LSEngine\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\LSEngine\Maths\LSEMath.h" />
     <ClInclude Include="src\LSEngine\Maths\Shapes\Curve.h" />
     <ClInclude Include="src\LSEngine\Maths\Vector.h" />
     <ClInclude Include="src\LSEngine\Renderer\Buffer.h" />

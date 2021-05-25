@@ -16,6 +16,9 @@
     <Filter Include="src\LSEngine\ECS">
       <UniqueIdentifier>{3B3A59FE-2733-7850-5065-5DD53CBD575C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\LSEngine\ECS\Objects">
+      <UniqueIdentifier>{F4E3405F-E008-90DF-0954-756FF5D78EFD}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\LSEngine\Events">
       <UniqueIdentifier>{35F84D2F-A159-2B3D-2AC7-71EF962762FC}</UniqueIdentifier>
     </Filter>
@@ -48,9 +51,6 @@
     </Filter>
     <Filter Include="vendor\stb">
       <UniqueIdentifier>{8BD3C5A8-778B-07F6-E092-E051CC69A2E6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\LSEngine\ECS\Objects">
-      <UniqueIdentifier>{5a3c9854-4c16-4839-8cef-1abdaa23bef7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +113,9 @@
     </ClInclude>
     <ClInclude Include="src\LSEngine\ECS\Entity.h">
       <Filter>src\LSEngine\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\ECS\Objects\ECS.h">
+      <Filter>src\LSEngine\ECS\Objects</Filter>
     </ClInclude>
     <ClInclude Include="src\LSEngine\ECS\System.h">
       <Filter>src\LSEngine\ECS</Filter>
@@ -213,7 +216,7 @@
     <ClInclude Include="src\lsepch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\LSEngine\ECS\Objects\ECS.h" />
+    <ClInclude Include="src\LSEngine\Maths\LSEMath.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Core\Application.cpp">
@@ -254,6 +257,9 @@
     </ClCompile>
     <ClCompile Include="src\LSEngine\ECS\Entity.cpp">
       <Filter>src\LSEngine\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\ECS\Objects\ECS.cpp">
+      <Filter>src\LSEngine\ECS\Objects</Filter>
     </ClCompile>
     <ClCompile Include="src\LSEngine\ECS\System.cpp">
       <Filter>src\LSEngine\ECS</Filter>
@@ -336,6 +342,5 @@
     <ClCompile Include="vendor\stb\stb_image.cpp">
       <Filter>vendor\stb</Filter>
     </ClCompile>
-    <ClCompile Include="src\LSEngine\ECS\Objects\ECS.cpp" />
   </ItemGroup>
 </Project>

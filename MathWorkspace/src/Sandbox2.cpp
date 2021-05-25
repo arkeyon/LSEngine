@@ -1,4 +1,4 @@
-/*
+
 #include <LSEngine.h>
 
 #include "imgui.h"
@@ -10,6 +10,7 @@
 #include "LSEngine/Renderer/Meshfactory.h"
 #include "LSEngine/Renderer/Renderer.h"
 #include "LSEngine/Core/Camera/PerspectiveCameraController.h"
+#include "LSEngine/Core/Camera/OrthographicCameraController.h"
 #include "LSEngine/Core/Camera/OrthographicCamera.h"
 #include "LSEngine/Renderer/Shader.h"
 #include "LSEngine/Renderer/Texture.h"
@@ -18,20 +19,22 @@
 #include <glm/gtx/color_space.hpp>
 #include <glm/gtc/quaternion.hpp>
 
-#include "LSEngine/Renderer/PlanetFactory.h"
-
 #include <list>
+#include <math.h>
 
-#include "ECS.h"
+#include "LSEngine/ECS/Entity.h"
+#include "LSEngine/ECS/Objects/ECS.h"
 
-#define BIT(x) (1L << x)
+#include "LSEngine/Maths/LSEMath.h"
 
 class ExampleLayer : public LSE::Layer
 {
 private:
+	LSE::Ref<LSE::Model> m_Mesh;
+
 	LSE::Ref<LSE::Shader> m_Shader;
-	LSE::Ref<LSE::PerspectiveCamera> m_Camera;
-	LSE::Ref<LSE::PerspectiveCameraController> m_CameraController;
+	LSE::Ref<LSE::OrthographicCamera> m_Camera;
+	LSE::Ref<LSE::OrthographicCameraController> m_CameraController;
 
 	bool m_Paused = false;
 
@@ -41,8 +44,7 @@ private:
 	float m_Frames = 0.f;
 	float m_Time = 0.f;
 
-	LSE::Ref<WorldEntity> m_Skybox;
-	LSE::Ref<WorldEntity> m_Sphere;
+	LSE::Ref<WorldEntity> m_MeshEntity;
 
 public:
 	ExampleLayer()
@@ -53,31 +55,40 @@ public:
 		RendererAPI::SetAPI(RendererAPI::API::OpenGL);
 		Renderer::Init();
 
-		m_Camera = MakeRef<PerspectiveCamera>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 10000.f);
-		m_CameraController = MakeRef<PerspectiveCameraController>(m_Camera);
+		m_Camera = MakeRef<OrthographicCamera>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), -10.f, 10.f, -10.f, 10.f, -1.f, 1.f);
+		m_CameraController = MakeRef<OrthographicCameraController>(m_Camera);
 
 		m_Shader.reset(Shader::Create("assets/shaders/simpleshader.glsl"));
 
-		LSE::Ref<LSE::Model> skybox = MakeRef<Model>();
-		LSE::Ref<LSE::Model> sphere = MakeRef<Model>();
-
+		m_Mesh = MakeRef<Model>();
+		
 		{
-			Ref<Mesh> skyboxmesh = MeshFactory::rectCorner(200.f, 200.f, 200.f);
-			skyboxmesh->Invert();
-			skybox->AddMesh(skyboxmesh);
+			MeshFactory::parametricfunc_t func = [](const float& t)
+			{
+				return glm::vec3(t, t * t, 0.f);
+			};
+		
+			MeshFactory::parametriccolourfunc_t colorfunc = [](const float& t)
+			{
+				return glm::vec4(1.f, 1.f, 1.f, 1.f);
+			};
+		
+			//Ref<Mesh> mesh = MeshFactory::paramatricSurface(surface, -5.f, 5.f, 400, 0.f, 1.f, 3, colorsurface);
+			Ref<Mesh> mesh = MeshFactory::paramatric(func, -10.f, 10.f, 500, colorfunc);
+
+			m_Mesh->AddMesh(mesh);
 		}
 
-		m_Skybox = ECS->CreateEntity<WorldEntity>(glm::vec3(0.f, 0.f, 0.f), glm::angleAxis(0.f, glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), skybox);
-		m_Sphere = ECS->CreateEntity<WorldEntity>(glm::vec3(100.f, 100.f, 100.f), glm::angleAxis(0.f, glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), PlanetFactory::Planet(80.f));
+		m_MeshEntity = MakeRef<WorldEntity>(glm::vec3(0.f, 0.f, 0.f), glm::angleAxis(0.f, glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), m_Mesh);
 
 		m_TestTexture = Texture2D::Create("assets/textures/BLANK.png");
 
 		auto& window = Application::Get().GetWindow();
 		window.SetCursorState(false);
 
-		RenderCommand::EnableFaceCulling(true);
+		RenderCommand::EnableFaceCulling(false);
 		RenderCommand::EnableDepthTest(true);
-		//RenderCommand::EnabledWireframe(true);
+		RenderCommand::SetClearColour(glm::vec4(0.f, 0.f, 0.f, 1.f));
 	}
 
 	void OnUpdate(float delta) override
@@ -101,17 +112,24 @@ public:
 
 		RenderCommand::Clear();
 
-		//TODO: Put in renderer
-		
 		m_Shader->SetUniformi("tex", 0);
 		m_TestTexture->Bind(0);
 
 		Renderer::BeginScene(m_Camera);
 
-		//Renderer::Submit(m_Shader, m_Skybox->GetComponent<Renderable>()->m_Model);
-		//RenderCommand::EnabledWireframe(true);
-		Renderer::Submit(m_Shader, m_Sphere->GetComponent<Renderable>()->m_Model, m_Sphere->GetComponent<ReferenceFrame>()->getModelMat());
-		//RenderCommand::EnabledWireframe(false);
+		glm::mat4 m = glm::rotate(glm::mat4(1.f), -glm::half_pi<float>(), glm::vec3(0.f, 0.f, 1.f));
+
+		float b = m[0][0];
+
+		auto xb = solveQuadratic(m[0][1], m[0][0] - 1.f, 0.f);
+		auto yb = solveQuadratic(m[1][1] - 1.f, m[1][0], 0.f);
+
+		LSE_TRACE("{0}\t{1}\t{2}\t{3}", xb[0], xb[1], yb[0], yb[1]);
+
+		Renderer::Submit(m_Shader, m_MeshEntity->GetComponent<Renderable>()->m_Model, glm::mat4(1.f));
+		Renderer::Submit(m_Shader, m_MeshEntity->GetComponent<Renderable>()->m_Model, m);
+
+		Renderer::EndScene();
 	}
 
 	void OnImGuiRender() override
@@ -158,7 +176,7 @@ public:
 
 	~Sandbox()
 	{
-		
+
 	}
 };
 
@@ -166,4 +184,3 @@ LSE::Application* LSE::CreateApplication()
 {
 	return new Sandbox();
 }
-*/

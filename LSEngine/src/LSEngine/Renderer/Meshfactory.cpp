@@ -1228,6 +1228,8 @@ namespace LSE
 		{
 			mesh->m_Vertices[i].a_Position = curvefunc(tstart + (tend - tstart) * (float)i / (float)(tsteps - 1));
 			mesh->m_Vertices[i].a_Colour = curvecolourfunc(tstart + (tend - tstart) * (float)i / (float)(tsteps - 1));
+			mesh->m_Vertices[i].a_Tex = -1.f;
+			mesh->m_Vertices[i].a_Normal = glm::vec3(0.f, 0.f, 1.f);
 		}
 
 		for (int i = 0; i < tsteps - 1; i++)

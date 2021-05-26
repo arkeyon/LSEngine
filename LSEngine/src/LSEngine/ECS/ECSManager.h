@@ -41,6 +41,18 @@ namespace LSE {
 		}
 
 		template <class T>
+		const Ref<T> GetComponent(Entity* parent) const
+		{
+			for (const auto comp : m_Components)
+			{
+				if (!comp) continue;
+				if (comp->GetType() != T::StaticGetType()) continue;
+				if (comp->m_Parent.get() == parent) return std::dynamic_pointer_cast<T>(comp);
+			}
+			return Ref<T>((T*)nullptr);
+		}
+
+		template <class T>
 		void DeleteComponent(Entity* parent)
 		{
 			Ref<T> comp = GetComponent<T>(parent);s

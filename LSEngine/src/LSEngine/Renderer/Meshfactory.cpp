@@ -1220,6 +1220,43 @@ namespace LSE
 		return mesh;
 	}
 
+	Ref<Mesh> MeshFactory::mark()
+	{
+		Ref<Mesh> mesh = MakeRef<Mesh>(8, 8);
+
+		for (int i = 0; i < 4; i++)
+		{
+			float theta = i / 4.f * glm::pi<float>();
+			float x = cosf(theta) * 0.1f;
+			float y = sinf(theta) * 0.1f;
+
+			mesh->m_Vertices[i * 2].a_Position = glm::vec3(x, y, 0.f);
+			mesh->m_Vertices[i * 2].a_Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+			mesh->m_Vertices[i * 2 + 1].a_Position = glm::vec3(-x, -y, 0.f);
+			mesh->m_Vertices[i * 2 + 1].a_Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+		}
+
+		for (int i = 0; i < 8; i++)
+		{
+			mesh->m_Indices[i] = i;
+		}
+
+		return mesh;
+	}
+
+	Ref<Mesh> MeshFactory::line(const glm::vec3& start, const glm::vec3& end)
+	{
+		Ref<Mesh> mesh = MakeRef<Mesh>(2, 2);
+
+		mesh->m_Vertices[0].a_Position = start;
+		mesh->m_Vertices[0].a_Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+		mesh->m_Vertices[1].a_Position = end;
+		mesh->m_Vertices[1].a_Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+
+		mesh->m_Indices[0] = 0;
+		mesh->m_Indices[1] = 1;
+	}
+
 	Ref<Mesh> MeshFactory::paramatric(parametricfunc_t curvefunc, float tstart, float tend, const int tsteps, parametriccolourfunc_t curvecolourfunc)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(tsteps, 2 * tsteps - 2);

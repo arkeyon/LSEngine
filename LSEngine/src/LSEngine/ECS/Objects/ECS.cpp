@@ -14,7 +14,7 @@ Renderable::Renderable(LSE::Entity* parent, LSE::Ref<LSE::Model> model)
 
 }
 
-glm::mat4 ReferenceFrame::getModelMat()
+glm::mat4 ReferenceFrame::getModelMat() const
 {
 	return glm::translate(glm::mat4(1.f), m_Pos) * glm::scale(glm::mat4_cast(m_Orin), m_Scale);
 }

@@ -41,7 +41,7 @@ public:
 	glm::quat m_Orin;
 	glm::vec3 m_Scale;
 
-	glm::mat4 getModelMat();
+	glm::mat4 getModelMat() const;
 
 	ReferenceFrame() = default;
 

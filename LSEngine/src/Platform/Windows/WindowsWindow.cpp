@@ -157,8 +157,8 @@ namespace LSE {
 				data.EventCallback(e);
 			});
 
-		if (glfwRawMouseMotionSupported()) glfwSetInputMode(m_Window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
-		else LSE_CORE_WARN("Raw input not supported");
+		//if (glfwRawMouseMotionSupported()) glfwSetInputMode(m_Window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+		//else LSE_CORE_WARN("Raw input not supported");
 
 		glfwSetErrorCallback(GLFWErrorCallback);
 	}

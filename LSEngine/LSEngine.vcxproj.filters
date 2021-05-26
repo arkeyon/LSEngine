@@ -135,6 +135,9 @@
     <ClInclude Include="src\LSEngine\ImGui\ImGuiLayer.h">
       <Filter>src\LSEngine\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="src\LSEngine\Maths\LSEMath.h">
+      <Filter>src\LSEngine\Maths</Filter>
+    </ClInclude>
     <ClInclude Include="src\LSEngine\Maths\Shapes\Curve.h">
       <Filter>src\LSEngine\Maths\Shapes</Filter>
     </ClInclude>
@@ -216,7 +219,6 @@
     <ClInclude Include="src\lsepch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\LSEngine\Maths\LSEMath.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Core\Application.cpp">

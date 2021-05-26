@@ -30,7 +30,9 @@
 class ExampleLayer : public LSE::Layer
 {
 private:
-	LSE::Ref<LSE::Model> m_Mesh;
+	LSE::Ref<LSE::Model> m_ParabolaModel;
+	LSE::Ref<LSE::Model> m_LineModel;
+	LSE::Ref<LSE::Model> m_Mark;
 
 	LSE::Ref<LSE::Shader> m_Shader;
 	LSE::Ref<LSE::OrthographicCamera> m_Camera;
@@ -60,7 +62,13 @@ public:
 
 		m_Shader.reset(Shader::Create("assets/shaders/simpleshader.glsl"));
 
-		m_Mesh = MakeRef<Model>();
+		m_ParabolaModel = MakeRef<Model>();
+
+		m_LineModel = MakeRef<Model>();
+		m_LineModel->AddMesh(MeshFactory::line(glm::vec3(-5.f, 0.f, 0.f), glm::vec3(5.f, 0.f, 0.f)));
+
+		m_Mark = MakeRef<Model>();
+		m_Mark->AddMesh(MeshFactory::mark());
 		
 		{
 			MeshFactory::parametricfunc_t func = [](const float& t)
@@ -76,10 +84,10 @@ public:
 			//Ref<Mesh> mesh = MeshFactory::paramatricSurface(surface, -5.f, 5.f, 400, 0.f, 1.f, 3, colorsurface);
 			Ref<Mesh> mesh = MeshFactory::paramatric(func, -10.f, 10.f, 500, colorfunc);
 
-			m_Mesh->AddMesh(mesh);
+			m_ParabolaModel->AddMesh(mesh);
 		}
 
-		m_MeshEntity = MakeRef<WorldEntity>(glm::vec3(0.f, 0.f, 0.f), glm::angleAxis(0.f, glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), m_Mesh);
+		m_MeshEntity = MakeRef<WorldEntity>(glm::vec3(0.f, 0.f, 0.f), glm::angleAxis(0.f, glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), m_ParabolaModel);
 
 		m_TestTexture = Texture2D::Create("assets/textures/BLANK.png");
 
@@ -88,8 +96,13 @@ public:
 
 		RenderCommand::EnableFaceCulling(false);
 		RenderCommand::EnableDepthTest(true);
-		RenderCommand::SetClearColour(glm::vec4(0.f, 0.f, 0.f, 1.f));
+		RenderCommand::SetClearColour(glm::vec4(0.3f, 0.3f, 0.3f, 1.f));
 	}
+
+	float rot = -glm::half_pi<float>();
+
+	glm::mat4 A = glm::translate(glm::mat4(1.f), glm::vec3(-0.8f, -0.8f, 0.f));
+	glm::mat4 B = glm::rotate(glm::mat4(1.f), rot, glm::vec3(0.f, 0.f, 1.f));
 
 	void OnUpdate(float delta) override
 	{
@@ -117,17 +130,25 @@ public:
 
 		Renderer::BeginScene(m_Camera);
 
-		glm::mat4 m = glm::rotate(glm::mat4(1.f), -glm::half_pi<float>(), glm::vec3(0.f, 0.f, 1.f));
+		B = glm::rotate(glm::mat4(1.f), rot += 0.001f, glm::vec3(0.f, 0.f, 1.f));
+		
+		glm::vec2 t1 = find(glm::vec2(5.f, 5.f));
+		glm::vec2 t2 = find(glm::vec2(5.f, -5.f));
+		glm::vec2 t3 = find(glm::vec2(-5.f, 5.f));
+		glm::vec2 t4 = find(glm::vec2(-5.f, -5.f));
 
-		float b = m[0][0];
+		glm::vec4 T1(t1[0], t1[0] * t1[0], 0.f, 1.f);
+		glm::vec4 T2(t2[0], t2[0] * t2[0], 0.f, 1.f);
+		glm::vec4 T3(t3[0], t3[0] * t3[0], 0.f, 1.f);
+		glm::vec4 T4(t4[0], t4[0] * t4[0], 0.f, 1.f);
 
-		auto xb = solveQuadratic(m[0][1], m[0][0] - 1.f, 0.f);
-		auto yb = solveQuadratic(m[1][1] - 1.f, m[1][0], 0.f);
+		Renderer::Submit(m_Shader, m_Mark, glm::translate(glm::mat4(1.f), glm::vec3(A * T1)));
+		Renderer::Submit(m_Shader, m_Mark, glm::translate(glm::mat4(1.f), glm::vec3(A * T2)));
+		Renderer::Submit(m_Shader, m_Mark, glm::translate(glm::mat4(1.f), glm::vec3(A * T3)));
+		Renderer::Submit(m_Shader, m_Mark, glm::translate(glm::mat4(1.f), glm::vec3(A * T4)));
 
-		LSE_TRACE("{0}\t{1}\t{2}\t{3}", xb[0], xb[1], yb[0], yb[1]);
-
-		Renderer::Submit(m_Shader, m_MeshEntity->GetComponent<Renderable>()->m_Model, glm::mat4(1.f));
-		Renderer::Submit(m_Shader, m_MeshEntity->GetComponent<Renderable>()->m_Model, m);
+		Renderer::Submit(m_Shader, m_MeshEntity->GetComponent<Renderable>()->m_Model, glm::mat4(A));
+		Renderer::Submit(m_Shader, m_MeshEntity->GetComponent<Renderable>()->m_Model, glm::mat4(B));
 
 		Renderer::EndScene();
 	}

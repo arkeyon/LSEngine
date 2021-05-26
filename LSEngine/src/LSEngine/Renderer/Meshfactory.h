@@ -40,6 +40,9 @@ namespace LSE {
 		typedef glm::vec4(*parametriccolourfunc_t)(const float& t);
 		static Ref<Mesh> paramatric(parametricfunc_t curvefunc, float tstart = 0.f, float tend = 1.f, const int tsteps = 10, parametriccolourfunc_t curvecolourfunc = [](const float& t) { return glm::vec4(1.f, 1.f, 1.f, 1.f); });
 		
+		static Ref<Mesh> mark();
+		static Ref<Mesh> line(const glm::vec3& start, const glm::vec3& end);
+
 		typedef glm::vec3(*surfacefunc_t)(const float& u, const float& v);
 		typedef glm::vec4(*surfacecolourfunc_t)(const float& u, const float& v);
 		static Ref<Mesh> paramatricSurface(surfacefunc_t curvefunc, float ustart = 0.f, float uend = 1.f, const int usteps = 10, float vstart = 0.f, float vend = 1.f, const int vsteps = 10, surfacecolourfunc_t curvecolourfunc = [](const float& u, const float& v) { return glm::vec4(1.f, 1.f, 1.f, 1.f); });

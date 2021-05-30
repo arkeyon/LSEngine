@@ -27,11 +27,15 @@
 
 #include "LSEngine/Maths/LSEMath.h"
 
+#include "LSEngine/Maths/Curve.h"
+
 class ExampleLayer : public LSE::Layer
 {
 private:
-	LSE::Ref<LSE::Model> m_ParabolaModel;
-	LSE::Ref<LSE::Model> m_LineModel;
+	LSE::Ref<LSE::Maths::Parabola> m_Parabola1;
+	LSE::Ref<LSE::Maths::Parabola> m_Parabola2;
+	LSE::Ref<LSE::Maths::Line> m_Line1;
+	LSE::Ref<LSE::Maths::Line> m_Line2;
 	LSE::Ref<LSE::Model> m_Mark;
 
 	LSE::Ref<LSE::Shader> m_Shader;
@@ -46,48 +50,29 @@ private:
 	float m_Frames = 0.f;
 	float m_Time = 0.f;
 
-	LSE::Ref<WorldEntity> m_MeshEntity;
-
 public:
 	ExampleLayer()
 		: Layer("ExampleLayer")
 	{
 		using namespace LSE;
+		using namespace LSE::Maths;
 
 		RendererAPI::SetAPI(RendererAPI::API::OpenGL);
 		Renderer::Init();
 
-		m_Camera = MakeRef<OrthographicCamera>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), -10.f, 10.f, -10.f, 10.f, -1.f, 1.f);
+		m_Camera = MakeRef<OrthographicCamera>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), -10.f * 16.f / 9.f, 10.f * 16.f / 9.f, -10.f, 10.f, -1.f, 1.f);
 		m_CameraController = MakeRef<OrthographicCameraController>(m_Camera);
 
 		m_Shader.reset(Shader::Create("assets/shaders/simpleshader.glsl"));
 
-		m_ParabolaModel = MakeRef<Model>();
-
-		m_LineModel = MakeRef<Model>();
-		m_LineModel->AddMesh(MeshFactory::line(glm::vec3(-5.f, 0.f, 0.f), glm::vec3(5.f, 0.f, 0.f)));
-
 		m_Mark = MakeRef<Model>();
 		m_Mark->AddMesh(MeshFactory::mark());
-		
-		{
-			MeshFactory::parametricfunc_t func = [](const float& t)
-			{
-				return glm::vec3(t, t * t, 0.f);
-			};
-		
-			MeshFactory::parametriccolourfunc_t colorfunc = [](const float& t)
-			{
-				return glm::vec4(1.f, 1.f, 1.f, 1.f);
-			};
-		
-			//Ref<Mesh> mesh = MeshFactory::paramatricSurface(surface, -5.f, 5.f, 400, 0.f, 1.f, 3, colorsurface);
-			Ref<Mesh> mesh = MeshFactory::paramatric(func, -10.f, 10.f, 500, colorfunc);
 
-			m_ParabolaModel->AddMesh(mesh);
-		}
+		m_Parabola1 = MakeRef<Parabola>(glm::vec3(0.f, -7.f, 0.f), glm::angleAxis(0.2f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(1.f, 1.f, 1.f));
+		m_Parabola2 = MakeRef<Parabola>(glm::vec3(-6.f, -2.f, 0.f), glm::angleAxis(-1.1f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(2.f, 1.f, 1.f));
 
-		m_MeshEntity = MakeRef<WorldEntity>(glm::vec3(0.f, 0.f, 0.f), glm::angleAxis(0.f, glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), m_ParabolaModel);
+		m_Line1 = MakeRef<Line>(glm::vec3(2.f, -5.f, 0.f), glm::angleAxis(0.6f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(1.f, 1.f, 1.f));
+		m_Line2 = MakeRef<Line>(glm::vec3(-3.f, -4.f, 0.f), glm::angleAxis(-0.1f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(2.f, 1.f, 1.f));
 
 		m_TestTexture = Texture2D::Create("assets/textures/BLANK.png");
 
@@ -99,14 +84,10 @@ public:
 		RenderCommand::SetClearColour(glm::vec4(0.3f, 0.3f, 0.3f, 1.f));
 	}
 
-	float rot = -glm::half_pi<float>();
-
-	glm::mat4 A = glm::translate(glm::mat4(1.f), glm::vec3(-0.8f, -0.8f, 0.f));
-	glm::mat4 B = glm::rotate(glm::mat4(1.f), rot, glm::vec3(0.f, 0.f, 1.f));
-
 	void OnUpdate(float delta) override
 	{
 		using namespace LSE;
+		using namespace LSE::Maths;
 
 		if (!m_Paused)
 		{
@@ -130,25 +111,32 @@ public:
 
 		Renderer::BeginScene(m_Camera);
 
-		B = glm::rotate(glm::mat4(1.f), rot += 0.001f, glm::vec3(0.f, 0.f, 1.f));
-		
-		glm::vec2 t1 = find(glm::vec2(5.f, 5.f));
-		glm::vec2 t2 = find(glm::vec2(5.f, -5.f));
-		glm::vec2 t3 = find(glm::vec2(-5.f, 5.f));
-		glm::vec2 t4 = find(glm::vec2(-5.f, -5.f));
+		//m_Parabola->intercept((const LSE::Maths::ParametricCurve&)m_Line);
 
-		glm::vec4 T1(t1[0], t1[0] * t1[0], 0.f, 1.f);
-		glm::vec4 T2(t2[0], t2[0] * t2[0], 0.f, 1.f);
-		glm::vec4 T3(t3[0], t3[0] * t3[0], 0.f, 1.f);
-		glm::vec4 T4(t4[0], t4[0] * t4[0], 0.f, 1.f);
+		std::array<Ref<ParametricCurve>, 4> curves =
+		{
+			m_Parabola1,
+			m_Parabola2,
+			m_Line1,
+			m_Line2
+		};
 
-		Renderer::Submit(m_Shader, m_Mark, glm::translate(glm::mat4(1.f), glm::vec3(A * T1)));
-		Renderer::Submit(m_Shader, m_Mark, glm::translate(glm::mat4(1.f), glm::vec3(A * T2)));
-		Renderer::Submit(m_Shader, m_Mark, glm::translate(glm::mat4(1.f), glm::vec3(A * T3)));
-		Renderer::Submit(m_Shader, m_Mark, glm::translate(glm::mat4(1.f), glm::vec3(A * T4)));
+		std::vector<glm::vec3> solutions;
 
-		Renderer::Submit(m_Shader, m_MeshEntity->GetComponent<Renderable>()->m_Model, glm::mat4(A));
-		Renderer::Submit(m_Shader, m_MeshEntity->GetComponent<Renderable>()->m_Model, glm::mat4(B));
+		{
+			auto s = intercept(m_Parabola1, m_Parabola2);
+			solutions.insert(solutions.end(), s.begin(), s.end());
+		}
+
+		for (auto s : solutions)
+		{
+			Renderer::Submit(m_Shader, m_Mark, glm::translate(glm::mat4(1.f), s));
+		}
+
+		Renderer::Submit(m_Shader, m_Parabola1->GetComponent<Renderable>()->m_Model, m_Parabola1->GetComponent<ReferenceFrame>()->getModelMat());
+		Renderer::Submit(m_Shader, m_Parabola2->GetComponent<Renderable>()->m_Model, m_Parabola2->GetComponent<ReferenceFrame>()->getModelMat());
+		Renderer::Submit(m_Shader, m_Line1->GetComponent<Renderable>()->m_Model, m_Line1->GetComponent<ReferenceFrame>()->getModelMat());
+		Renderer::Submit(m_Shader, m_Line2->GetComponent<Renderable>()->m_Model, m_Line2->GetComponent<ReferenceFrame>()->getModelMat());
 
 		Renderer::EndScene();
 	}

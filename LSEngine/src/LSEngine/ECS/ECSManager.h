@@ -41,7 +41,7 @@ namespace LSE {
 		}
 
 		template <class T>
-		const Ref<T> GetComponent(Entity* parent) const
+		const Ref<T> GetComponent(const Entity* parent) const
 		{
 			for (const auto comp : m_Components)
 			{

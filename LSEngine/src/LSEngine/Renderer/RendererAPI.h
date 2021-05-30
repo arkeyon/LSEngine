@@ -2,6 +2,7 @@
 
 #include "LSEngine/Core/Core.h"
 #include "LSEngine/Renderer/VertexArray.h"
+#include "LSEngine/Renderer/RenderPrimitives.h"
 
 #include <glm/glm.hpp>
 
@@ -28,7 +29,7 @@ namespace LSE {
 
 		virtual void SetViewPort(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
 
-		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray) = 0;
+		virtual void DrawIndexed(const Ref<VertexArray>& vertexArray, RendererPrimitives primitives = RendererPrimitives::TRIANGLES) = 0;
 
 		inline static API GetAPI() { return s_API; }
 		inline static void SetAPI(API api) { s_API = api; }

@@ -3,17 +3,13 @@
 #include "LSEngine/Core/Core.h"
 #include "LSEngine/Renderer/BufferLayout.h"
 #include "LSEngine/Renderer/Material.h"
+#include "LSEngine/Renderer/RenderPrimitives.h"
 
 #include <array>
 
 #include <glm/glm.hpp>
 
 namespace LSE {
-
-	enum class RendererPrimitives
-	{
-		POINTS = 1, LINES = 2, TRIANGLES = 3, QUADS = 4,
-	};
 
 	struct vertex_t
 	{
@@ -28,8 +24,8 @@ namespace LSE {
 
 	struct Mesh
 	{
-		Mesh(const int32_t verticesCount, const int32_t indicesCount)
-			: m_VerticesCount(verticesCount), m_IndicesCount(indicesCount), m_Vertices(new vertex_t[verticesCount]), m_Indices(new index_t[m_IndicesCount])
+		Mesh(const int32_t verticesCount, const int32_t indicesCount, RendererPrimitives primitives = RendererPrimitives::TRIANGLES)
+			: m_VerticesCount(verticesCount), m_IndicesCount(indicesCount), m_Vertices(new vertex_t[verticesCount]), m_Indices(new index_t[m_IndicesCount]), m_Primitive(primitives)
 		{
 
 		}
@@ -41,7 +37,7 @@ namespace LSE {
 		int32_t m_VerticesCount;
 		const int32_t m_IndicesCount;
 
-		RendererPrimitives m_Primitive = RendererPrimitives::TRIANGLES;
+		RendererPrimitives m_Primitive;
 		Ref<Material> m_Material;
 
 		vertex_t* m_Vertices;

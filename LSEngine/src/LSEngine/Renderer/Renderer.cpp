@@ -59,10 +59,11 @@ namespace LSE {
 		shader->SetUniformMat4("u_ModelMatrix", transform);
 		shader->SetUniform3f("u_EyeDir", s_SceneData->ViewDir);
 
-		for (auto va : model->m_VAOs)
+		for (int i = 0; i < model->m_VAOs.size(); i++)
 		{
+			auto va = model->m_VAOs[i];
 			va->Bind();
-			RenderCommand::DrawIndexed(va);
+			RenderCommand::DrawIndexed(va, model->m_Meshs[i]->m_Primitive);
 		}
 	}
 }

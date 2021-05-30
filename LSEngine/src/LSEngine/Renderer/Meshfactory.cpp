@@ -1222,7 +1222,7 @@ namespace LSE
 
 	Ref<Mesh> MeshFactory::mark()
 	{
-		Ref<Mesh> mesh = MakeRef<Mesh>(8, 8);
+		Ref<Mesh> mesh = MakeRef<Mesh>(8, 8, RendererPrimitives::LINES);
 
 		for (int i = 0; i < 4; i++)
 		{
@@ -1246,7 +1246,7 @@ namespace LSE
 
 	Ref<Mesh> MeshFactory::line(const glm::vec3& start, const glm::vec3& end)
 	{
-		Ref<Mesh> mesh = MakeRef<Mesh>(2, 2);
+		Ref<Mesh> mesh = MakeRef<Mesh>(2, 2, RendererPrimitives::LINES);
 
 		mesh->m_Vertices[0].a_Position = start;
 		mesh->m_Vertices[0].a_Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
@@ -1255,11 +1255,13 @@ namespace LSE
 
 		mesh->m_Indices[0] = 0;
 		mesh->m_Indices[1] = 1;
+
+		return mesh;
 	}
 
 	Ref<Mesh> MeshFactory::paramatric(parametricfunc_t curvefunc, float tstart, float tend, const int tsteps, parametriccolourfunc_t curvecolourfunc)
 	{
-		Ref<Mesh> mesh = MakeRef<Mesh>(tsteps, 2 * tsteps - 2);
+		Ref<Mesh> mesh = MakeRef<Mesh>(tsteps, 2 * tsteps - 2, RendererPrimitives::LINES);
 
 		for (int i = 0; i < tsteps; i++)
 		{

@@ -219,6 +219,8 @@
     <ClInclude Include="src\lsepch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\LSEngine\Maths\Curve.h" />
+    <ClInclude Include="src\LSEngine\Renderer\RenderPrimitives.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Core\Application.cpp">
@@ -344,5 +346,7 @@
     <ClCompile Include="vendor\stb\stb_image.cpp">
       <Filter>vendor\stb</Filter>
     </ClCompile>
+    <ClCompile Include="src\LSEngine\Maths\Curve.cpp" />
+    <ClCompile Include="src\LSEngine\Maths\LSEMath.cpp" />
   </ItemGroup>
 </Project>

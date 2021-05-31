@@ -135,6 +135,9 @@
     <ClInclude Include="src\LSEngine\ImGui\ImGuiLayer.h">
       <Filter>src\LSEngine\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="src\LSEngine\Maths\Curve.h">
+      <Filter>src\LSEngine\Maths</Filter>
+    </ClInclude>
     <ClInclude Include="src\LSEngine\Maths\LSEMath.h">
       <Filter>src\LSEngine\Maths</Filter>
     </ClInclude>
@@ -169,6 +172,9 @@
       <Filter>src\LSEngine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\LSEngine\Renderer\RenderCommand.h">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\RenderPrimitives.h">
       <Filter>src\LSEngine\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\LSEngine\Renderer\Renderer.h">
@@ -219,8 +225,6 @@
     <ClInclude Include="src\lsepch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\LSEngine\Maths\Curve.h" />
-    <ClInclude Include="src\LSEngine\Renderer\RenderPrimitives.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Core\Application.cpp">
@@ -273,6 +277,12 @@
     </ClCompile>
     <ClCompile Include="src\LSEngine\ImGui\ImGuiLayer.cpp">
       <Filter>src\LSEngine\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Maths\Curve.cpp">
+      <Filter>src\LSEngine\Maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LSEngine\Maths\LSEMath.cpp">
+      <Filter>src\LSEngine\Maths</Filter>
     </ClCompile>
     <ClCompile Include="src\LSEngine\Renderer\Buffer.cpp">
       <Filter>src\LSEngine\Renderer</Filter>
@@ -346,7 +356,5 @@
     <ClCompile Include="vendor\stb\stb_image.cpp">
       <Filter>vendor\stb</Filter>
     </ClCompile>
-    <ClCompile Include="src\LSEngine\Maths\Curve.cpp" />
-    <ClCompile Include="src\LSEngine\Maths\LSEMath.cpp" />
   </ItemGroup>
 </Project>

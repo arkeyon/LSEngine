@@ -131,6 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Procedural.cpp" />
     <ClCompile Include="src\Sandbox2.cpp" />
   </ItemGroup>
   <ItemGroup>

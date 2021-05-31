@@ -88,19 +88,20 @@ namespace LSE {
 		while (m_Running)
 		{
 			float delta = timer.elapsed();
+			if (delta < 1.f / 20.f) continue;
 			timer.reset();
-
+		
 			if (!m_Minimized)
 			{
 				for (Ref<Layer>& layer : m_LayerStack)
 					layer->OnUpdate(delta);
 			}
-
+		
 			m_ImGuiLayer->Begin();
 			for (Ref<Layer>& layer : m_LayerStack)
 				layer->OnImGuiRender();
 			m_ImGuiLayer->End();
-
+		
 			m_Window->OnUpdate();
 		}
 	}

@@ -7,16 +7,16 @@
 
 namespace LSE::Maths {
 
-	glm::vec2 solveQuadQuad(const glm::mat4& A, const glm::mat4& B, glm::vec2 start)
+	bool solveQuadQuad(const glm::mat4& A, const glm::mat4& B, glm::vec2& t)
 	{
-		glm::vec2 t = start;
-
-		float step = 0.001f;
-		float stepcount = 2000.f;
+		float step = 0.01f;
+		float stepcount = 200.f;
 
 		float epsilon = 0.06f;
 
-		std::array<float, 5> pastchange;
+		float pastchangesum = 100.f;
+		std::array<float, 5> pastchange = { 100.f, 100.f, 100.f, 100.f, 100.f };
+		int pastchangei = 0;
 		float lastl = 1000000.f;
 
 		for (int i = 0; i < (int)stepcount; i++)
@@ -33,16 +33,26 @@ namespace LSE::Maths {
 			R[1][1] = -B[0][1] + 2.f * -B[1][1] * t[1];
 
 			float l = glm::length(C);
+
+			if (l < epsilon)
+			{
+				return true;
+			}
+
 			float lchange = lastl - l;
+
+			pastchangesum += (abs(lchange) - pastchange[pastchangei]) / 5.f;
+			pastchange[pastchangei] = abs(lchange);
+			pastchangei = (pastchangei + 1) % 5;
+
+			if (pastchangesum < epsilon)
+			{
+				return false;
+			}
 
 			if (lchange < 0.f)
 			{
 				step *= 0.6f;
-			}
-
-			if (l < epsilon)
-			{
-				break;
 			}
 
 			glm::vec2 G = R * C / l;
@@ -51,7 +61,7 @@ namespace LSE::Maths {
 			lastl = l;
 		}
 
-		return t;
+		return true;
 	}
 
 	std::vector<float> solveQuadratic(float a, float b, float c)

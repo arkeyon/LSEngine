@@ -68,8 +68,8 @@ public:
 		m_Mark = MakeRef<Model>();
 		m_Mark->AddMesh(MeshFactory::mark());
 
-		m_Parabola1 = MakeRef<Parabola>(glm::vec3(0.f, -7.f, 0.f), glm::angleAxis(0.2f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(1.f, 1.f, 1.f));
-		m_Parabola2 = MakeRef<Parabola>(glm::vec3(-6.f, -2.f, 0.f), glm::angleAxis(-1.1f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(2.f, 1.f, 1.f));
+		m_Parabola1 = MakeRef<Parabola>(glm::vec3(4.f, -4.f, 0.f), glm::angleAxis(0.2f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(1.f, 1.f, 1.f), -2.f, 2.f);
+		m_Parabola2 = MakeRef<Parabola>(glm::vec3(-6.f, -2.f, 0.f), glm::angleAxis(-1.1f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(2.f, 1.f, 1.f), -10.f, 2.f);
 
 		m_Line1 = MakeRef<Line>(glm::vec3(2.f, -5.f, 0.f), glm::angleAxis(0.6f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(1.f, 1.f, 1.f));
 		m_Line2 = MakeRef<Line>(glm::vec3(-3.f, -4.f, 0.f), glm::angleAxis(-0.1f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(2.f, 1.f, 1.f));
@@ -123,9 +123,16 @@ public:
 
 		std::vector<glm::vec3> solutions;
 
+		for (int i = 0; i < curves.size() - 1; i++)
 		{
-			auto s = intercept(m_Parabola1, m_Parabola2);
-			solutions.insert(solutions.end(), s.begin(), s.end());
+			auto curve1 = curves[i];
+			for (int j = i + 1; j < curves.size() - i; j++)
+			{
+				auto curve2 = curves[j];
+				
+				auto s = intercept(curve1, curve2);
+				solutions.insert(solutions.end(), s.begin(), s.end());
+			}
 		}
 
 		for (auto s : solutions)
@@ -133,10 +140,10 @@ public:
 			Renderer::Submit(m_Shader, m_Mark, glm::translate(glm::mat4(1.f), s));
 		}
 
-		Renderer::Submit(m_Shader, m_Parabola1->GetComponent<Renderable>()->m_Model, m_Parabola1->GetComponent<ReferenceFrame>()->getModelMat());
-		Renderer::Submit(m_Shader, m_Parabola2->GetComponent<Renderable>()->m_Model, m_Parabola2->GetComponent<ReferenceFrame>()->getModelMat());
-		Renderer::Submit(m_Shader, m_Line1->GetComponent<Renderable>()->m_Model, m_Line1->GetComponent<ReferenceFrame>()->getModelMat());
-		Renderer::Submit(m_Shader, m_Line2->GetComponent<Renderable>()->m_Model, m_Line2->GetComponent<ReferenceFrame>()->getModelMat());
+		for (auto c : curves)
+		{
+			Renderer::Submit(m_Shader, c->GetComponent<Renderable>()->m_Model, c->GetComponent<ReferenceFrame>()->getModelMat());
+		}
 
 		Renderer::EndScene();
 	}

@@ -7,7 +7,7 @@
 
 namespace LSE::Maths {
 
-	glm::vec2 solveQuadQuad(const glm::mat4& A, const glm::mat4& B, glm::vec2 start);
+	bool solveQuadQuad(const glm::mat4& A, const glm::mat4& B, glm::vec2& t);
 
 	std::vector<float> solveQuadratic(float a, float b, float c);
 

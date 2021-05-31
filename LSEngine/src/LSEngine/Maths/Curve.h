@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include "LSEngine/ECS/Objects/ECS.h"
+#include "LSEngine/Maths/LSEMath.h"
 
 namespace LSE::Maths {
 
@@ -9,21 +10,7 @@ namespace LSE::Maths {
 	class Parabola;
 	class Line;
 
-	template <class firstclass, class secondclass>
-	std::vector<glm::vec3> intercept(const Ref<firstclass> first, const Ref<secondclass> second)
-	{
-		std::vector<glm::vec3> solutions;
-
-		auto sol = interceptLocal(first, second);
-		for (auto s : sol)
-		{
-			solutions.push_back(glm::vec3(first->GetComponent<ReferenceFrame>()->getModelMat() * glm::vec4(first->function(s.x), 1.f) + second->GetComponent<ReferenceFrame>()->getModelMat() * glm::vec4(second->function(s.y), 1.f)) / 2.f);
-		}
-
-		return solutions;
-	}
-
-	std::vector<std::pair<float, float>> interceptLocal(const Ref<ParametricCurve> first, const Ref<ParametricCurve> second);
+	std::vector<glm::vec3> intercept(const Ref<ParametricCurve> first, const Ref<ParametricCurve> second);
 
 	class ParametricCurve : public LSE::Entity
 	{
@@ -33,13 +20,11 @@ namespace LSE::Maths {
 		virtual glm::vec3 function(const float& t) const = 0;
 		virtual glm::vec3 gradiant(const float& t) const;
 
+		virtual std::vector<glm::vec2> interceptLocal(const Ref<ParametricCurve> other);
+
 		float m_TMin;
 		float m_TMax;
 	};
-
-	std::vector<glm::vec2> interceptLocal(const Ref<Parabola> first, const Ref<Parabola> second);
-	std::vector<glm::vec2> interceptLocal(const Ref<Parabola> first, const Ref<Line> second);
-	std::vector<glm::vec2> interceptLocal(const Ref<Line> first, const Ref<Parabola> second);
 
 	class Parabola : public ParametricCurve
 	{
@@ -49,8 +34,9 @@ namespace LSE::Maths {
 		virtual glm::vec3 function(const float& t) const override;
 		virtual glm::vec3 gradiant(const float& t) const override;
 
+		virtual std::vector<glm::vec2> interceptLocal(const Ref<ParametricCurve> other) override;
 	private:
-		static Ref<Model> m_Model;
+		Ref<Model> m_Model;
 	};
 
 	class Line : public ParametricCurve
@@ -61,8 +47,9 @@ namespace LSE::Maths {
 		virtual glm::vec3 function(const float& t) const override;
 		virtual glm::vec3 gradiant(const float& t) const override;
 
-	private:
-		static Ref<Model> m_Model;
-	};
+		virtual std::vector<glm::vec2> interceptLocal(const Ref<ParametricCurve> other) override;
 
+	private:
+		Ref<Model> m_Model;
+	};
 }

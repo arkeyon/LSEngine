@@ -22,6 +22,8 @@ namespace LSE::Maths {
 		: m_TMin(tmin), m_TMax(tmax)
 	{
 		AddComponent<ReferenceFrame>(pos, orin, scale);
+		m_Model = MakeRef<Model>();
+		AddComponent<Renderable>(m_Model);
 	}
 
 	glm::vec3 ParametricCurve::gradiant(const float& t) const
@@ -38,16 +40,27 @@ namespace LSE::Maths {
 		return solutions;
 	}
 
+	UnnamedCurve::UnnamedCurve(const glm::vec3& pos, const glm::quat& orin, const glm::vec3& scale, func_t function, const float& tmin, const float& tmax, func_t gfunction)
+		: ParametricCurve(pos, orin, scale, tmin, tmax), m_Func(function), m_GFunc(gfunction)
+	{
+		m_Model->AddMesh(MeshFactory::paramatric(function, tmin, tmax, 200));
+	}
+
+	glm::vec3 UnnamedCurve::function(const float& t) const { return m_Func(t); }
+
+	glm::vec3 UnnamedCurve::gradiant(const float& t) const
+	{
+		if (m_GFunc) return m_GFunc(t);
+		return ParametricCurve::gradiant(t);
+	}
+
 	Parabola::Parabola(const glm::vec3& pos, const glm::quat& orin, const glm::vec3& scale, const float& tmin, const float& tmax)
 		: ParametricCurve(pos, orin, scale, tmin, tmax)
 	{
-		m_Model = MakeRef<Model>();
 		m_Model->AddMesh(MeshFactory::paramatric([](const float& t)
 		{
 			return glm::vec3(t, t * t, 0.f);
 		}, tmin, tmax, 200));
-
-		AddComponent<Renderable>(m_Model);
 	}
 
 	glm::vec3 Parabola::function(const float& t) const { return glm::vec3(t, t * t, 0.f); }
@@ -116,15 +129,17 @@ namespace LSE::Maths {
 	Line::Line(const glm::vec3& pos, const glm::quat& orin, const glm::vec3& scale, const float& tmin, const float& tmax)
 		: ParametricCurve(pos, orin, scale, tmin, tmax)
 	{
-		m_Model = MakeRef<Model>();
 		m_Model->AddMesh(MeshFactory::line(glm::vec3(tmin, 0.f, 0.f), glm::vec3(tmax, 0.f, 0.f)));
-
-		AddComponent<Renderable>(m_Model);
 	}
 
 	glm::vec3 Line::function(const float& t) const { return glm::vec3(t, 0.f, 0.f); }
 	glm::vec3 Line::gradiant(const float& t) const { return glm::vec3(1.f, 0.f, 0.f); }
 	
+	void Line::reflect(const Ref<ParametricCurve> other)
+	{
+		auto solution = interceptLocal(other);
+	}
+
 	std::vector<glm::vec2> Line::interceptLocal(const Ref<ParametricCurve> other)
 	{
 		if (std::dynamic_pointer_cast<Parabola>(other))
@@ -163,4 +178,26 @@ namespace LSE::Maths {
 
 		return ParametricCurve::interceptLocal(other);
 	}
+
+	Ray::Ray(const glm::vec3 pos, const glm::quat& orin, const float& length)
+		: ParametricCurve(pos, orin, glm::vec3(1.f, 1.f, 1.f), 0.f, length)
+	{
+		m_Model->AddMesh(MeshFactory::line(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f)));
+	}
+
+	glm::vec3 Ray::function(const float& t) const
+	{
+		if (t <= m_TMax) return glm::vec3(t, 0.f, 0.f);
+	}
+
+	glm::vec3 Ray::gradiant(const float& t) const
+	{
+
+	}
+
+	std::vector<glm::vec2> Ray::interceptLocal(const Ref<ParametricCurve> other)
+	{
+
+	}
+
 }

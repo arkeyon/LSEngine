@@ -36,6 +36,8 @@ private:
 	LSE::Ref<LSE::Maths::Parabola> m_Parabola2;
 	LSE::Ref<LSE::Maths::Line> m_Line1;
 	LSE::Ref<LSE::Maths::Line> m_Line2;
+
+	LSE::Ref<LSE::Maths::UnnamedCurve> m_UCurve;
 	LSE::Ref<LSE::Model> m_Mark;
 
 	LSE::Ref<LSE::Shader> m_Shader;
@@ -68,11 +70,17 @@ public:
 		m_Mark = MakeRef<Model>();
 		m_Mark->AddMesh(MeshFactory::mark());
 
-		m_Parabola1 = MakeRef<Parabola>(glm::vec3(4.f, -4.f, 0.f), glm::angleAxis(0.2f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(1.f, 1.f, 1.f), -2.f, 2.f);
-		m_Parabola2 = MakeRef<Parabola>(glm::vec3(-6.f, -2.f, 0.f), glm::angleAxis(-1.1f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(2.f, 1.f, 1.f), -10.f, 2.f);
+		m_Parabola1 = MakeRef<Parabola>(glm::vec3(0.f, -7.f, 0.f), glm::angleAxis(0.2f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(1.f, 1.f, 1.f), -5.f, 5.f);
+		m_Parabola2 = MakeRef<Parabola>(glm::vec3(-6.f, -2.f, 0.f), glm::angleAxis(-1.1f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(2.f, 1.f, 1.f), -10.f, 5.f);
 
 		m_Line1 = MakeRef<Line>(glm::vec3(2.f, -5.f, 0.f), glm::angleAxis(0.6f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(1.f, 1.f, 1.f));
 		m_Line2 = MakeRef<Line>(glm::vec3(-3.f, -4.f, 0.f), glm::angleAxis(-0.1f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(2.f, 1.f, 1.f));
+
+		m_UCurve = MakeRef<UnnamedCurve>(glm::vec3(0.f, 0.f, 0.f), glm::angleAxis(0.f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(4.f, 4.f, 1.f),
+			[](const float& t)
+			{
+				return glm::vec3(t, 1.f - exp(-t), 0.f);
+			}, 0.f, 10.f);
 
 		m_TestTexture = Texture2D::Create("assets/textures/BLANK.png");
 
@@ -113,12 +121,13 @@ public:
 
 		//m_Parabola->intercept((const LSE::Maths::ParametricCurve&)m_Line);
 
-		std::array<Ref<ParametricCurve>, 4> curves =
+		std::array<Ref<ParametricCurve>, 1> curves =
 		{
-			m_Parabola1,
-			m_Parabola2,
-			m_Line1,
-			m_Line2
+			//m_Parabola1,
+			//m_Parabola2,
+			//m_Line1,
+			//m_Line2,
+			m_UCurve
 		};
 
 		std::vector<glm::vec3> solutions;
@@ -126,10 +135,10 @@ public:
 		for (int i = 0; i < curves.size() - 1; i++)
 		{
 			auto curve1 = curves[i];
-			for (int j = i + 1; j < curves.size() - i; j++)
+			for (int j = i + 1; j < curves.size(); j++)
 			{
 				auto curve2 = curves[j];
-				
+
 				auto s = intercept(curve1, curve2);
 				solutions.insert(solutions.end(), s.begin(), s.end());
 			}

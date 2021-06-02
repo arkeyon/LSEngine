@@ -13,3 +13,6 @@
 [submodule "LSEngine/vendor/gli"]
 	path = LSEngine/vendor/gli
 	url = https://github.com/g-truc/gli
+[submodule "LSEngine/vendor/ImGuizmo"]
+	path = LSEngine/vendor/ImGuizmo
+	url = https://github.com/CedricGuillemet/ImGuizmo

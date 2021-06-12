@@ -1,7 +1,7 @@
 #pragma once
 
 #include "LSEngine/Core/Core.h"
-/*
+
 namespace LSE {
 
 	template <class T>
@@ -24,4 +24,3 @@ class RendererSystem : public LSE::EntitySystem<Renderable>
 
 	virtual void Delete(LSE::Ref<Renderable> component) override;
 };
-*/

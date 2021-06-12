@@ -134,11 +134,6 @@ namespace LSE::Maths {
 
 	glm::vec3 Line::function(const float& t) const { return glm::vec3(t, 0.f, 0.f); }
 	glm::vec3 Line::gradiant(const float& t) const { return glm::vec3(1.f, 0.f, 0.f); }
-	
-	void Line::reflect(const Ref<ParametricCurve> other)
-	{
-		auto solution = interceptLocal(other);
-	}
 
 	std::vector<glm::vec2> Line::interceptLocal(const Ref<ParametricCurve> other)
 	{
@@ -188,16 +183,21 @@ namespace LSE::Maths {
 	glm::vec3 Ray::function(const float& t) const
 	{
 		if (t <= m_TMax) return glm::vec3(t, 0.f, 0.f);
+		return glm::vec3();
 	}
 
 	glm::vec3 Ray::gradiant(const float& t) const
 	{
-
+		return glm::vec3();
 	}
 
 	std::vector<glm::vec2> Ray::interceptLocal(const Ref<ParametricCurve> other)
 	{
-
+		return { glm::vec3() };
 	}
 
+	void Ray::reflect(const Ref<ParametricCurve> other)
+	{
+
+	}
 }

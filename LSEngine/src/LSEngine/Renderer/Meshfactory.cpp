@@ -1280,6 +1280,31 @@ namespace LSE
 		return mesh;
 	}
 
+	Ref<Mesh> MeshFactory::regularPolygon(const int sides)
+	{
+		Ref<Mesh> mesh = MakeRef<Mesh>(sides, 3 * (sides - 2), RendererPrimitives::TRIANGLES);
+
+		for (int n = 0; n < sides; n++)
+		{
+			float theta = (float)n / (sides) * glm::two_pi<float>();
+
+			auto& vert = mesh->m_Vertices[n];
+			vert.a_Position = glm::vec3(cosf(theta), sinf(theta), 0.f);
+			vert.a_Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+			vert.a_Tex = -1.f;
+			vert.a_Normal = glm::vec3(0.f, 0.f, 1.f);
+		}
+
+		for (int i = 0; i < sides - 2; i++)
+		{
+			mesh->m_Indices[i * 3 + 0] = 0;
+			mesh->m_Indices[i * 3 + 1] = i + 1;
+			mesh->m_Indices[i * 3 + 2] = i + 2;
+		}
+
+		return mesh;
+	}
+
 	Ref<Mesh> MeshFactory::paramatricSurface(surfacefunc_t curvefunc, float ustart, float uend, const int usteps, float vstart, float vend, const int vsteps, surfacecolourfunc_t curvecolourfunc)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(usteps * vsteps, (usteps - 1) * (vsteps - 1) * 6);

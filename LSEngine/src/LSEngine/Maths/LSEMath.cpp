@@ -9,10 +9,10 @@ namespace LSE::Maths {
 
 	bool solveQuadQuad(const glm::mat4& A, const glm::mat4& B, glm::vec2& t)
 	{
-		float step = 0.01f;
+		float step = 0.1f;
 		float stepcount = 200.f;
 
-		float epsilon = 0.06f;
+		float epsilon = 0.01f;
 
 		float pastchangesum = 100.f;
 		std::array<float, 5> pastchange = { 100.f, 100.f, 100.f, 100.f, 100.f };

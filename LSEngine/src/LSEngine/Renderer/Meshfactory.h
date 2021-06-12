@@ -36,6 +36,8 @@ namespace LSE {
 
 		static Ref<Mesh> rectCenterSharedVertices(float width, float height, float depth);
 
+		static Ref<Mesh> regularPolygon(const int sides);
+
 		typedef glm::vec3(*parametricfunc_t)(const float& t);
 		typedef glm::vec4(*parametriccolourfunc_t)(const float& t);
 		static Ref<Mesh> paramatric(parametricfunc_t curvefunc, float tstart = 0.f, float tend = 1.f, const int tsteps = 10, parametriccolourfunc_t curvecolourfunc = [](const float& t) { return glm::vec4(1.f, 1.f, 1.f, 1.f); });

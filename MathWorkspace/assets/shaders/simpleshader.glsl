@@ -49,5 +49,5 @@ in VertexData
 
 void main()
 {
-	a_Colour = texture2D(tex, fin.UV) * fin.Colour;
+	a_Colour = fin.Colour;
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "lsepch.h"
-/*
+
 #include "System.h"
 
 #include "Component.h"
@@ -25,4 +25,3 @@ void RendererSystem::Delete(LSE::Ref<Renderable> component)
 {
 
 }
-*/

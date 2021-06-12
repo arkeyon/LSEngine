@@ -20,6 +20,7 @@ workspace "LSEngine"
     IncludeDir["gli"]       = "LSEngine/vendor/gli"
     IncludeDir["FreeImage"] = "LSEngine/vendor/FreeImage/include"
     IncludeDir["stb"]       = "LSEngine/vendor/stb"
+    IncludeDir["ImGuizmo"]       = "LSEngine/vendor/ImGuizmo"
 
     include "LSEngine/vendor/glfw"
     include "LSEngine/vendor/glad"
@@ -47,6 +48,7 @@ workspace "LSEngine"
             "%{IncludeDir.spdlog}",
             "%{IncludeDir.GLM}",
             "%{IncludeDir.imgui}",
+            "%{IncludeDir.ImGuizmo}",
             "%{IncludeDir.FreeImage}",
             "%{IncludeDir.stb}"
         }
@@ -101,6 +103,7 @@ workspace "LSEngine"
             "%{IncludeDir.spdlog}",
             "%{IncludeDir.GLM}",
             "%{IncludeDir.imgui}",
+			"%{IncludeDir.ImGuizmo}",
             "%{IncludeDir.FreeImage}",
             "%{IncludeDir.stb}"
         }
@@ -155,6 +158,7 @@ workspace "LSEngine"
             "%{IncludeDir.spdlog}",
             "%{IncludeDir.GLM}",
             "%{IncludeDir.imgui}",
+			"%{IncludeDir.ImGuizmo}",
             "%{IncludeDir.FreeImage}",
             "%{IncludeDir.stb}"
         }
@@ -204,7 +208,7 @@ workspace "LSEngine"
         {
             "%{prj.name}/src/**.h",
             "%{prj.name}/src/**.cpp",
-            "%{IncludeDir.stb}/stb_image.cpp"
+            "%{IncludeDir.stb}/stb_image.cpp",
         }
         
         includedirs
@@ -214,6 +218,7 @@ workspace "LSEngine"
             "%{IncludeDir.GLFW}",
             "%{IncludeDir.GLAD}",
             "%{IncludeDir.imgui}",
+			"%{IncludeDir.ImGuizmo}",
             "%{IncludeDir.GLM}",
             "%{IncludeDir.gli}",
             "%{IncludeDir.FreeImage}",

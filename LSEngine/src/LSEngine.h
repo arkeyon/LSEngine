@@ -8,5 +8,3 @@
 #include "LSEngine/Events/KeyEvent.h"
 #include "LSEngine/Events/MouseEvent.h"
 #include "LSEngine/Events/ApplicationEvent.h"
-
-#include "LSEngine/Core/EntryPoint.h"

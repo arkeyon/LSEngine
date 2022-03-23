@@ -38,6 +38,7 @@ namespace LSE::Maths {
 		std::vector<glm::vec2> solutions;
 
 		return solutions;
+		 
 	}
 
 	UnnamedCurve::UnnamedCurve(const glm::vec3& pos, const glm::quat& orin, const glm::vec3& scale, func_t function, const float& tmin, const float& tmax, func_t gfunction)

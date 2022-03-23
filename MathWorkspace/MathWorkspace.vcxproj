@@ -131,12 +131,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\layers\Editor.cpp" />
+    <ClCompile Include="src\layers\Engine.cpp" />
     <ClCompile Include="src\Sandbox2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LSEngine\LSEngine.vcxproj">
       <Project>{7AF2543D-66BF-AF48-8FD8-9DF07B04E5D6}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\layers\Editor.h" />
+    <ClInclude Include="src\layers\Engine.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

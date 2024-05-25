@@ -22,8 +22,6 @@ namespace LSE::Maths {
 		: m_TMin(tmin), m_TMax(tmax)
 	{
 		AddComponent<ReferenceFrame>(pos, orin, scale);
-		m_Model = MakeRef<Model>();
-		AddComponent<Renderable>(m_Model);
 	}
 
 	glm::vec3 ParametricCurve::gradiant(const float& t) const
@@ -40,10 +38,38 @@ namespace LSE::Maths {
 		return solutions;
 	}
 
+	PointCurve::PointCurve(std::vector<glm::vec3>& points)
+		: m_Points(points), ParametricCurve(glm::vec3(), glm::angleAxis(0.f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(1.f, 1.f, 1.f), m_Points[0].z, m_Points[m_Points.size() - 1].z)
+	{
+
+	}
+
+	glm::vec3 PointCurve::function(const float& t) const
+	{
+		for (int i = 0; i < m_Points.size(); i++)
+		{
+			auto& m1 = m_Points[i];
+			auto& m2 = m_Points[(i + 1 == m_Points.size()) ? 0 : i + 1];
+
+			if (t > m1.z)
+			{
+				if (t <= m2.z)
+				{
+					return glm::mix(glm::vec3(m1.x, m1.y, 0.f), glm::vec3(m2.x, m2.y, 0.f), (t - m1.z) / (m2.z - m1.z));
+				}
+				continue;
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
+
 	UnnamedCurve::UnnamedCurve(const glm::vec3& pos, const glm::quat& orin, const glm::vec3& scale, func_t function, const float& tmin, const float& tmax, func_t gfunction)
 		: ParametricCurve(pos, orin, scale, tmin, tmax), m_Func(function), m_GFunc(gfunction)
 	{
-		m_Model->AddMesh(MeshFactory::paramatric(function, tmin, tmax, 200));
+		m_Model->AddMesh(MeshFactory2D::paramatric(function, tmin, tmax, 200));
 	}
 
 	glm::vec3 UnnamedCurve::function(const float& t) const { return m_Func(t); }
@@ -57,7 +83,7 @@ namespace LSE::Maths {
 	Parabola::Parabola(const glm::vec3& pos, const glm::quat& orin, const glm::vec3& scale, const float& tmin, const float& tmax)
 		: ParametricCurve(pos, orin, scale, tmin, tmax)
 	{
-		m_Model->AddMesh(MeshFactory::paramatric([](const float& t)
+		m_Model->AddMesh(MeshFactory2D::paramatric([](const float& t)
 		{
 			return glm::vec3(t, t * t, 0.f);
 		}, tmin, tmax, 200));
@@ -129,7 +155,7 @@ namespace LSE::Maths {
 	Line::Line(const glm::vec3& pos, const glm::quat& orin, const glm::vec3& scale, const float& tmin, const float& tmax)
 		: ParametricCurve(pos, orin, scale, tmin, tmax)
 	{
-		m_Model->AddMesh(MeshFactory::line(glm::vec3(tmin, 0.f, 0.f), glm::vec3(tmax, 0.f, 0.f)));
+		m_Model->AddMesh(MeshFactory2D::line(glm::vec3(tmin, 0.f, 0.f), glm::vec3(tmax, 0.f, 0.f)));
 	}
 
 	glm::vec3 Line::function(const float& t) const { return glm::vec3(t, 0.f, 0.f); }
@@ -177,7 +203,7 @@ namespace LSE::Maths {
 	Ray::Ray(const glm::vec3 pos, const glm::quat& orin, const float& length)
 		: ParametricCurve(pos, orin, glm::vec3(1.f, 1.f, 1.f), 0.f, length)
 	{
-		m_Model->AddMesh(MeshFactory::line(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f)));
+		m_Model->AddMesh(MeshFactory2D::line(glm::vec3(0.f, 0.f, 0.f), glm::vec3(1.f, 0.f, 0.f)));
 	}
 
 	glm::vec3 Ray::function(const float& t) const

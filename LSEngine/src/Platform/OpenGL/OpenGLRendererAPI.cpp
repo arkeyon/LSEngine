@@ -27,7 +27,10 @@ namespace LSE {
 
 	void OpenGLRendererAPI::EnableDepthTest(bool enabled)
 	{
-		if (enabled) glEnable(GL_DEPTH_TEST);
+		if (enabled)
+		{
+			glEnable(GL_DEPTH_TEST);
+		}
 		else glDisable(GL_DEPTH_TEST);
 	}
 
@@ -39,6 +42,7 @@ namespace LSE {
 
 	void OpenGLRendererAPI::EnableWireframe(bool enabled)
 	{
+		glLineWidth(5.f);
 		if (enabled) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
@@ -48,11 +52,11 @@ namespace LSE {
 		if (enabled == 0)
 		{
 			glEnable(GL_STENCIL_TEST);
-			glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+			glColorMask(GL_TRUE, GL_FALSE, GL_FALSE, GL_FALSE);
 			glDepthMask(GL_FALSE);
-			//glStencilMask(0xFF);
-			glStencilFunc(GL_NEVER, 0, 0xFF);
-			glStencilOp(GL_INVERT, GL_KEEP, GL_KEEP);
+			glStencilMask(1);
+			glStencilFunc(GL_NEVER, 1, 0xFF);
+			glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
 		}
 		else if (enabled == 1)
 		{
@@ -61,18 +65,19 @@ namespace LSE {
 			//glStencilMask(0x00);
 			glStencilFunc(GL_LEQUAL, 1, 0xFF);
 			glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+			glClear(GL_DEPTH_BUFFER_BIT);
 		}
 		else if (enabled == 2)
 		{
-			glDisable(GL_STENCIL_TEST);
 			glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 			glDepthMask(GL_TRUE);
-			//glStencilMask(0x00);
-			glClear(GL_DEPTH_BUFFER_BIT);
 		}
 		else
 		{
+			glDisable(GL_STENCIL_TEST);
 			glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+			//glDepthMask(GL_TRUE);
+			//glStencilMask(0x00);
 		}
 	}
 

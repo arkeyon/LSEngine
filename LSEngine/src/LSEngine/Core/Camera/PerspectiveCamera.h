@@ -7,7 +7,7 @@ namespace LSE {
 	class LSE_API PerspectiveCamera : public Camera3D
 	{
 	public:
-		PerspectiveCamera(glm::vec3 pos, glm::vec3 angles, float fov = glm::half_pi<float>(), float ar = 16.f / 9.f, float znear = 0.1f, float zfar = 100.f);
+		PerspectiveCamera(glm::vec3 pos, glm::vec3 angles, float fov = glm::half_pi<float>(), float ar = 16.f / 9.f, float znear = 0.1f, float zfar = 1000.f);
 		PerspectiveCamera(const PerspectiveCamera& camera);
 
 		virtual void SetView(const glm::vec3& pos, const glm::vec3& angles) override;

@@ -18,6 +18,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/color_space.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <complex.h>
 
 #include <list>
 #include <math.h>
@@ -29,16 +30,13 @@
 
 #include "LSEngine/Maths/Curve.h"
 
+#include <vector>
+
 class ExampleLayer : public LSE::Layer
 {
 private:
-	LSE::Ref<LSE::Maths::Parabola> m_Parabola1;
-	LSE::Ref<LSE::Maths::Parabola> m_Parabola2;
-	LSE::Ref<LSE::Maths::Line> m_Line1;
-	LSE::Ref<LSE::Maths::Line> m_Line2;
-
-	LSE::Ref<LSE::Maths::UnnamedCurve> m_UCurve;
-	LSE::Ref<LSE::Model> m_Mark;
+	LSE::Ref<LSE::Model> m_Grid1;
+	LSE::Ref<LSE::Model> m_Grid2;
 
 	LSE::Ref<LSE::Shader> m_Shader;
 	LSE::Ref<LSE::OrthographicCamera> m_Camera;
@@ -46,7 +44,15 @@ private:
 
 	bool m_Paused = false;
 
+	std::vector<glm::vec3> m_MouseRecord;
+	std::array<std::complex<float>, 1000> m_Harmonics;
+
+	glm::vec2 m_LastMousePos;
+
 	LSE::Ref<LSE::Texture2D> m_TestTexture;
+
+	float a = 1.f, b = 0.f;
+	float c = 0.f, d = 0.f;
 
 	float m_FPS = 0.f;
 	float m_Frames = 0.f;
@@ -62,27 +68,32 @@ public:
 		RendererAPI::SetAPI(RendererAPI::API::OpenGL);
 		Renderer::Init();
 
-		m_Camera = MakeRef<OrthographicCamera>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), -10.f * 16.f / 9.f, 10.f * 16.f / 9.f, -10.f, 10.f, -1.f, 1.f);
+		m_Camera = MakeRef<OrthographicCamera>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), -1.f, 1.f, -1.f, 1.f, -1.f, 1.f);
 		m_CameraController = MakeRef<OrthographicCameraController>(m_Camera);
 
-		m_Shader.reset(Shader::Create("assets/shaders/simpleshader.glsl"));
+		m_Shader.reset(Shader::Create("assets/shaders/complexshader.glsl"));
 
-		m_Mark = MakeRef<Model>();
-		m_Mark->AddMesh(MeshFactory::mark());
+		m_Grid1 = MakeRef<Model>();
+		m_Grid2 = MakeRef<Model>();
 
-		m_Parabola1 = MakeRef<Parabola>(glm::vec3(0.f, -7.f, 0.f), glm::angleAxis(0.2f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(1.f, 1.f, 1.f), -5.f, 5.f);
-		m_Parabola2 = MakeRef<Parabola>(glm::vec3(-6.f, -2.f, 0.f), glm::angleAxis(-1.1f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(2.f, 1.f, 1.f), -10.f, 5.f);
+		auto func1 = [](const float& u, const float& v)
+		{
+			return glm::vec3(u, v, 0.f);
+		};
 
-		m_Line1 = MakeRef<Line>(glm::vec3(2.f, -5.f, 0.f), glm::angleAxis(0.6f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(1.f, 1.f, 1.f));
-		m_Line2 = MakeRef<Line>(glm::vec3(-3.f, -4.f, 0.f), glm::angleAxis(-0.1f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(2.f, 1.f, 1.f));
+		auto cfunc = [](const float& u, const float& v)
+		{
+			return fmodf((round(fabsf(u) * 10.f) + round(fabsf(v) * 10.f)), 2.f) >= 1.f ? glm::vec4(1.f, 1.f, 1.f, 1.f) : glm::vec4(0.2f, 0.2f, 0.2f, 1.f);
+		};
 
-		m_UCurve = MakeRef<UnnamedCurve>(glm::vec3(0.f, 0.f, 0.f), glm::angleAxis(0.f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(4.f, 4.f, 1.f),
-			[](const float& t)
-			{
-				return glm::vec3(t, 1.f - exp(-t), 0.f);
-			}, 0.f, 10.f);
+		m_Grid1->AddMesh(MeshFactory3D::paramatricSurface(func1, -1.f, 1.f, 1000, -1.f, 1.f, 1000, cfunc));
 
-		m_TestTexture = Texture2D::Create("assets/textures/BLANK.png");
+		auto func2 = [](const float& u, const float& v)
+		{
+			return glm::vec3(u * 2.f, v * 2.f, 0.f);
+		};
+
+		m_Grid2->AddMesh(MeshFactory3D::paramatricSurface(func2, -1.f, 1.f, 1000, -1.f, 1.f, 1000, cfunc));
 
 		auto& window = Application::Get().GetWindow();
 		window.SetCursorState(false);
@@ -114,43 +125,14 @@ public:
 
 		RenderCommand::Clear();
 
-		m_Shader->SetUniformi("tex", 0);
-		m_TestTexture->Bind(0);
-
 		Renderer::BeginScene(m_Camera);
 
-		std::array<Ref<ParametricCurve>, 4> curves =
-		{
-			m_Parabola1,
-			m_Parabola2,
-			m_Line1,
-			m_Line2,
-			//m_UCurve
-		};
-		
-		std::vector<glm::vec3> solutions;
-		
-		for (int i = 0; i < curves.size() - 1; i++)
-		{
-			auto curve1 = curves[i];
-			for (int j = i + 1; j < curves.size(); j++)
-			{
-				auto curve2 = curves[j];
-		
-				auto s = intercept(curve1, curve2);
-				solutions.insert(solutions.end(), s.begin(), s.end());
-			}
-		}
-		
-		for (auto s : solutions)
-		{
-			Renderer::Submit(m_Shader, m_Mark, glm::translate(glm::mat4(1.f), s));
-		}
-		
-		for (auto c : curves)
-		{
-			Renderer::Submit(m_Shader, c->GetComponent<Renderable>()->m_Model, c->GetComponent<ReferenceFrame>()->getModelMat());
-		}
+		m_Shader->SetUniform1f("a", a);
+		m_Shader->SetUniform1f("b", b);
+		m_Shader->SetUniform1f("c", c);
+		m_Shader->SetUniform1f("d", d);
+
+		Renderer::Submit(m_Shader, m_Grid1);
 
 		Renderer::EndScene();
 	}
@@ -159,8 +141,10 @@ public:
 	{
 		ImGui::Begin("Debug");
 		ImGui::Text((std::string("FPS: ") + std::to_string(m_FPS)).c_str());
-		ImGui::Text((std::string("Camera->Pos: ") + std::to_string(m_Camera->GetPos().x) + ", " + std::to_string(m_Camera->GetPos().y) + ", " + std::to_string(m_Camera->GetPos().z)).c_str());
-		ImGui::Text((std::string("Camera->Angles: ") + std::to_string(m_Camera->GetAngles().x) + ", " + std::to_string(m_Camera->GetAngles().y) + ", " + std::to_string(m_Camera->GetAngles().z)).c_str());
+		ImGui::SliderFloat("Re 1", &a, -2.f, 2.f);
+		ImGui::SliderFloat("Im 1", &b, -2.f, 2.f);
+		ImGui::SliderFloat("Re 2", &c, -2.f, 2.f);
+		ImGui::SliderFloat("Im 2", &d, -2.f, 2.f);
 		ImGui::End();
 	}
 
@@ -173,15 +157,35 @@ public:
 			m_CameraController->OnEvent(e);
 		}
 
-		EventDispatcher ed(e);
-		ed.Dispatch<KeyPressedEvent>([&](KeyPressedEvent& e)
+		EventDispatcher ked(e);
+		ked.Dispatch<KeyPressedEvent>([&](KeyPressedEvent& e)
 			{
-				if (((KeyPressedEvent&)e).GetKeyCode() == LSE_KEY_ESCAPE)
+				if (e.GetKeyCode() == LSE_KEY_ESCAPE)
 				{
 					m_Paused = !m_Paused;
 					auto& window = Application::Get().GetWindow();
 					if (m_Paused) window.SetCursorState(true);
 					else window.SetCursorState(false);
+				}
+				return false;
+			});
+
+		EventDispatcher mped(e);
+		mped.Dispatch<MouseButtonPressedEvent>([&](MouseButtonPressedEvent& e)
+			{
+				if (e.GetButtonCode() == LSE_MOUSE_BUTTON_1)
+				{
+
+				}
+				return false;
+			});
+
+		EventDispatcher mred(e);
+		mred.Dispatch<MouseButtonReleasedEvent>([&](MouseButtonReleasedEvent& e)
+			{
+				if (e.GetButtonCode() == LSE_MOUSE_BUTTON_1)
+				{
+
 				}
 				return false;
 			});

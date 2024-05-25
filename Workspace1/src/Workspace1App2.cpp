@@ -206,7 +206,7 @@ public:
 
 		{
 			m_TileModel = MakeRef<LSE::Model>();
-			Ref<Mesh> tilemesh = MeshFactory::planeCorner(glm::vec3(1.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
+			Ref<Mesh> tilemesh = MeshFactory3D::planeCorner(glm::vec3(1.f, 0.f, 0.f), glm::vec3(0.f, 1.f, 0.f));
 			tilemesh->Transform(glm::translate(glm::mat4(1.f), glm::vec3(0.5f, 0.5f, 0.f)) * glm::rotate(glm::mat4(1.f), -glm::half_pi<float>(), glm::vec3(0.f, 0.f, 1.f)) * glm::scale(glm::mat4(1.f), glm::vec3(0.9f, 0.9f, 1.f)));
 			m_TileModel->AddMesh(tilemesh);
 		}
@@ -267,11 +267,13 @@ public:
 
 	void OnImGuiRender() override
 	{
-		ImGui::Begin("Debug");
-		ImGui::Text((std::string("FPS: ") + std::to_string(m_FPS)).c_str());
-		ImGui::Text((std::string("Camera->Pos: ") + std::to_string(m_Camera->GetPos().x) + ", " + std::to_string(m_Camera->GetPos().y) + ", " + std::to_string(m_Camera->GetPos().z)).c_str());
-		ImGui::Text((std::string("Camera->Angles: ") + std::to_string(m_Camera->GetAngles().x) + ", " + std::to_string(m_Camera->GetAngles().y) + ", " + std::to_string(m_Camera->GetAngles().z)).c_str());
-		ImGui::End();
+		//ImGui::Begin("Debug");
+		//ImGui::Text((std::string("FPS: ") + std::to_string(m_FPS)).c_str());
+		//ImGui::Text((std::string("Camera->Pos: ") + std::to_string(m_Camera->GetPos().x) + ", " + std::to_string(m_Camera->GetPos().y) + ", " + std::to_string(m_Camera->GetPos().z)).c_str());
+		//ImGui::Text((std::string("Camera->Angles: ") + std::to_string(m_Camera->GetAngles().x) + ", " + std::to_string(m_Camera->GetAngles().y) + ", " + std::to_string(m_Camera->GetAngles().z)).c_str());
+		//ImGui::End();
+
+		ImGui::ShowDemoWindow();
 	}
 
 	void OnEvent(LSE::Event& e) override

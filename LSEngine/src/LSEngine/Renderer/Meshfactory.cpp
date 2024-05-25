@@ -1,4 +1,5 @@
 #include "lsepch.h"
+#include "lsepch.h"
 #include "Meshfactory.h"
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -19,7 +20,7 @@ namespace LSE
 		0, 3, 1, 1, 3, 2
 	};
 
-	Ref<Mesh> MeshFactory::cubeSphere(const float& radius, const int& detail, glm::vec4 colour, std::vector<int>* strides)
+	Ref<Mesh> MeshFactory3D::cubeSphere(const float& radius, const int& detail, glm::vec4 colour, std::vector<int>* strides)
 	{
 		using namespace glm;
 		Ref<Mesh> mesh = griddedCubeCenter(1.f, detail, colour, strides);
@@ -35,7 +36,7 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::cubeEllipsoid(const float& a, const float& b, const float& c, const int& detail, glm::vec4 colour, std::vector<int>* strides)
+	Ref<Mesh> MeshFactory3D::cubeEllipsoid(const float& a, const float& b, const float& c, const int& detail, glm::vec4 colour, std::vector<int>* strides)
 	{
 		using namespace glm;
 
@@ -58,21 +59,21 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::sphere(const float& radius, const int& detail, glm::vec4 colour)
+	Ref<Mesh> MeshFactory3D::sphere(const float& radius, const int& detail, glm::vec4 colour)
 	{
 		const int width = detail * 2;
 		const int height = detail;
 		return sphere(radius, width, height, colour);
 	}
 
-	Ref<Mesh> MeshFactory::cubeCorner(float size, glm::vec4 colour)
+	Ref<Mesh> MeshFactory3D::cubeCorner(float size, glm::vec4 colour)
 	{
-		return MeshFactory::rectCorner(size, size, size, colour);
+		return MeshFactory3D::rectCorner(size, size, size, colour);
 	}
 
-	Ref<Mesh> MeshFactory::cubeCenter(float size, glm::vec4 colour)
+	Ref<Mesh> MeshFactory3D::cubeCenter(float size, glm::vec4 colour)
 	{
-		return MeshFactory::rectCenter(size, size, size, colour);
+		return MeshFactory3D::rectCenter(size, size, size, colour);
 	}
 
 	float a(float f)
@@ -85,7 +86,7 @@ namespace LSE
 		return a(fmodf(2.f * f, 2.f) / 2.f);
 	}
 
-	Ref<Mesh> MeshFactory::sphere(const float& radius, const int& w, const int& h, glm::vec4 colour)
+	Ref<Mesh> MeshFactory3D::sphere(const float& radius, const int& w, const int& h, glm::vec4 colour)
 	{
 
 		const int width = w + 1;
@@ -132,7 +133,7 @@ namespace LSE
 	}
 
 
-	Ref<Mesh> MeshFactory::colourRectCorner(float width, float height, float depth)
+	Ref<Mesh> MeshFactory3D::colourRectCorner(float width, float height, float depth)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(24, 36);
 
@@ -309,7 +310,7 @@ namespace LSE
 	}
 
 
-	Ref<Mesh> MeshFactory::rectCorner(float width, float height, float depth, glm::vec4 colour)
+	Ref<Mesh> MeshFactory3D::rectCorner(float width, float height, float depth, glm::vec4 colour)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(24, 36);
 
@@ -330,6 +331,7 @@ namespace LSE
 		mesh->m_Vertices[1].a_UV = vec2(0.f, 1.f);
 		mesh->m_Vertices[2].a_UV = vec2(1.f, 1.f);
 		mesh->m_Vertices[3].a_UV = vec2(1.f, 0.f);
+
 
 		mesh->m_Vertices[4].a_Position = vec3(0.f, depth, height); //TOP
 		mesh->m_Vertices[5].a_Position = vec3(0.f, 0.f, height);
@@ -461,7 +463,7 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::planeCenter(glm::vec3 x, glm::vec3 y)
+	Ref<Mesh> MeshFactory3D::planeCenter(glm::vec3 x, glm::vec3 y)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(4, 6);
 
@@ -495,7 +497,7 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::planeCorner(glm::vec3 i, glm::vec3 j)
+	Ref<Mesh> MeshFactory3D::planeCorner(glm::vec3 i, glm::vec3 j)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(4, 6);
 
@@ -529,7 +531,7 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::gridCenter(glm::vec3 xdir, glm::vec3 ydir, int xdetail, int ydetail, glm::vec4 colour)
+	Ref<Mesh> MeshFactory3D::gridCenter(glm::vec3 xdir, glm::vec3 ydir, int xdetail, int ydetail, glm::vec4 colour)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(xdetail * ydetail, (xdetail - 1) * (ydetail - 1) * 6);
 
@@ -566,7 +568,7 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::gridCorner(glm::vec3 xdir, glm::vec3 ydir, int xdetail, int ydetail, glm::vec4 colour)
+	Ref<Mesh> MeshFactory3D::gridCorner(glm::vec3 xdir, glm::vec3 ydir, int xdetail, int ydetail, glm::vec4 colour)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(xdetail * ydetail, (xdetail - 1) * (ydetail - 1) * 6);
 
@@ -603,7 +605,7 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::rectCenterSharedVertices(float width, float height, float depth)
+	Ref<Mesh> MeshFactory3D::rectCenterSharedVertices(float width, float height, float depth)
 	{
 		float depthover2 = depth / 2.f;
 		float widthover2 = width / 2.f;
@@ -686,7 +688,7 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::rectCenter(float width, float height, float depth, glm::vec4 colour)
+	Ref<Mesh> MeshFactory3D::rectCenter(float width, float height, float depth, glm::vec4 colour)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(24, 36);
 
@@ -842,12 +844,12 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::griddedCubeCenter(float size, int detail, glm::vec4 colour, std::vector<int>* strides)
+	Ref<Mesh> MeshFactory3D::griddedCubeCenter(float size, int detail, glm::vec4 colour, std::vector<int>* strides)
 	{
 		return griddedRectCenter(size, size, size, detail, detail, detail, colour, strides);
 	}
 
-	Ref<Mesh> MeshFactory::griddedRectCenter(float width, float height, float depth, int wdetail, int hdetail, int ddetail, glm::vec4 colour, std::vector<int>* strides)
+	Ref<Mesh> MeshFactory3D::griddedRectCenter(float width, float height, float depth, int wdetail, int hdetail, int ddetail, glm::vec4 colour, std::vector<int>* strides)
 	{
 		using namespace glm;
 
@@ -1064,7 +1066,7 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::colourRectCenter(float width, float height, float depth)
+	Ref<Mesh> MeshFactory3D::colourRectCenter(float width, float height, float depth)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(24, 36);
 
@@ -1220,7 +1222,7 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::mark()
+	Ref<Mesh> MeshFactory2D::mark()
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(8, 8, RendererPrimitives::LINES);
 
@@ -1244,7 +1246,7 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::line(const glm::vec3& start, const glm::vec3& end)
+	Ref<Mesh> MeshFactory2D::line(const glm::vec3& start, const glm::vec3& end)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(2, 2, RendererPrimitives::LINES);
 
@@ -1259,7 +1261,7 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::paramatric(parametricfunc_t curvefunc, float tstart, float tend, const int tsteps, parametriccolourfunc_t curvecolourfunc)
+	Ref<Mesh> MeshFactory2D::paramatric(parametricfunc_t curvefunc, float tstart, float tend, const int tsteps, parametriccolourfunc_t curvecolourfunc)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(tsteps, 2 * tsteps - 2, RendererPrimitives::LINES);
 
@@ -1280,7 +1282,7 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::regularPolygon(const int sides)
+	Ref<Mesh> MeshFactory2D::regularPolygon(const int sides)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(sides, 3 * (sides - 2), RendererPrimitives::TRIANGLES);
 
@@ -1305,7 +1307,117 @@ namespace LSE
 		return mesh;
 	}
 
-	Ref<Mesh> MeshFactory::paramatricSurface(surfacefunc_t curvefunc, float ustart, float uend, const int usteps, float vstart, float vend, const int vsteps, surfacecolourfunc_t curvecolourfunc)
+	Ref<Mesh> MeshFactory2D::circle(const float& radius, const int detail)
+	{
+		Ref<Mesh> mesh = MakeRef<Mesh>(detail, detail, RendererPrimitives::LINE_LOOP);
+
+		for (int i = 0; i < detail; i++)
+		{
+			float theta = (float)i / detail * glm::two_pi<float>();
+			mesh->m_Vertices[i].a_Position = radius * glm::vec3(cosf(theta), sinf(theta), 0.f);
+			mesh->m_Vertices[i].a_Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+			mesh->m_Indices[i] = i;
+		}
+
+		return mesh;
+	}
+
+	Ref<Mesh> MeshFactory2D::elipse(const float& a, const float& b, const int detail)
+	{
+		Ref<Mesh> mesh = MakeRef<Mesh>(detail, (detail - 2) * 3, RendererPrimitives::TRIANGLES);
+
+		for (int i = 0; i < detail; i++)
+		{
+			float theta = (float)i / detail * glm::two_pi<float>();
+			mesh->m_Vertices[i].a_Position = glm::vec3(a * cosf(theta), b * sinf(theta), 0.f);
+			mesh->m_Vertices[i].a_Colour = glm::vec4(1.f, 1.f, 1.f, 1.f);
+			mesh->m_Vertices[i].a_Normal = glm::vec3(0.f, 0.f, 1.f);
+		}
+
+		for (int i = 0; i < detail - 2; i++)
+		{
+			mesh->m_Indices[i * 3 + 0] = 0;
+			mesh->m_Indices[i * 3 + 1] = i + 1;
+			mesh->m_Indices[i * 3 + 2] = i + 2;
+		}
+
+		return mesh;
+	}
+
+	Ref<Mesh> MeshFactory2D::square(const float& size, const glm::vec4 color)
+	{
+		Ref<Mesh> mesh = MakeRef<Mesh>(4, 6, RendererPrimitives::TRIANGLES);
+
+		mesh->m_Vertices[0].a_Position = glm::vec3(0.f, 0.f, 0.f);
+		mesh->m_Vertices[1].a_Position = glm::vec3(size, 0.f, 0.f);
+		mesh->m_Vertices[2].a_Position = glm::vec3(size, size, 0.f);
+		mesh->m_Vertices[3].a_Position = glm::vec3(0.f, size, 0.f);
+
+		mesh->m_Vertices[0].a_Colour = color;
+		mesh->m_Vertices[1].a_Colour = color;
+		mesh->m_Vertices[2].a_Colour = color;
+		mesh->m_Vertices[3].a_Colour = color;
+
+		mesh->m_Indices[0] = 0;
+		mesh->m_Indices[1] = 1;
+		mesh->m_Indices[2] = 2;
+		mesh->m_Indices[3] = 2;
+		mesh->m_Indices[4] = 3;
+		mesh->m_Indices[5] = 0;
+
+		return mesh;
+	}
+
+	Ref<Mesh> MeshFactory2D::squareCentre(const float& size, const glm::vec4 color)
+	{
+		Ref<Mesh> mesh = MakeRef<Mesh>(4, 6, RendererPrimitives::TRIANGLES);
+
+		float hsize = size / 2.f;
+
+		mesh->m_Vertices[0].a_Position = glm::vec3(-hsize, -hsize, 0.f);
+		mesh->m_Vertices[1].a_Position = glm::vec3(hsize, -hsize, 0.f);
+		mesh->m_Vertices[2].a_Position = glm::vec3(hsize, hsize, 0.f);
+		mesh->m_Vertices[3].a_Position = glm::vec3(-hsize, hsize, 0.f);
+
+		mesh->m_Vertices[0].a_Colour = color;
+		mesh->m_Vertices[1].a_Colour = color;
+		mesh->m_Vertices[2].a_Colour = color;
+		mesh->m_Vertices[3].a_Colour = color;
+
+		mesh->m_Indices[0] = 0;
+		mesh->m_Indices[1] = 1;
+		mesh->m_Indices[2] = 2;
+		mesh->m_Indices[3] = 2;
+		mesh->m_Indices[4] = 3;
+		mesh->m_Indices[5] = 0;
+
+		return mesh;
+	}
+
+
+	Ref<Mesh> MeshFactory2D::triangle45(const float& size, const glm::vec4 color)
+	{
+		Ref<Mesh> mesh = MakeRef<Mesh>(3, 3, RendererPrimitives::TRIANGLES);
+
+		float hsize = size / 2.f;
+
+		mesh->m_Vertices[0].a_Position = glm::vec3(-hsize, 0.f, 0.f);
+		mesh->m_Vertices[0].a_Colour = color;
+
+		mesh->m_Vertices[1].a_Position = glm::vec3(hsize, 0.f, 0.f);
+		mesh->m_Vertices[1].a_Colour = color;
+
+		mesh->m_Vertices[2].a_Position = glm::vec3(hsize, size, 0.f);
+		mesh->m_Vertices[2].a_Colour = color;
+
+		mesh->m_Indices[0] = 0;
+		mesh->m_Indices[1] = 1;
+		mesh->m_Indices[2] = 2;
+
+		return mesh;
+	}
+
+	Ref<Mesh> MeshFactory3D::paramatricSurface(surfacefunc_t curvefunc, float ustart, float uend, const int usteps, float vstart, float vend, const int vsteps, surfacecolourfunc_t curvecolourfunc)
 	{
 		Ref<Mesh> mesh = MakeRef<Mesh>(usteps * vsteps, (usteps - 1) * (vsteps - 1) * 6);
 

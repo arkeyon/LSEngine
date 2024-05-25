@@ -88,7 +88,7 @@ namespace LSE {
 		while (m_Running)
 		{
 			float delta = timer.elapsed();
-			if (delta < 1.f / 144.f) continue;
+			if (delta < 1.f / 500.f) continue;
 			timer.reset();
 		
 			if (!m_Minimized)

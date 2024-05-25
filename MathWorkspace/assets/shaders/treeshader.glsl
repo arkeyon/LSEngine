@@ -36,16 +36,8 @@ void main()
 
 layout (location = 0) out vec4 a_Colour;
 
-uniform vec3 lightpos = vec3(100.f, 100.f, 180.f);
-uniform vec3 u_EyeDir;
-
-uniform vec4 u_Color = vec4(1.f, 1.f, 1.f, 1.f);
-uniform vec3 u_AmbientColor = vec3(1.f, 1.f, 1.f);
-uniform vec3 u_DiffuseColor = vec3(1.f, 1.f, 1.f);
-uniform vec3 u_SpecularColor = vec3(1.f, 1.f, 1.f);
-uniform float u_Shininess = 10.f;
-
 uniform sampler2D tex;
+uniform vec4 color;
 
 in VertexData
 {
@@ -58,13 +50,5 @@ in VertexData
 
 void main()
 {
-
-	vec3 lightdir = (fin.Position - lightpos);
-	vec3 R = reflect(-normalize(lightdir), -fin.Normal);
-
-	float spec = pow(clamp(dot(R, u_EyeDir), 0.f, 1.f), u_Shininess);
-	float diffuse = clamp(dot(-fin.Normal, normalize(lightdir)), 0.f, 1.f);
-
-	float dist = length(lightdir);
-	a_Colour = u_Color * vec4(fin.Colour.xyz * (u_AmbientColor + diffuse * u_DiffuseColor + spec * u_SpecularColor) * 50.f / dist, fin.Colour.z);
+	a_Colour = fin.Colour * color;
 }

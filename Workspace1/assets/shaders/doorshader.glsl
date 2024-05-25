@@ -40,12 +40,15 @@ uniform vec3 lightpos = vec3(100.f, 100.f, 180.f);
 uniform vec3 u_EyeDir;
 
 uniform vec4 u_Color = vec4(1.f, 1.f, 1.f, 1.f);
-uniform vec3 u_AmbientColor = 0.5f * vec3(1.f, 1.f, 1.f);
-uniform vec3 u_DiffuseColor = 0.5f * vec3(1.f, 1.f, 1.f);
-uniform vec3 u_SpecularColor = 0.5f * vec3(1.f, 1.f, 1.f);
+uniform vec3 u_AmbientColor = vec3(1.f, 1.f, 1.f);
+uniform vec3 u_DiffuseColor = vec3(1.f, 1.f, 1.f);
+uniform vec3 u_SpecularColor = vec3(1.f, 1.f, 1.f);
 uniform float u_Shininess = 10.f;
 
 uniform sampler2D tex;
+
+uniform vec3 portalnormal;
+uniform vec3 portalpos;
 
 in VertexData
 {
@@ -58,6 +61,12 @@ in VertexData
 
 void main()
 {
+
+	if (dot(fin.Position, portalnormal) > dot(portalpos, portalnormal))
+	{
+		discard;
+	}
+
 	vec3 lightdir = (fin.Position - lightpos);
 	vec3 R = reflect(-normalize(lightdir), -fin.Normal);
 
@@ -65,5 +74,5 @@ void main()
 	float diffuse = clamp(dot(-fin.Normal, normalize(lightdir)), 0.f, 1.f);
 
 	float dist = length(lightdir);
-	a_Colour = u_Color * texture2D(tex, fin.UV) * vec4(fin.Colour.xyz * (u_AmbientColor + diffuse * u_DiffuseColor + spec * u_SpecularColor) * 20.f / dist, fin.Colour.z);
+	a_Colour = u_Color * vec4(fin.Colour.xyz * (u_AmbientColor + diffuse * u_DiffuseColor + spec * u_SpecularColor) * 50.f / dist, fin.Colour.z);
 }

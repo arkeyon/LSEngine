@@ -28,7 +28,7 @@
 class ExampleLayer : public LSE::Layer
 {
 private:
-	LSE::Ref<LSE::Model> m_Skybox, m_Cube, m_Door;
+	LSE::Ref<LSE::Model>m_Surface;
 
 	LSE::Ref<LSE::Shader> m_Shader;
 	LSE::Ref<LSE::PerspectiveCamera> m_Camera;
@@ -42,15 +42,18 @@ private:
 	float m_Frames = 0.f;
 	float m_Time = 0.f;
 
+	float m_Phase = 0.f;
+	float m_Speed = 16.f;
+	float m_Frequency = 2.f;
+	float m_Spacing = 30.f;
+	float m_Amplitude = 100.f;
+	int m_Dipoles = 4;
+
 	glm::vec4 m_Color = glm::vec4(1.f, 1.f, 1.f, 1.f);
 	glm::vec3 m_AmbientColor = 1.f * glm::vec3(1.f, 1.f, 1.f);
 	glm::vec3 m_DiffuseColor = 1.f * glm::vec3(1.f, 1.f, 1.f);
 	glm::vec3 m_SpecularColor = 1.f * glm::vec3(1.f, 1.f, 1.f);
 	float m_Shininess = 10.f;
-
-	LSE::Ref<WorldEntity> m_Door1;
-	LSE::Ref<WorldEntity> m_Door2;
-	LSE::Ref<WorldEntity> m_Player;
 
 public:
 	ExampleLayer()
@@ -61,48 +64,30 @@ public:
 		RendererAPI::SetAPI(RendererAPI::API::OpenGL);
 		Renderer::Init();
 
-		m_Camera = MakeRef<PerspectiveCamera>(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 10000.f);
+		m_Camera = MakeRef<PerspectiveCamera>(glm::vec3(-25.f, -60.f, 100.f), glm::vec3(0.71f, 1.497f, 0.f), glm::two_pi<float>() / 6.f, 16.f / 9.f, 0.1f, 10000.f);
 		m_CameraController = MakeRef<PerspectiveCameraController>(m_Camera);
 
-		m_Shader.reset(Shader::Create("assets/shaders/simpleshader.glsl"));
+		m_Shader.reset(Shader::Create("assets/shaders/waves.glsl"));
 
-		m_Skybox = MakeRef<Model>();
-		m_Cube = MakeRef<Model>();
-		m_Door = MakeRef<Model>();
+		//RenderCommand::EnabledWireframe(true);
+
+		m_Surface = MakeRef<LSE::Model>();
 
 		{
-			Ref<Mesh> mesh = MeshFactory::rectCorner(200.f, 200.f, 200.f);
-			mesh->Invert();
+			MeshFactory3D::surfacefunc_t surface = [](const float& u, const float& v)
+			{
+				return glm::vec3(u, v, 0.f);
+			};
 		
-			m_Skybox->AddMesh(mesh);
+			MeshFactory3D::surfacecolourfunc_t colorsurface = [](const float& u, const float& v)
+			{
+				return glm::vec4(0.1f, 0.4f, 0.7f, 1.f);
+			};
+		
+			Ref<Mesh> mesh = MeshFactory3D::paramatricSurface(surface, -300.f, 300.f, 3000, -300.f, +300.f, 3000, colorsurface);
+			//mesh->Invert();
+			m_Surface->AddMesh(mesh);
 		}
-		
-		{
-			Ref<Mesh> mesh = MeshFactory::cubeCenter(5.f);
-			m_Cube->AddMesh(mesh);
-		}
-		
-		//{
-		//	MeshFactory::surfacefunc_t surface = [](const float& u, const float& v)
-		//	{
-		//		return glm::vec3(u, 10.f * cos(v), 10.f * sin(v));
-		//	};
-		//
-		//	MeshFactory::surfacecolourfunc_t colorsurface = [](const float& u, const float& v)
-		//	{
-		//		return glm::vec4(glm::rgbColor(glm::vec3(v / glm::two_pi<float>() * 360.f, 1.f, 1.f)), 1.f);
-		//	};
-		//
-		//	Ref<Mesh> mesh = MeshFactory::paramatricSurface(surface, 0.f, 100.f, 5, 0.f, glm::two_pi<float>(), 20, colorsurface);
-		//	//mesh->Invert();
-		//	m_Door->AddMesh(mesh);
-		//}
-
-		m_Door->AddMesh(MeshFactory::planeCorner(glm::vec3(20.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 80.f)));
-
-		m_Door1 = MakeRef<WorldEntity>(glm::vec3(80.f, 80.f, 0.f), glm::angleAxis(0.f, glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), m_Door);
-		m_Door2 = MakeRef<WorldEntity>(glm::vec3(120.f, 120.f, 0.f), glm::angleAxis(glm::quarter_pi<float>(), glm::vec3(1.f, 0.f, 0.f)), glm::vec3(1.f, 1.f, 1.f), m_Door);
-		m_Player = MakeRef<WorldEntity>(glm::vec3(50.f, 50.f, 0.f), glm::angleAxis(0.f, glm::vec3(0.f, 0.f, 1.f)), glm::vec3(1.f, 1.f, 1.f), m_Cube);
 
 		m_TestTexture = Texture2D::Create("assets/textures/BLANK.png");
 
@@ -113,9 +98,13 @@ public:
 		RenderCommand::EnableDepthTest(true);
 	}
 
+	float runtime = 0.f;
+
 	void OnUpdate(float delta) override
 	{
 		using namespace LSE;
+
+		runtime += delta;
 
 		if (!m_Paused)
 		{
@@ -134,20 +123,20 @@ public:
 
 		RenderCommand::Clear();
 
-		m_Shader->SetUniform4f("u_Color", m_Color);							  //TODO: Put in renderer
-		m_Shader->SetUniform3f("u_AmbientColor", m_AmbientColor);
-		m_Shader->SetUniform3f("u_DiffuseColor", m_DiffuseColor);
-		m_Shader->SetUniform3f("u_SpecularColor", m_SpecularColor);
+		m_Shader->SetUniform1f("u_Time", runtime);
+		m_Shader->SetUniform1f("u_Phase", m_Phase);
+		m_Shader->SetUniform1f("u_Frequency", m_Frequency);
+		m_Shader->SetUniform1f("u_Speed", m_Speed);
+		m_Shader->SetUniform1f("u_Spacing", m_Spacing);
+		m_Shader->SetUniform1f("u_Amplitude", m_Amplitude);
+		m_Shader->SetUniformi("u_Dipoles", m_Dipoles);
 
 		m_Shader->SetUniformi("tex", 0);
 		m_TestTexture->Bind(0);
 
-		glm::mat4 im = m_Door1->GetComponent<ReferenceFrame>()->getModelMat() * glm::inverse(m_Door2->GetComponent<ReferenceFrame>()->getModelMat());
-
 		Renderer::BeginScene(m_Camera);
 
-		Renderer::Submit(m_Shader, m_Skybox);
-		Renderer::Submit(m_Shader, m_Door1->GetComponent<Renderable>()->m_Model, m_Door1->GetComponent<ReferenceFrame>()->getModelMat());
+		Renderer::Submit(m_Shader, m_Surface);
 
 		Renderer::EndScene();
 	}
@@ -161,11 +150,12 @@ public:
 		if (m_Paused)
 		{
 			ImGui::Spacing();
-			ImGui::ColorEdit4("Color", &m_Color[0]);
-			ImGui::ColorEdit3("AmbientColor", &m_AmbientColor[0]);
-			ImGui::ColorEdit3("DiffuseColor", &m_DiffuseColor[0]);
-			ImGui::ColorEdit3("SpecularColor", &m_SpecularColor[0]);
-			ImGui::SliderFloat("Shininess", &m_Shininess, 1.f, 10.f, "%.3f", 3.f);
+			ImGui::SliderFloat("Phase",&m_Phase, -15.f, 15.f, "%.3f", 3.f);
+			ImGui::SliderFloat("Frequency",&m_Frequency, 1.f, 100.f, "%.3f", 3.f);
+			ImGui::SliderFloat("Speed",&m_Speed, 1.f, 100.f, "%.3f", 3.f);
+			ImGui::SliderFloat("Spacing",&m_Spacing, 0.f, 200.f, "%.3f", 3.f);
+			ImGui::SliderFloat("Amplitude",&m_Amplitude, 1.f, 100.f, "%.3f", 3.f);
+			ImGui::SliderInt("Dipoles",&m_Dipoles, 0, 100);
 		}
 		ImGui::End();
 	}

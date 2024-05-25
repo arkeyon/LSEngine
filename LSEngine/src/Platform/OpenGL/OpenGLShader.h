@@ -24,6 +24,10 @@ namespace LSE {
 		void Compile(std::unordered_map<GLenum, std::string> shaderSources);
 	private:
 		uint32_t m_ShaderProgram;
+
+		std::unordered_map<const char*, GLuint> m_NameMap;
+
+		GLuint ShaderCache(const char* name);
 	};
 
 }

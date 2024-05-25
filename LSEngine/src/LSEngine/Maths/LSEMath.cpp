@@ -68,6 +68,14 @@ namespace LSE::Maths {
 	{
 		std::vector<float> solutions;
 
+		if (fabsf(a) <= FLT_EPSILON)
+		{
+			if (b == 0.f) return solutions;
+
+			solutions.push_back(-c / b);
+			return solutions;
+		}
+
 		float det = b * b - 4.f * a * c;
 		if (det < 0.f) return solutions;
 		else if (det == 0.f)
@@ -83,6 +91,7 @@ namespace LSE::Maths {
 
 		solutions.push_back(s1);
 		solutions.push_back(s2);
+
 
 		return solutions;
 	}

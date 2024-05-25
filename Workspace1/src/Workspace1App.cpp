@@ -23,8 +23,8 @@
 
 #include <stdio.h>
 
-#define tilewidth 25
-#define tileheight 25
+#define tilewidth 5
+#define tileheight 5
 #define tilesize tilewidth * tileheight
 
 class ExampleLayer : public LSE::Layer
@@ -223,10 +223,10 @@ public:
 		m_Shader.reset(Shader::Create("assets/shaders/simpletexshader.glsl"));
 
 		m_TileModel = MakeRef<LSE::Model>();
-		m_TileModel->AddMesh(MeshFactory::generateCubeCorner(1.f));
+		m_TileModel->AddMesh(MeshFactory3D::cubeCorner(1.f));
 
 		m_BackModel = MakeRef<LSE::Model>();
-		m_BackModel->AddMesh(MeshFactory::generatePlaneCorner(glm::vec3(tilewidth, 0.f, 0.f), glm::vec3(0.f, tileheight, 0.f)));
+		m_BackModel->AddMesh(MeshFactory3D::planeCorner(glm::vec3(tilewidth, 0.f, 0.f), glm::vec3(0.f, tileheight, 0.f)));
 
 		for (int i = 0; i < 17; i++)
 		{

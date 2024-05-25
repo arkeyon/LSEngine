@@ -48,6 +48,7 @@ namespace LSE {
 			LSE_CORE_ASSERT(success, "Could not initialize GLFW");
 		}
 
+		glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_FALSE);
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
 
 		s_Context = new OpenGLContext(m_Window);
@@ -157,8 +158,8 @@ namespace LSE {
 				data.EventCallback(e);
 			});
 
-		//if (glfwRawMouseMotionSupported()) glfwSetInputMode(m_Window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
-		//else LSE_CORE_WARN("Raw input not supported");
+		if (glfwRawMouseMotionSupported()) glfwSetInputMode(m_Window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+		else LSE_CORE_WARN("Raw input not supported");
 
 		glfwSetErrorCallback(GLFWErrorCallback);
 	}
@@ -167,7 +168,7 @@ namespace LSE {
 	{
 		glfwSwapInterval((int)enabled);
 
-		m_Data.VSync = true;
+		m_Data.VSync = enabled;
 	}
 
 	void WindowsWindow::SetCursorState(bool enabled)

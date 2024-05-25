@@ -225,6 +225,7 @@
     <ClInclude Include="src\lsepch.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\BatchRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Core\Application.cpp">

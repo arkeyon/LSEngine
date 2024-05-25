@@ -79,7 +79,7 @@ namespace LSE {
 		pi.radius = radius;
 
 		//pi.mesh = MeshFactory::griddedCubeCenter(pi.radius, pi.meshdetail, vec4(1.f, 1.f, 1.f, 1.f), &pi.facestrides);
-		pi.mesh = MeshFactory::cubeSphere(pi.radius, pi.meshdetail, vec4(1.f, 1.f, 1.f, 1.f), &pi.facestrides);
+		pi.mesh = MeshFactory3D::cubeSphere(pi.radius, pi.meshdetail, vec4(1.f, 1.f, 1.f, 1.f), &pi.facestrides);
 
 		srand(time(0));
 

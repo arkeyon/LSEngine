@@ -3,6 +3,9 @@
 #include "OpenGlShader.h"
 #include <fstream>
 #include <iostream>
+#include <unordered_map>
+#include <map>
+#include <vector>
 
 #include "LSEngine/Core/IOUtils.h"
 
@@ -13,6 +16,9 @@ namespace LSE {
 		std::string source = ReadFile(path);
 		auto shaderSources = PreProcess(source);
 		Compile(shaderSources);
+
+		m_NameMap = std::unordered_map<const char*, GLuint>();
+		m_NameMap[""] = -1;
 	}
 
 	GLenum ShaderTypeFromString(const std::string& type)
@@ -117,39 +123,55 @@ namespace LSE {
 		glUseProgram(0);
 	}
 
+	GLuint OpenGLShader::ShaderCache(const char* name)
+	{
+		auto it = m_NameMap.find(name);
+
+		if (it != m_NameMap.end())
+		{
+			return it->second;
+		}
+
+		GLuint location = glGetUniformLocation(m_ShaderProgram, name);;
+
+		m_NameMap[name] = location;
+		
+		return location;
+	}
+
 	void OpenGLShader::SetUniformMat4(const char* name, const glm::mat4& matrix)
 	{
-		GLuint location = glGetUniformLocation(m_ShaderProgram, name);
+		GLuint location = ShaderCache(name);
 		glUniformMatrix4fv(location, 1, GL_FALSE, &(matrix[0][0]));
 	}
 
 	void OpenGLShader::SetUniformi(const char* name, int i)
 	{
-		GLuint location = glGetUniformLocation(m_ShaderProgram, name);
+		GLuint location = ShaderCache(name);
 		glUniform1i(location, i);
 	}
 
 	void OpenGLShader::SetUniform4f(const char* name, const glm::vec4& vector)
 	{
-		GLuint location = glGetUniformLocation(m_ShaderProgram, name);
+		GLuint location = ShaderCache(name);
 		glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
 	}
 
 	void OpenGLShader::SetUniform3f(const char* name, const glm::vec3& vector)
 	{
-		GLuint location = glGetUniformLocation(m_ShaderProgram, name);
+		GLuint location = ShaderCache(name);
 		glUniform3f(location, vector.x, vector.y, vector.z);
 	}
 	
 	void OpenGLShader::SetUniform2f(const char* name, const glm::vec2& vector)
 	{
-		GLuint location = glGetUniformLocation(m_ShaderProgram, name);
+		GLuint location = ShaderCache(name);
 		glUniform2f(location, vector.x, vector.y);
 	}
 	
 	void OpenGLShader::SetUniform1f(const char* name, const float& vector)
 	{
-		GLuint location = glGetUniformLocation(m_ShaderProgram, name);
+		GLuint location = ShaderCache(name);
 		glUniform1f(location, vector);
 	}
 }

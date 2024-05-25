@@ -8,7 +8,7 @@
 
 namespace LSE {
 
-	class LSE_API MeshFactory
+	class LSE_API MeshFactory3D
 	{
 	public:
 		static Ref<Mesh> cubeSphere(const float& radius, const int& detail, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f }, std::vector<int>* strides = nullptr);
@@ -31,22 +31,34 @@ namespace LSE {
 		static Ref<Mesh> planeCenter(glm::vec3 x, glm::vec3 y);
 		static Ref<Mesh> planeCorner(glm::vec3 x, glm::vec3 y);
 
-		static Ref<Mesh> gridCenter(glm::vec3 xdir, glm::vec3 y, int xdetail, int ydetail, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
-		static Ref<Mesh> gridCorner(glm::vec3 xdir, glm::vec3 y, int xdetail, int ydetail, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
+		static Ref<Mesh> gridCenter(glm::vec3 xdir, glm::vec3 ydir, int xdetail, int ydetail, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
+		static Ref<Mesh> gridCorner(glm::vec3 xdir, glm::vec3 ydir, int xdetail, int ydetail, glm::vec4 colour = { 1.f, 1.f, 1.f, 1.f });
 
 		static Ref<Mesh> rectCenterSharedVertices(float width, float height, float depth);
 
 		static Ref<Mesh> regularPolygon(const int sides);
 
-		typedef glm::vec3(*parametricfunc_t)(const float& t);
-		typedef glm::vec4(*parametriccolourfunc_t)(const float& t);
-		static Ref<Mesh> paramatric(parametricfunc_t curvefunc, float tstart = 0.f, float tend = 1.f, const int tsteps = 10, parametriccolourfunc_t curvecolourfunc = [](const float& t) { return glm::vec4(1.f, 1.f, 1.f, 1.f); });
-		
-		static Ref<Mesh> mark();
-		static Ref<Mesh> line(const glm::vec3& start, const glm::vec3& end);
-
 		typedef glm::vec3(*surfacefunc_t)(const float& u, const float& v);
 		typedef glm::vec4(*surfacecolourfunc_t)(const float& u, const float& v);
 		static Ref<Mesh> paramatricSurface(surfacefunc_t curvefunc, float ustart = 0.f, float uend = 1.f, const int usteps = 10, float vstart = 0.f, float vend = 1.f, const int vsteps = 10, surfacecolourfunc_t curvecolourfunc = [](const float& u, const float& v) { return glm::vec4(1.f, 1.f, 1.f, 1.f); });
+	};
+
+	class LSE_API MeshFactory2D
+	{
+	public:
+		static Ref<Mesh> regularPolygon(const int sides);
+
+		typedef glm::vec3(*parametricfunc_t)(const float& t);
+		typedef glm::vec4(*parametriccolourfunc_t)(const float& t);
+		static Ref<Mesh> paramatric(parametricfunc_t curvefunc, float tstart = 0.f, float tend = 1.f, const int tsteps = 10, parametriccolourfunc_t curvecolourfunc = [](const float& t) { return glm::vec4(1.f, 1.f, 1.f, 1.f); });
+
+		static Ref<Mesh> mark();
+		static Ref<Mesh> line(const glm::vec3& start, const glm::vec3& end);
+		static Ref<Mesh> circle(const float& radius, const int detail);
+		static Ref<Mesh> elipse(const float& a, const float& b, const int detail);
+		static Ref<Mesh> square(const float& size, const glm::vec4 color = glm::vec4(1.f, 1.f, 1.f, 1.f));
+		static Ref<Mesh> squareCentre(const float& size, const glm::vec4 color = glm::vec4(1.f, 1.f, 1.f, 1.f));
+		static Ref<Mesh> triangle45(const float& size, const glm::vec4 color = glm::vec4(1.f, 1.f, 1.f, 1.f));
+		static Ref<Mesh> rect(const float& width, const float& height, const glm::vec4 color = glm::vec4(1.f, 1.f, 1.f, 1.f));
 	};
 }

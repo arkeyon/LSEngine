@@ -28,10 +28,21 @@ namespace LSE::Maths {
 		Ref<Model> m_Model;
 	};
 
-	class UnnamedCurve : public ParametricCurve
+	class PointCurve : public ParametricCurve
 	{
 	private:
+		std::vector<glm::vec3> m_Points;
+	public:
+		PointCurve(std::vector<glm::vec3>& points);
+
+		virtual glm::vec3 function(const float& t) const override;
+	};
+
+	class UnnamedCurve : public ParametricCurve
+	{
+	public:
 		typedef glm::vec3(*func_t)(const float& t);
+	private:
 		func_t m_Func, m_GFunc;
 	public:
 		UnnamedCurve(const glm::vec3& pos, const glm::quat& orin, const glm::vec3& scale, func_t function, const float& tmin = -30.f, const float& tmax = 30.f, func_t gfunction = nullptr);

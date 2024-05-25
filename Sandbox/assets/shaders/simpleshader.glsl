@@ -47,6 +47,8 @@ uniform float u_Shininess = 10.f;
 
 uniform sampler2D tex;
 
+
+
 in VertexData
 {
 	vec3 Position;
@@ -58,6 +60,9 @@ in VertexData
 
 void main()
 {
+
+
+
 	vec3 lightdir = (fin.Position - lightpos);
 	vec3 R = reflect(-normalize(lightdir), -fin.Normal);
 
@@ -65,6 +70,5 @@ void main()
 	float diffuse = clamp(dot(-fin.Normal, normalize(lightdir)), 0.f, 1.f);
 
 	float dist = length(lightdir);
-	a_Colour = u_Color * texture2D(tex, fin.UV) * vec4(fin.Colour.xyz * (u_AmbientColor + diffuse * u_DiffuseColor + spec * u_SpecularColor) * 20.f / dist, fin.Colour.z);
-	//a_Colour = u_Color * texture2D(tex, fin.UV) * vec4(fin.Colour.xyz * (u_AmbientColor + diffuse * u_DiffuseColor + spec * u_SpecularColor) * 20.f / dist, fin.Colour.z);
+	a_Colour = u_Color * texture2D(tex, fin.UV) * vec4(fin.Colour.xyz * (u_AmbientColor + diffuse * u_DiffuseColor + spec * u_SpecularColor) * 50.f / dist, fin.Colour.z);
 }

@@ -36,6 +36,7 @@ namespace LSE::Maths {
 		std::vector<glm::vec2> solutions;
 
 		return solutions;
+		 
 	}
 
 	PointCurve::PointCurve(std::vector<glm::vec3>& points)

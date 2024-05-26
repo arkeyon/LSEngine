@@ -29,5 +29,4 @@ namespace LSE {
 		template <class T>
 		inline const Ref<T> GetComponent() const { return ECS->GetComponent<T>(this); }
 	};
-
 }

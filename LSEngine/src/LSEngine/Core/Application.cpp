@@ -74,9 +74,14 @@ namespace LSE {
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
 		{
-			(*--it)->OnEvent(e);
-			if (e.m_Handled)
-				break;
+			auto layer = *--it;
+
+			if (layer->isActive())
+			{
+				layer->OnEvent(e);
+				if (e.m_Handled)
+					break;
+			}
 		}
 	}
 

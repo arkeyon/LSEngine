@@ -103,7 +103,7 @@ workspace "LSEngine"
             "%{IncludeDir.spdlog}",
             "%{IncludeDir.GLM}",
             "%{IncludeDir.imgui}",
-			"%{IncludeDir.ImGuizmo}",
+	    "%{IncludeDir.ImGuizmo}",
             "%{IncludeDir.FreeImage}",
             "%{IncludeDir.stb}"
         }
@@ -234,8 +234,9 @@ workspace "LSEngine"
         {
             "GLFW",
             "GLAD",
-            "imgui",
+            "ImGui",
             "opengl32.lib",
+	    "FreeImage.lib"
         }
 
         defines
@@ -261,11 +262,6 @@ workspace "LSEngine"
                 "LSE_ENABLE_ASSERTS"
             }
 
-            links
-            {
-                "FreeImageLibd.lib"
-            }
-
             runtime "Debug"
             symbols "on"
     
@@ -273,18 +269,8 @@ workspace "LSEngine"
             defines "LSE_RELEASE"
             runtime "Release"
             optimize "on"
-    
-            links
-            {
-                "FreeImageLib.lib"
-            }
 
         filter "configurations:Dist"
             defines "LSE_DIST"
             runtime "Release"
             optimize "on"
-
-            links
-            {
-                "FreeImageLib.lib"
-            }

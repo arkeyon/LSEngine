@@ -5,11 +5,14 @@
 
 namespace LSE {
 
+	class LSE_API LayerStack;
+
 	class LSE_API Layer
 	{
 	private:
 
 		friend LSE::Application;
+		friend LSE::LayerStack;
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}

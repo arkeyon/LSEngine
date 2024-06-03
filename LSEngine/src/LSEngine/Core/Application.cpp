@@ -17,7 +17,7 @@
 
 #include "Platform/Windows/WindowsTimer.h"
 
-#include "FreeImage.h"
+//#include "FreeImage.h"
 #include "imgui.h"
 
 #include <glm/glm.hpp>
@@ -36,7 +36,7 @@ namespace LSE {
 	{
 		s_Instance = this;
 
-		FreeImage_Initialise();
+		//FreeImage_Initialise();
 
 		m_Window = Scope<Window>(Window::Create(WindowProps("Title", width, height, fullscreen)));
 		m_Window->SetVSync(false);

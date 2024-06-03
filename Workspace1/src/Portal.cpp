@@ -15,13 +15,14 @@
 #include "LSEngine/Renderer/Texture.h"
 
 #include <glm/gtc/type_ptr.hpp>
-#include <glm/gtx/color_space.hpp>
 #include <glm/gtc/quaternion.hpp>
 
 #include <list>
 
 #include "LSEngine/ECS/Entity.h"
 #include "LSEngine/ECS/Objects/ECS.h"
+#include "LSEngine/Core/EntryPoint.h"
+
 
 #define BIT(x) (1L << x)
 
@@ -120,7 +121,7 @@ public:
 		}
 
 		m_Door2 = MakeRef<LSE::Model>();
-		m_Door2transform = glm::translate(glm::mat4(1.f), glm::vec3(80.f, 30.f, 0.f)) * glm::rotate(glm::mat4(1.f), glm::half_pi<float>(), glm::vec3(0.f, 0.f, 1.f));
+		m_Door2transform = glm::translate(glm::mat4(1.f), glm::vec3(80.f, 30.f, 0.f)) * glm::rotate(glm::mat4(1.f), glm::half_pi<float>(), glm::vec3(0.f, 0.f, 1.f)) * glm::scale(glm::mat4(1.f), glm::vec3(1.f, 1.f, 5.f));
 		{
 			auto door = MeshFactory2D::elipse(5.f, 10.f, 50);
 			door->Transform(glm::translate(glm::mat4(1.f), glm::vec3(0.f, 0.f, 10.f)) * glm::rotate(glm::mat4(1.f), glm::half_pi<float>(), glm::vec3(1.f, 0.f, 0.f)));
@@ -213,7 +214,7 @@ public:
 
 		glm::mat4 t = m_Door1transform * glm::inverse(m_Door2transform * glm::rotate(glm::mat4(1.f), angle, glm::vec3(0.f, 0.f, 1.f)));;
 
-		Renderer::Submit(m_Shader, m_Camerablock, trans2 * glm::translate(glm::mat4(1.f), m_Camera->GetPos()));
+		Renderer::Submit(m_Shader, m_Camerablock, trans2 * glm::inverse(m_Camera->GetViewMatrix()));
 
 		RenderCommand::EnabledWireframe(true);
 		Renderer::Submit(m_Shader, m_Door2, m_Door2transform * glm::rotate(glm::mat4(1.f), glm::pi<float>() + angle, glm::vec3(0.f, 0.f, 1.f)));

@@ -32,3 +32,4 @@ namespace LSE {
 #define LSE_WARN(...)  ::LSE::Log::GetClientLogger()->warn(__VA_ARGS__)
 #define LSE_CRITICAL(...) ::LSE::Log::GetClientLogger()->critical(__VA_ARGS__)
 #define LSE_ERROR(...) ::LSE::Log::GetClientLogger()->error(__VA_ARGS__)
+

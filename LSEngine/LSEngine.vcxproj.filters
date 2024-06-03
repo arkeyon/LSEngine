@@ -147,6 +147,9 @@
     <ClInclude Include="src\LSEngine\Maths\Vector.h">
       <Filter>src\LSEngine\Maths</Filter>
     </ClInclude>
+    <ClInclude Include="src\LSEngine\Renderer\BatchRenderer.h">
+      <Filter>src\LSEngine\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\LSEngine\Renderer\Buffer.h">
       <Filter>src\LSEngine\Renderer</Filter>
     </ClInclude>
@@ -225,7 +228,6 @@
     <ClInclude Include="src\lsepch.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\LSEngine\Renderer\BatchRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LSEngine\Core\Application.cpp">

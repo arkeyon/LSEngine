@@ -19,7 +19,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/color_space.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include <glm/gtx/norm.hpp>
 
 #include <stdio.h>
 
@@ -276,7 +275,7 @@ public:
 				glm::vec3 tileanimate1 = tile.moveoffs * (1.f - std::min(tile.elapsed, 1.f));
 				glm::vec3 tileanimate2 = tile.moveoffs2 * (1.f - std::min(tile.elapsed, 1.f));
 				
-				if (tile.combining && glm::length2(tileanimate1 - tileanimate2) != 0.f)
+				if (tile.combining && glm::length(tileanimate1 - tileanimate2) != 0.f)
 				{
 					int ntile = std::max(0, tile.ID - 1);
 					if (!ntile) continue;

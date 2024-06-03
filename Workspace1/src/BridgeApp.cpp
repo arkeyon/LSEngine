@@ -20,7 +20,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/color_space.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include <glm/gtx/norm.hpp>
 
 #include <stdio.h>
 

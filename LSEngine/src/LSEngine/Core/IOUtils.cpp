@@ -5,7 +5,7 @@
 #include <gli/gli.hpp>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
-#include <FreeImage.h>
+//#include <FreeImage.h>
 
 #include <fstream>
 #include <sstream>
@@ -26,28 +26,28 @@ namespace LSE {
 		return result;
 	}
 
-	GLuint CreateTexture(char const* Filename)
-	{
-		FREE_IMAGE_FORMAT format = FreeImage_GetFileType(Filename);
-
-		if (format == FIF_UNKNOWN)
-		{
-			format = FreeImage_GetFIFFromFilename(Filename);
-		}
-
-		FIBITMAP* img = FreeImage_Load(format, Filename);
-		uint32_t width = FreeImage_GetWidth(img);
-		uint32_t height = FreeImage_GetHeight(img);
-		LSE_CORE_TRACE("{0}\t{1}", width, height);
-		GLuint TextureName = 0;
-		glGenTextures(1, &TextureName);
-		glBindTexture(GL_TEXTURE_2D, TextureName);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, FreeImage_GetBits(img));
-		
-		return TextureName;
-	}
+	//GLuint CreateTexture(char const* Filename)
+	//{
+	//	FREE_IMAGE_FORMAT format = FreeImage_GetFileType(Filename);
+	//
+	//	if (format == FIF_UNKNOWN)
+	//	{
+	//		format = FreeImage_GetFIFFromFilename(Filename);
+	//	}
+	//
+	//	FIBITMAP* img = FreeImage_Load(format, Filename);
+	//	uint32_t width = FreeImage_GetWidth(img);
+	//	uint32_t height = FreeImage_GetHeight(img);
+	//
+	//	GLuint TextureName = 0;
+	//	glGenTextures(1, &TextureName);
+	//	glBindTexture(GL_TEXTURE_2D, TextureName);
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	//	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	//	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_BGRA, GL_UNSIGNED_BYTE, FreeImage_GetBits(img));
+	//	
+	//	return TextureName;
+	//}
 }
